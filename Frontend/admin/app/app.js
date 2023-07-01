@@ -5,8 +5,15 @@ angular.module('myApp', [
   'myApp.home',
 ])
   .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-    $locationProvider.hashPrefix('!');
-    $routeProvider.otherwise({ redirectTo: '/' });
+    $locationProvider.hashPrefix('');
+    $routeProvider
+      .when('/view1', {
+        templateUrl: 'homePage/home.html'
+      })
+    // .when('/view2', {
+    //   template: '<my-app-view2></my-app-view2>'
+    // })
+    // .otherwise({ redirectTo: '/' });
   }]);
 
 angular.module('myApp').component('app', {
@@ -15,4 +22,8 @@ angular.module('myApp').component('app', {
 
 angular.module('myApp').component('appHeader', {
   templateUrl: 'header.html',
+});
+
+angular.module('myApp').component('appFooter', {
+  templateUrl: 'footer.html',
 });

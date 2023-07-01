@@ -1,0 +1,15 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+}
+
+.menu > li:hover {
+  display: inline;
+  color: red;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 12px 24px;
+}
