@@ -1,9 +1,9 @@
 export default angular.module('myApp').component('customeTable', {
-  templateUrl: 'components/table/table.html',
+  templateUrl: 'components/custome-table/custome-table.html',
   bindings: {
     data: '='
   },
-  controller: ['$scope', function TableController($scope) {
+  controller: ['$scope', function CustomeTableController($scope) {
     // $scope.sidebarVisible = true;
 
     // $scope.toggleSidebar = function () {

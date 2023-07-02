@@ -1,5 +1,9 @@
-<div ng-controller="BannerPageCtrl">
-  <h1>{{ data }}</h1>
-  <button ng-click="changeText()">Change Text</button>
-  <custome-table data="data"></custome-table>
+<div ng-controller="BannerListCtrl">
+  <a href="#/banners/create">Create</a>
+  <div ng-if="isLoading">
+    <div class="spinner">Loading...</div>
+  </div>
+  <div ng-if="!isLoading">
+    <custome-table data="data"></custome-table>
+  </div>
 </div>

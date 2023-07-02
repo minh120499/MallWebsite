@@ -1,0 +1,9 @@
+<div ng-if="!$ctrl.data || $ctrl.data.length === 0">
+  <empty-data>
+</div>
+
+<div ng-if="$ctrl.data && $ctrl.data.length > 0">
+  <ul>
+    <li ng-repeat="item in $ctrl.data">{{ item }}</li>
+  </ul>
+</div>

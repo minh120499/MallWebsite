@@ -19,10 +19,8 @@ angular.module('myApp', [
     $httpProvider.interceptors.push(['$q', function ($q) {
       return {
         request: function (config) {
-          // Kiểm tra nếu URL không chứa domain backend
           if (config.url.indexOf('/api/') === 0) {
-            // Thêm domain backend vào URL
-            config.url = 'http://localhost:5062' + config.url;
+            config.url = backendUrl + config.url;
           }
           return config;
         }

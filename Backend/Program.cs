@@ -1,4 +1,5 @@
 using Backend;
+using Backend.Exceptions;
 using Backend.Repository;
 using Backend.Service;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<ExceptionMiddleware>();
+
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddScoped<EmployeesService>();
 builder.Services.AddScoped<IBannersRepository, BannersRepository>();
@@ -32,9 +36,9 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(_builder =>
+    options.AddDefaultPolicy(policyBuilder =>
     {
-        _builder.AllowAnyOrigin()
+        policyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -50,6 +54,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 app.UseCors();
 app.Run();

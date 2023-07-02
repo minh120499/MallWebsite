@@ -1,5 +1,5 @@
 ﻿using Backend.Model;
-using Backend.Model.Entities;
+using Backend.Model.Request;
 using Backend.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +24,9 @@ public class BannersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Banner banner)
+    public async Task<IActionResult> Create([FromBody] BannerRequest request)
     {
-        var response = await _bannersService.Create(banner);
+        var response = await _bannersService.Create(request);
         return Ok(response);
     }
 }
