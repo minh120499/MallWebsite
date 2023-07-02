@@ -5,5 +5,5 @@ namespace Backend.Repository;
 
 public interface IEmployeesRepository
 {
-    public Task<List<Employees>> GetByFilter(FilterModel filters);
+    public Task<List<Employee>> GetByFilter(FilterModel filters);
 }

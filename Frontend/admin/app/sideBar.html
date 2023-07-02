@@ -1,0 +1,22 @@
+<div class="admin-sidebar" ng-class="{'collapse-expanded': sidebarVisible, 'collapse-collapsed': !sidebarVisible}">
+  <div ng-show="sidebarVisible">
+    <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">Hide</button>
+    <ul class="sidebar-menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#/users">Users</a></li>
+      <li><a href="#/banners">Banners</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Orders</a></li>
+    </ul>
+  </div>
+
+  <div ng-hide="sidebarVisible">
+    <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">Show</button>
+    <ul class="sidebar-menu">
+      <li><a href="#">Icon</a></li>
+      <li><a href="#">Icon</a></li>
+      <li><a href="#">Icon</a></li>
+      <li><a href="#">Icon</a></li>
+    </ul>
+  </div>
+</div>

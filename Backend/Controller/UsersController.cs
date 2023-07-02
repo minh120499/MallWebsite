@@ -6,19 +6,19 @@ namespace Backend.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController: ControllerBase
+public class EmployeesController: ControllerBase
 {
-    private readonly UsersService _usersService;
+    private readonly EmployeesService _employeesService;
 
-    public UsersController(UsersService usersService)
+    public EmployeesController(EmployeesService employeesService)
     {
-        _usersService = usersService;
+        _employeesService = employeesService;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] FilterModel filters)
     {
-        var a = await _usersService.GetByFilter(filters);
-        return Ok(a);
+        var employees = await _employeesService.GetByFilter(filters);
+        return Ok(employees);
     }
 }

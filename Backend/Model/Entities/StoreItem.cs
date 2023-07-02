@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Model.Entities;
 
-[Table("Store")]
-public class Stores
+[Table("StoreItems")]
+public class StoreItem
 {
     [Key]
     public int Id { get; set; }
@@ -12,8 +12,16 @@ public class Stores
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
     
-    public string? Location { get; set; }
+    [Required]
+    public int StoreId { get; set; }
+
+    [ForeignKey("StoreId")]
+    public Store? Store { get; set; }
     
+    public int? Available { get; set; }
+    
+    public int? Price { get; set; }
+
     public string? Status { get; set; }
 
     [Timestamp]

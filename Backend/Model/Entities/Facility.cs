@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Model.Entities;
 
-[Table("Facilitie")]
-public class Facilities
+[Table("Facilities")]
+public class Facility
 {
     [Key]
     public int Id { get; set; }

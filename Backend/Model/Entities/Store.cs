@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Model.Entities;
 
-[Table("Banner")]
-public class Banners
+[Table("Stores")]
+public class Store
 {
     [Key]
     public int Id { get; set; }
@@ -12,7 +12,7 @@ public class Banners
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
     
-    public string? Image { get; set; }
+    public string? Location { get; set; }
     
     public string? Status { get; set; }
 

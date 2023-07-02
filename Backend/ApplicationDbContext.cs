@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend;
 
-public class ApplicationDbContext : IdentityDbContext<Employees>
+public class ApplicationDbContext : IdentityDbContext<Employee>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
-    public DbSet<Employees>? Employees { get; set; }
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Banner> Banners { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

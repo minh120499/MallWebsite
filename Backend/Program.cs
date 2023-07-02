@@ -17,7 +17,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Si
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
-builder.Services.AddScoped<UsersService>();
+builder.Services.AddScoped<EmployeesService>();
+builder.Services.AddScoped<IBannersRepository, BannersRepository>();
+builder.Services.AddScoped<BannersService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -26,6 +28,16 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1",
         new OpenApiInfo { Title = "PizzaStore API", Description = "Making the Pizzas you love", Version = "v1" });
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(_builder =>
+    {
+        _builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 
 
@@ -39,5 +51,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();

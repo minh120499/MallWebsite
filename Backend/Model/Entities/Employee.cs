@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Model.Entities;
 
-[Table("Category")]
-public class Categories
+[Table("Employees")]
+public class Employee : IdentityUser
 {
-    [Key]
-    public int Id { get; set; }
-    
-    [Required(AllowEmptyStrings = false)]
-    public string? Name { get; set; }
-    
-    public string? Image { get; set; }
-    
+    [Phone] public string? Phone { get; set; }
+
+    [Required(AllowEmptyStrings = false)] 
+    public string FullName { get; set; } = "";
+
+    public string? Address { get; set; }
+
     public string? Status { get; set; }
 
     [Timestamp]
