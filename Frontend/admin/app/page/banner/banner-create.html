@@ -1,3 +1,25 @@
+<button ng-click="createBanner()">create</button>
 <div class="form-container">
-  
+  <div class="form-group">
+    <div class="form-item">
+      <label for="banner-name">Name</label>
+      <input id="banner-name" ng-model="bannerName" />
+    </div>
+
+    <div class="form-item">
+      <label for="banner-store">Store</label>
+      <input id="banner-store" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <div class="input-upload">
+        <button class="button" ng-click="uploadImage()">Upload file</button>
+        <div>{{ fileName }}</div>
+      </div>
+    </div>
+    <div class="form-item"></div>
+  </div>
+  <div class="images"></div>
 </div>

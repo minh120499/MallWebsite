@@ -20,8 +20,8 @@ namespace Backend.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateOn = table.Column<DateTime>(type: "datetime2", rowVersion: true, nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", rowVersion: true, nullable: false)
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

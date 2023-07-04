@@ -41,6 +41,7 @@ public class ExceptionMiddleware : IMiddleware
                     break;
 
                 default:
+                    errorResult.Messages = exception.Message;
                     statusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }

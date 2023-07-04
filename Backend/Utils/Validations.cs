@@ -8,11 +8,11 @@ public static class Validations
     public static void Banner(BannerRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Name == null)
+        if (request.Name is null or "")
         {
             errors.Add(new Dictionary<string, string>()
             {
-                { "name", "name is not null" }
+                { "name", "name is not blank" }
             });
         }
 

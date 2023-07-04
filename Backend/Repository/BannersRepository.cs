@@ -28,6 +28,8 @@ public class BannersRepository : IBannersRepository
     {
         try
         {
+            banner.CreateOn = DateTime.Now;
+            banner.ModifiedOn = DateTime.Now;
             await _context.Banners.AddAsync(banner);
             await _context.SaveChangesAsync();
             
