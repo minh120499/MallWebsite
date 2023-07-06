@@ -3,6 +3,8 @@ angular.module('myApp', [
   'ui.router',
   'myApp.dashboard',
   'myApp.banner',
+  'myApp.store',
+  'myApp.product',
 ])
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     var backendUrl = 'http://localhost:5062';

@@ -1,52 +1,51 @@
-angular.module('myApp.banner', ['ngRoute'])
+angular.module('myApp.product', ['ngRoute'])
 
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/banners', {
-        templateUrl: 'page/banner/banner.html',
-        controller: 'BannerListCtrl'
+      .when('/products', {
+        templateUrl: 'page/product/product.html',
+        controller: 'ProductListCtrl'
       })
-      .when('/banners/create', {
-        templateUrl: 'page/banner/banner-create.html',
-        controller: 'BannerCreateCtrl'
+      .when('/products/create', {
+        templateUrl: 'page/product/product-create.html',
+        controller: 'ProductCreateCtrl'
       });
   }])
 
-  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', function ($scope, $http, $rootScope, $location) {
-    document.title = 'Banner List';
+  .controller('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
+    document.title = 'Product List';
 
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
 
-    loadBanner($http, $scope);
+    loadProduct($http, $scope);
   }])
 
-  .controller('BannerCreateCtrl', ['$scope', '$http', function ($scope, $http) {
-    document.title = 'Create Banner';
+  .controller('ProductCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+    document.title = 'Create Product';
 
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
-    $scope.bannerName = "";
-    $scope.fileData = "";
-    $scope.fileName = "";
+    $scope.productName = "";
+    $scope.location = "";
 
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
-    $scope.createBanner = function () {
-      createBanner($http, $scope, { name: $scope.bannerName, image: $scope.fileData });
+    $scope.createProduct = function () {
+      createProduct($http, $scope, { name: $scope.productName, location: $scope.location });
     };
   }]);
 
 
-function loadBanner($http, $scope) {
+function loadProduct($http, $scope) {
   $scope.isLoading = true;
-  $http.get('/api/banners')
+  $http.get('/api/products')
     .then(function (response) {
-      console.log("Banner", response);
+      console.log(response);
       $scope.data = response.data;
       $scope.isLoading = false;
     })
@@ -57,11 +56,11 @@ function loadBanner($http, $scope) {
     });
 }
 
-function createBanner($http, $scope, request) {
+function createProduct($http, $scope, request) {
   $scope.isLoading = true;
-  $http.post('/api/banners', request)
+  $http.post('/api/products', request)
     .then(function (response) {
-      console.log('Banner created successfully:', response.data);
+      console.log('Product created successfully:', response.data);
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error

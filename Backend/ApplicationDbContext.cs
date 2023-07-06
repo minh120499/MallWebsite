@@ -11,8 +11,14 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
     {
     }
 
-    public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Banner> Banners { get; set; } = null!;
+    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Facility> Facilities { get; set; } = null!;
+    public DbSet<Feedback> Feedbacks { get; set; } = null!;
+    public DbSet<Store> Stores { get; set; } = null!;
+    public DbSet<StoreBanner> StoreBanners { get; set; } = null!;
+    public DbSet<StoreItem> StoreItems { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

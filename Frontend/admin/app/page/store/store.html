@@ -1,5 +1,5 @@
-<div ng-controller="BannerListCtrl">
-  <a href="#/banners/create">Create</a>
+<div ng-controller="StoreListCtrl">
+  <a href="#/stores/create">Create</a>
   <div ng-if="isLoading">
     <div class="spinner">Loading...</div>
   </div>
@@ -12,8 +12,8 @@
         <thead>
           <tr>
             <th>Stt</th>
-            <th>Image</th>
             <th>Name</th>
+            <th>Location</th>
             <th>Status</th>
             <th></th>
           </tr>
@@ -21,8 +21,8 @@
         <tbody>
           <tr ng-repeat="item in data">
             <td>{{ item.id }}</td>
-            <td>{{ item.image }}</td>
             <td>{{ item.name }}</td>
+            <td>{{ item.location }}</td>
             <td>{{ item.status }}</td>
             <td class="column-action">
               <button class="edit" />

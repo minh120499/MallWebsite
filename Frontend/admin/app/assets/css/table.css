@@ -1,0 +1,66 @@
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: #1677ff;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:hover {
+  background: #d9d9d9;
+  cursor: pointer;
+}
+
+.content-table tbody {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #1677ff;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+.content-table .column-action {
+  display: flex;
+  gap: 8px;
+}
+
+.content-table .edit {
+  background-image: url("https://icons.veryicon.com/png/128/miscellaneous/cookd-pc/editoutlined.png");
+  background-color: #ffd591;
+}
+
+.content-table .delete {
+  background-image: url("https://www.pngkey.com/png/full/208-2086552_picture-library-bin-trash-can-svg-png-icon.png");
+  background-color: #ff7875;
+}
+
+.content-table .column-action button {
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  padding: 4px;
+  border-radius: 6px;
+}

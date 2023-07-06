@@ -3,7 +3,18 @@
 </div>
 
 <div ng-if="$ctrl.data && $ctrl.data.length > 0">
-  <ul>
-    <li ng-repeat="item in $ctrl.data">{{ item }}</li>
-  </ul>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>Stt</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in $ctrl.data">
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

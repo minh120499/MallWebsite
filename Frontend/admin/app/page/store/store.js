@@ -1,52 +1,51 @@
-angular.module('myApp.banner', ['ngRoute'])
+angular.module('myApp.store', ['ngRoute'])
 
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/banners', {
-        templateUrl: 'page/banner/banner.html',
-        controller: 'BannerListCtrl'
+      .when('/stores', {
+        templateUrl: 'page/store/store.html',
+        controller: 'StoreListCtrl'
       })
-      .when('/banners/create', {
-        templateUrl: 'page/banner/banner-create.html',
-        controller: 'BannerCreateCtrl'
+      .when('/stores/create', {
+        templateUrl: 'page/store/store-create.html',
+        controller: 'StoreCreateCtrl'
       });
   }])
 
-  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', function ($scope, $http, $rootScope, $location) {
-    document.title = 'Banner List';
+  .controller('StoreListCtrl', ['$scope', '$http', function ($scope, $http) {
+    document.title = 'Store List';
 
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
 
-    loadBanner($http, $scope);
+    loadStore($http, $scope);
   }])
 
-  .controller('BannerCreateCtrl', ['$scope', '$http', function ($scope, $http) {
-    document.title = 'Create Banner';
+  .controller('StoreCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+    document.title = 'Create Store';
 
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
-    $scope.bannerName = "";
-    $scope.fileData = "";
-    $scope.fileName = "";
+    $scope.storeName = "";
+    $scope.location = "";
 
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
-    $scope.createBanner = function () {
-      createBanner($http, $scope, { name: $scope.bannerName, image: $scope.fileData });
+    $scope.createStore = function () {
+      createStore($http, $scope, { name: $scope.storeName, location: $scope.location });
     };
   }]);
 
 
-function loadBanner($http, $scope) {
+function loadStore($http, $scope) {
   $scope.isLoading = true;
-  $http.get('/api/banners')
+  $http.get('/api/stores')
     .then(function (response) {
-      console.log("Banner", response);
+      console.log(response);
       $scope.data = response.data;
       $scope.isLoading = false;
     })
@@ -57,11 +56,11 @@ function loadBanner($http, $scope) {
     });
 }
 
-function createBanner($http, $scope, request) {
+function createStore($http, $scope, request) {
   $scope.isLoading = true;
-  $http.post('/api/banners', request)
+  $http.post('/api/stores', request)
     .then(function (response) {
-      console.log('Banner created successfully:', response.data);
+      console.log('Store created successfully:', response.data);
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
