@@ -1,14 +1,17 @@
-<button ng-click="createBanner()">create</button>
+<button ng-click="createBanner()">
+  <i class='bx bx-edit'></i>
+  <span>Create</span>
+</button>
 <div class="form-container">
   <div class="form-group">
     <div class="form-item">
       <label for="banner-name">Name</label>
-      <input id="banner-name" ng-model="bannerName" />
+      <input id="banner-name" ng-model="bannerName" placeholder="Name..."/>
     </div>
 
     <div class="form-item">
       <label for="banner-store">Store</label>
-      <input id="banner-store" />
+      <input id="banner-store" placeholder="Store..."/>
     </div>
   </div>
 
