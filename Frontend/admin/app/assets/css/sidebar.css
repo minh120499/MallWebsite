@@ -1,52 +1,47 @@
 /* Poppins */
-:root{
-    --siderbar-color: #fff;
-    --primary-color: #695cfe;
-    --text-color: #707070;
+:root {
+  --siderbar-color: #fff;
+  --primary-color: #695cfe;
+  --text-color: #707070;
 
-    --tran-04: all 0.4s ease;
-    --tran-05: all 0.5s ease;
-}
-.admin-sidebar{
-    width: auto;
-    transition: var(--tran-05);
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
 }
 
-.admin-sidebar .text{
-    padding-right: 10px;
-    color: var(--text-color);
-    /* transition: var(--tran-04); */
+.admin-sidebar .text {
+  padding-right: 10px;
+  color: var(--text-color);
 }
 
 .admin-sidebar button,
-.admin-sidebar li a{
-    height: 40px;
-    display: flex;
-    align-items: center;
+.admin-sidebar li a {
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 .admin-sidebar button .icon,
-.admin-sidebar li a .icon{ 
-    padding: 10px;
-    font-size: 20px;
+.admin-sidebar li a .icon {
+  padding: 10px;
+  font-size: 20px;
 }
 
-.admin-sidebar button ,
-.admin-sidebar li a{
-    width: 100%;
-    border-radius: 6px;
+.admin-sidebar button,
+.admin-sidebar li a {
+  width: 100%;
+  border-radius: 6px;
 }
 .admin-sidebar button:hover,
-.admin-sidebar li a:hover{
-    background: var(--primary-color);
+.admin-sidebar li a:hover {
+  background: var(--primary-color);
 }
 
 .admin-sidebar button:hover .icon,
 .admin-sidebar li a:hover .icon,
-.admin-sidebar li a:hover .text{
-    color: var(--siderbar-color);
+.admin-sidebar li a:hover .text {
+  color: var(--siderbar-color);
 }
 
 .admin-sidebar .toggle-sidebar-btn,
-.admin-sidebar .sidebar-menu{
-    flex-direction: column;
+.admin-sidebar .sidebar-menu {
+  flex-direction: column;
 }

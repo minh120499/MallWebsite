@@ -38,6 +38,7 @@
  * 
 */
 .admin-sidebar {
+  width: auto;
   height: 100vh;
   overflow: auto;
   background-color: #f0f0f0;
@@ -61,11 +62,11 @@
 }
 
 .collapse-expanded {
-  width: 200px;
+  width: 150px;
 }
 
 .collapse-collapsed {
-  width: 50px;
+  width: 60px;
 }
 
 .toggle-sidebar-btn {

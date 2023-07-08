@@ -5,6 +5,7 @@ angular.module('myApp', [
   'myApp.banner',
   'myApp.store',
   'myApp.product',
+  'myApp.feedback',
 ])
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     var backendUrl = 'http://localhost:5062';

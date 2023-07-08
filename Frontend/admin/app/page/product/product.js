@@ -29,14 +29,21 @@ angular.module('myApp.product', ['ngRoute'])
     $scope.error = undefined;
     $scope.isLoading = false;
     $scope.productName = "";
-    $scope.location = "";
+    $scope.store = "";
+    $scope.stock = "";
+    $scope.price = "";
 
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
     $scope.createProduct = function () {
-      createProduct($http, $scope, { name: $scope.productName, location: $scope.location });
+      createProduct($http, $scope, {
+        name: $scope.productName,
+        storeId: $scope.store,
+        available: $scope.stock,
+        price: $scope.price
+      });
     };
   }]);
 

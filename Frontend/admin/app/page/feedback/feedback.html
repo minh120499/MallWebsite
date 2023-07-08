@@ -1,0 +1,36 @@
+<div ng-controller="StoreListCtrl">
+  <a href="#/stores/create">Create</a>
+  <div ng-if="isLoading">
+    <div class="spinner">Loading...</div>
+  </div>
+  <div ng-if="!isLoading">
+    <div ng-if="!data || data.length === 0">
+      <empty-data>
+    </div>
+    <div ng-if="data && data.length > 0">
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Stt</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in data">
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.location }}</td>
+            <td>{{ item.status }}</td>
+            <td class="column-action">
+              <button class="edit" />
+              <button class="delete" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
