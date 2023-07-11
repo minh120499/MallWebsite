@@ -24,7 +24,10 @@ angular.module('myApp.product', ['ngRoute'])
 
   .controller('ProductCreateCtrl', ['$scope', '$http', function ($scope, $http) {
     document.title = 'Create Product';
-
+    
+    $scope.limit = 10;
+    $scope.page = 1;
+    $scope.total = 0;
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
@@ -32,6 +35,7 @@ angular.module('myApp.product', ['ngRoute'])
     $scope.store = "";
     $scope.stock = "";
     $scope.price = "";
+
 
     $scope.uploadImage = function () {
       uploadImage($scope);
@@ -53,7 +57,10 @@ function loadProduct($http, $scope) {
   $http.get('/api/products')
     .then(function (response) {
       console.log(response);
-      $scope.data = response.data;
+      $scope.data = response.data.data;
+      $scope.limit = response.data.limit;
+      $scope.page = response.data.page;
+      $scope.total = response.data.total;
       $scope.isLoading = false;
     })
     .catch(function (error) {

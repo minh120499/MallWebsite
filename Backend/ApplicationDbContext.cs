@@ -16,9 +16,15 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Facility> Facilities { get; set; } = null!;
     public DbSet<Feedback> Feedbacks { get; set; } = null!;
+    public DbSet<Floor> Floors { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderLineItem> OrderLineItems { get; set; } = null!;
+    public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Store> Stores { get; set; } = null!;
     public DbSet<StoreBanner> StoreBanners { get; set; } = null!;
-    public DbSet<StoreItem> StoreItems { get; set; } = null!;
+    public DbSet<StoreProduct> StoreProducts { get; set; } = null!;
+    public DbSet<Variant> Variants { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -13,6 +13,12 @@ public class Employee : IdentityUser
     public string FullName { get; set; } = "";
 
     public string? Address { get; set; }
+    
+    [Required]
+    public int StoreId { get; set; }
+
+    [ForeignKey("StoreId")]
+    public Store? Store { get; set; }
 
     public string? Status { get; set; }
 

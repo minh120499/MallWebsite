@@ -39,7 +39,7 @@ public static class Validations
         }
     }
     
-    public static void StoreItem(StoreItemRequest request)
+    public static void StoreProduct(StoreProductRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
         if (request.Name is null or "")
