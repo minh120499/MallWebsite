@@ -26,8 +26,8 @@ builder.Services.AddScoped<IBannersRepository, BannersRepository>();
 builder.Services.AddScoped<BannersService>();
 builder.Services.AddScoped<IStoresRepository, StoresRepository>();
 builder.Services.AddScoped<StoresService>();
-builder.Services.AddScoped<IStoreItemsRepository, StoreItemsRepository>();
-builder.Services.AddScoped<StoreItemsService>();
+builder.Services.AddScoped<IStoreProductsRepository, StoreProductsRepository>();
+builder.Services.AddScoped<StoreProductsService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -5,28 +5,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository;
 
-public class StoreItemsRepository : IStoreItemsRepository
+public class StoreProductsRepository : IStoreProductsRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public StoreItemsRepository(ApplicationDbContext context)
+    public StoreProductsRepository(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<StoreItem>> GetByFilter(FilterModel filters)
+    public async Task<List<StoreProduct>> GetByFilter(FilterModel filters)
     {
-        var storeItems = await _context.StoreItems
+        var storeItems = await _context.StoreProducts
             .Include(si => si.Store)
-            .Where(si => si.Name != null && si.Name.Contains(filters.Query ?? ""))
-            .OrderBy(si => si.Id)
-            .Skip((filters.Page - 1) * filters.Limit)
-            .Take(filters.Limit)
+            // .Where(si => si.Name != null && si.Name.Contains(filters.Query ?? ""))
+            // .OrderBy(si => si.Id)
+            // .Skip((filters.Page - 1) * filters.Limit)
+            // .Take(filters.Limit)
             .ToListAsync();
         return storeItems;
     }
 
-    public async Task<StoreItem> Add(StoreItem storeItem)
+    public async Task<StoreProduct> Add(StoreProduct storeItem)
     {
         try
         {
@@ -38,8 +38,8 @@ public class StoreItemsRepository : IStoreItemsRepository
 
             storeItem.CreateOn = DateTime.Now;
             storeItem.ModifiedOn = DateTime.Now;
-            storeItem.Store = store;
-            await _context.StoreItems.AddAsync(storeItem);
+            // storeItem.Store = store;
+            await _context.StoreProducts.AddAsync(storeItem);
             await _context.SaveChangesAsync();
 
             return storeItem;

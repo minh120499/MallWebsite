@@ -1,6 +1,7 @@
 ﻿using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
 
@@ -15,10 +16,17 @@ public class BannersService
         _bannersRepository = bannersRepository;
     }
 
-    public async Task<List<Banner>> GetByFilter(FilterModel filters)
+    public async Task<TableListResponse<Banner>> GetByFilter(FilterModel filters)
     {
         var banners = await _bannersRepository.GetByFilter(filters);
-        return banners;
+        var total = await _bannersRepository.Count();
+        return new TableListResponse<Banner>()
+        {
+            Total = total,
+            Limit = filters.Limit,
+            Page = filters.Page,
+            Data = banners
+        };
     }
 
     public async Task<Banner> Create(BannerRequest request)

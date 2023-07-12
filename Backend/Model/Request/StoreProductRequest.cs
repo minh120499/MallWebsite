@@ -1,6 +1,6 @@
 ﻿namespace Backend.Model.Request;
 
-public class StoreItemRequest
+public class StoreProductRequest
 {
     public int Id { get; set; }
 

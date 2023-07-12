@@ -3,24 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Model.Entities;
 
-[Table("StoreItems")]
-public class StoreItem
+[Table(("Floors"))]
+public class Floor
 {
-    [Key]
+    [Key] 
     public int Id { get; set; }
-    
+
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
     
-    [Required]
-    public int StoreId { get; set; }
-
-    [ForeignKey("StoreId")]
-    public Store? Store { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    public string? Area { get; set; }
     
-    public int? Available { get; set; }
-    
-    public int? Price { get; set; }
+    public string? Description { get; set; }
 
     public string? Status { get; set; }
 

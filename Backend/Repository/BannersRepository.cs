@@ -16,7 +16,7 @@ public class BannersRepository : IBannersRepository
     public async Task<List<Banner>> GetByFilter(FilterModel filters)
     {
         var banners = await _context.Banners
-            // .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+            .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
             .OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
@@ -32,12 +32,17 @@ public class BannersRepository : IBannersRepository
             banner.ModifiedOn = DateTime.Now;
             await _context.Banners.AddAsync(banner);
             await _context.SaveChangesAsync();
-            
+
             return banner;
         }
         catch (Exception e)
         {
             throw new Exception(e.Message);
         }
+    }
+
+    public async Task<int> Count()
+    {
+        return await _context.Banners.CountAsync();
     }
 }

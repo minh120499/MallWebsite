@@ -28,7 +28,6 @@ public class StoresService
         var store = new Store()
         {
             Name = request.Name,
-            Location = request.Location,
             Status = StatusConstraint.ACTIVE,
         };
         return await _storesRepository.Add(store);

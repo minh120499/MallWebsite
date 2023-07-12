@@ -24,7 +24,10 @@ angular.module('myApp.store', ['ngRoute'])
 
   .controller('StoreCreateCtrl', ['$scope', '$http', function ($scope, $http) {
     document.title = 'Create Store';
-
+    
+    $scope.limit = 10;
+    $scope.page = 1;
+    $scope.total = 0;
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
@@ -46,7 +49,10 @@ function loadStore($http, $scope) {
   $http.get('/api/stores')
     .then(function (response) {
       console.log(response);
-      $scope.data = response.data;
+      $scope.data = response.data.data;
+      $scope.limit = response.data.limit;
+      $scope.page = response.data.page;
+      $scope.total = response.data.total;
       $scope.isLoading = false;
     })
     .catch(function (error) {

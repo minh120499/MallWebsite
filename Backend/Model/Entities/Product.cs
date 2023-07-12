@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Model.Entities;
 
-[Table("Stores")]
-public class Store
+[Table("Products")]
+public class Product
 {
     [Key]
     public int Id { get; set; }
     
-    [Required(AllowEmptyStrings = false)]
+    public string? Code { get; set; }
+    
+    public string? Image { get; set; }
+
     public string? Name { get; set; }
     
-    [Required]
-    public int FloorId { get; set; }
-
-    [ForeignKey("FloorId")]
-    public Floor? Floor { get; set; }
+    public string? Description { get; set; }
+    
+    public string? Brand { get; set; }
     
     [Required]
     public int CategoryId { get; set; }
@@ -24,9 +25,8 @@ public class Store
     [ForeignKey("CategoryId")]
     public Category? Category { get; set; }
     
-    public List<Facility>? Facilities { get; set; }
-    
-    public string? Description { get; set; }
+    public List<Variant>? Variants { get; set; }
+
     public string? Status { get; set; }
 
     public DateTime? CreateOn { get; set; }

@@ -7,4 +7,5 @@ public interface IBannersRepository
 {
     public Task<List<Banner>> GetByFilter(FilterModel filters);
     public Task<Banner> Add(Banner banner);
+    public Task<int> Count();
 }

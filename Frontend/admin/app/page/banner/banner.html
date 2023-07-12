@@ -7,7 +7,7 @@
     <div class="spinner">Loading...</div>
   </div>
   <div ng-if="!isLoading">
-    <div ng-if="!data || data.length === 0">
+    <div ng-if="total === 0">
       <empty-data>
     </div>
     <div ng-if="data && data.length > 0">
@@ -35,5 +35,6 @@
         </tbody>
       </table>
     </div>
+    <pagination></pagination>
   </div>
 </div>

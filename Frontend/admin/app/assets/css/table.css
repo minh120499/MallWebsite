@@ -1,3 +1,6 @@
+/* 
+ * Table
+ */
 .content-table {
   border-collapse: collapse;
   margin: 25px 0;
@@ -64,3 +67,119 @@
   padding: 4px;
   border-radius: 6px;
 }
+/* Table */
+
+/* 
+ * Pagination
+ */
+.pagination-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pagination-list {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+}
+
+.pagination-disable {
+  cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.25);
+}
+.pagination-disable:hover {
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.pagination-item {
+  display: inline-block;
+  min-width: 32px;
+  height: 32px;
+  line-height: 30px;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: 0;
+  cursor: pointer;
+}
+
+.pagination-item:not(.pagination-item-active, .pagination-disable):hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
+}
+
+.pagination-item a {
+  display: block;
+  padding: 0 6px;
+  color: rgba(0, 0, 0, 0.88);
+  transition: none;
+}
+
+.pagination-item-active {
+  font-weight: 600;
+  background-color: #ffffff;
+  border-color: #1677ff;
+}
+
+.pagination-item-active a {
+  color: #1677ff;
+}
+
+.pagination-option {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  height: 32px;
+  padding: 0 11px;
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 8px;
+}
+
+.pagination-dropdown {
+  margin: 0;
+  padding: 4px 7px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  position: absolute;
+  top: 34px;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  overflow: hidden;
+  font-variant: initial;
+  background-color: #ffffff;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-select {
+  height: 28px;
+  padding: 4px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.pagination-select:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
+}
+
+.pagination-dropdown-hide {
+  visibility: hidden;
+}
+/* Pagination */

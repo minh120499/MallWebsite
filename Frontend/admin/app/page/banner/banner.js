@@ -12,15 +12,27 @@ angular.module('myApp.banner', ['ngRoute'])
       });
   }])
 
-  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', function ($scope, $http, $rootScope, $location) {
-    document.title = 'Banner List';
+  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+    function ($scope, $http, $rootScope, $location, paginationService) {
+      document.title = 'Banner List';
 
-    $scope.data = undefined;
-    $scope.error = undefined;
-    $scope.isLoading = false;
+      const { query, page, limit } = $location.search();
 
-    loadBanner($http, $scope);
-  }])
+      $scope.limit = Number(limit || 10);
+      $scope.page = Number(page || 1);
+      $scope.total = 0;
+      $scope.query = query || "";
+
+      $scope.data = undefined;
+      $scope.error = undefined;
+      $scope.isLoading = false;
+
+      loadBanner($http, $scope, paginationService);
+
+      $scope.handlePageClick = function () {
+        console.log('Button clicked!');
+      };
+    }])
 
   .controller('BannerCreateCtrl', ['$scope', '$http', function ($scope, $http) {
     document.title = 'Create Banner';
@@ -42,12 +54,22 @@ angular.module('myApp.banner', ['ngRoute'])
   }]);
 
 
-function loadBanner($http, $scope) {
+function loadBanner($http, $scope, paginationService) {
   $scope.isLoading = true;
-  $http.get('/api/banners')
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  $http.get(`/api/banners${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log("Banner", response);
-      $scope.data = response.data;
+      $scope.data = response.data.data;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
     })
     .catch(function (error) {

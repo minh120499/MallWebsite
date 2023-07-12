@@ -1,0 +1,29 @@
+<div class="pagination-container">
+  <div class="pagination-item pagination-prev" ng-class="{'pagination-disable': page === 1, '': page !== 1}">
+    P
+  </div>
+  <ul class="pagination-list" ng-repeat="pageNumber in pagination">
+    <li class="pagination-item pagination-item-active"
+      ng-class="{'pagination-item-active': pageNumber.isActive, '': !pageNumber.isActive}"
+      ng-click="handlePageClick(pageNumber.page)">
+      <a rel="nofollow">{{pageNumber.page}}</a>
+    </li>
+  </ul>
+  <div class="pagination-item pagination-next"
+    ng-class="{'pagination-disable': paginationLength === 1, '': paginationLength !== 1}">
+    N
+  </div>
+  <div class="pagination-option" tabindex="0">
+    <div>10 / page</div>
+    <div class="pagination-dropdown pagination-dropdown-hide">
+      <div class="pagination-select" ng-click="handleLimitClick(10)">10 / page</div>
+      <div class="pagination-select" ng-click="handleLimitClick(25)">25 / page</div>
+      <div class="pagination-select" ng-click="handleLimitClick(50)">50 / page</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  console.log(12);
+
+</script>
