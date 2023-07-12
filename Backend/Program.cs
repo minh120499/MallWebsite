@@ -1,6 +1,7 @@
 using Backend;
 using Backend.Exceptions;
 using Backend.Repository;
+using Backend.Repository.Implements;
 using Backend.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +21,42 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Si
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ExceptionMiddleware>();
 
-builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
-builder.Services.AddScoped<EmployeesService>();
+// Banner
 builder.Services.AddScoped<IBannersRepository, BannersRepository>();
 builder.Services.AddScoped<BannersService>();
+// Category
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<CategoriesService>();
+// Employee
+builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+builder.Services.AddScoped<EmployeesService>();
+// Facility
+builder.Services.AddScoped<IFacilitiesRepository, FacilitiesRepository>();
+builder.Services.AddScoped<FacilitiesService>();
+// Feedback
+builder.Services.AddScoped<IFeedbacksRepository, FeedbacksRepository>();
+builder.Services.AddScoped<FeedbacksService>();
+// Floor
+builder.Services.AddScoped<IFloorsRepository, FloorsRepository>();
+builder.Services.AddScoped<FloorsService>();
+// Order
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<OrdersService>();
+// OrderLineItem
+builder.Services.AddScoped<IOrderLineItemsRepository, OrderLineItemsRepository>();
+builder.Services.AddScoped<OrderLineItemsService>();
+// Product
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<ProductsService>();
+// Store
 builder.Services.AddScoped<IStoresRepository, StoresRepository>();
 builder.Services.AddScoped<StoresService>();
+// StoreProduct
 builder.Services.AddScoped<IStoreProductsRepository, StoreProductsRepository>();
 builder.Services.AddScoped<StoreProductsService>();
+// Variant
+builder.Services.AddScoped<IVariantsRepository, VariantsRepository>();
+builder.Services.AddScoped<VariantsService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

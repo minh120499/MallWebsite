@@ -1,0 +1,91 @@
+<div ng-controller="MallCtrl">
+  <div ng-if="isLoading">
+    <div class="spinner">Loading...</div>
+  </div>
+  <div class="setting-layout" ng-if="!isLoading">
+    <div class="setting-box">
+      <h3>Facilities</h3>
+      <div class="setting-box-main" ng-if="!facilities || !facilities.length">
+        <empty-data>
+      </div>
+      <div class="setting-box-main" ng-if="facilities && facilities.length > 0">
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Stt</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in facilities">
+              <td>{{ $index + 1 }}</td>
+              <td ng-if="item.status">
+                {{ item.name }}
+              </td>
+              <td ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFacility(this, $index)" ng-model="name" placeholder="Name..." />
+                </div>
+              </td>
+              <td ng-if="item.status">
+                {{ item.name }}
+              </td>
+              <td ng-if="!item.status">
+                active
+              </td>
+              <td class="column-action">
+                <button class="edit" ng-click="edit($index, item, 'facilities')" />
+                <button class="delete" ng-click="delete($index)" />
+                <button ng-click="remove($index, 'facilities')">x</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="action-box">
+        <div class="button-save" ng-click="saveSetting()">Save</div>
+        <div class="button-add" ng-click="addFacilityLine()">Add</div>
+      </div>
+    </div>
+
+    <div class="setting-box">
+      <h3>Floors</h3>
+      <div class="setting-box-main" ng-if="!floors || !floors.length">
+        <empty-data>
+      </div>
+      <div class="setting-box-main" ng-if="floors && floors.length > 0">
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Stt</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in floors">
+              <td>{{ item.id }}</td>
+              <td>{{ item.image }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.status }}</td>
+              <td class="column-action">
+                <button class="edit" ng-click="edit($index, item, 'floors')" />
+                <button class="delete" />
+                <button ng-click="remove($index, 'floors')">x</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="action-box">
+        <div class="button-save" ng-click="saveSetting()">Save</div>
+        <div class="button-add" ng-click="addFloorLine()"">Add</div>
+      </div>
+    </div>
+
+  </div>
+</div>

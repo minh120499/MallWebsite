@@ -6,17 +6,12 @@ namespace Backend.Model.Entities;
 [Table("Facilities")]
 public class Facility
 {
-    [Key]
-    public int Id { get; set; }
-    
-    [Required(AllowEmptyStrings = false)]
-    public string? Name { get; set; }
+    [Key] public int Id { get; set; }
 
-    [Timestamp]
-    [Required]
+    [Required(AllowEmptyStrings = false)] public string? Name { get; set; }
+
+    public string? Status { get; set; }
     public DateTime? CreateOn { get; set; }
-    
-    [Timestamp]
-    [Required]
+
     public DateTime? ModifiedOn { get; set; }
 }

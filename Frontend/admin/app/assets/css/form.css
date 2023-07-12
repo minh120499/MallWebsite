@@ -4,13 +4,13 @@
   gap: 16px;
 }
 
-.form-container .form-group {
+.form-group {
   display: flex;
   justify-content: space-between;
   gap: 16px;
 }
 
-.form-container .form-group .form-item {
+.form-item {
   display: flex;
   flex-direction: column;
   flex-shrink: 1;
@@ -18,7 +18,7 @@
   gap: 8px;
 }
 
-.form-container .form-group .form-item input {
+.form-item input {
   outline: none;
   padding: 4px 8px;
   /* p */

@@ -14,13 +14,11 @@ public class Category
     
     public string? Image { get; set; }
     
+    public string? Type { get; set; }
+    
     public string? Status { get; set; }
 
-    [Timestamp]
-    [Required]
     public DateTime? CreateOn { get; set; }
     
-    [Timestamp]
-    [Required]
     public DateTime? ModifiedOn { get; set; }
 }

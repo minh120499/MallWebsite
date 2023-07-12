@@ -3,7 +3,7 @@ using Backend.Model;
 using Backend.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Repository;
+namespace Backend.Repository.Implements;
 
 public class StoreProductsRepository : IStoreProductsRepository
 {

@@ -2,7 +2,7 @@
 using Backend.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Repository;
+namespace Backend.Repository.Implements;
 
 public class EmployeesRepository : IEmployeesRepository
 {
@@ -22,5 +22,27 @@ public class EmployeesRepository : IEmployeesRepository
             .Take(filters.Limit)
             .ToListAsync();
         return employees;
+    }
+
+    public async Task<Employee> Add(Employee employee)
+    {
+        try
+        {
+            employee.CreateOn = DateTime.Now;
+            employee.ModifiedOn = DateTime.Now;
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+
+            return employee;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
+    public async Task<int> Count()
+    {
+        return await _context.Employees.CountAsync();
     }
 }

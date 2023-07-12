@@ -26,6 +26,8 @@ public class Store
     
     public List<Facility>? Facilities { get; set; }
     
+    public List<Banner>? Banners { get; set; }
+    
     public string? Description { get; set; }
     public string? Status { get; set; }
 

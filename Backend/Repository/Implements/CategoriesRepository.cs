@@ -2,38 +2,38 @@
 using Backend.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Repository;
+namespace Backend.Repository.Implements;
 
-public class BannersRepository : IBannersRepository
+public class CategoriesRepository : ICategoriesRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public BannersRepository(ApplicationDbContext context)
+    public CategoriesRepository(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<Banner>> GetByFilter(FilterModel filters)
+    public async Task<List<Category>> GetByFilter(FilterModel filters)
     {
-        var banners = await _context.Banners
+        var categories = await _context.Categories
             .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
             .OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
             .ToListAsync();
-        return banners;
+        return categories;
     }
 
-    public async Task<Banner> Add(Banner banner)
+    public async Task<Category> Add(Category category)
     {
         try
         {
-            banner.CreateOn = DateTime.Now;
-            banner.ModifiedOn = DateTime.Now;
-            await _context.Banners.AddAsync(banner);
+            category.CreateOn = DateTime.Now;
+            category.ModifiedOn = DateTime.Now;
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
-            return banner;
+            return category;
         }
         catch (Exception e)
         {
@@ -43,6 +43,6 @@ public class BannersRepository : IBannersRepository
 
     public async Task<int> Count()
     {
-        return await _context.Banners.CountAsync();
+        return await _context.Categories.CountAsync();
     }
 }
