@@ -1,8 +1,15 @@
 <div class="admin-sidebar" ng-class="{'collapse-expanded': sidebarVisible, 'collapse-collapsed': !sidebarVisible}">
   <div ng-show="sidebarVisible">
-    <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">
-      <i class='bx bxs-hide icon' icon></i>
-    </button>
+    <header>
+      <div class="image-button">
+        <div class="image">
+          <img src="assets\img\3u606rni.png" alt="logo">
+        </div>
+        <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">
+          <i class='bx bxs-hide icon' icon></i>
+        </button>
+      </div>
+    </header>
     <ul class="sidebar-menu">
       <li class="nav-link">
         <a href="#">
@@ -47,6 +54,14 @@
         </a>
       </li>
     </ul>
+    <ul class="bottom-content">
+      <li>
+        <a href="#">
+          <i class='bx bx-log-out icon'></i>
+          <span class="text nav-text">Logout</span>
+        </a>
+      </li>
+    </ul>
   </div>
 
   <div class="close" ng-hide="sidebarVisible">
@@ -84,6 +99,13 @@
           <i class='bx bx-cart icon'></i>
         </a>
       </li>
+    </ul>
+    <ul class="bottom-content">
+      <li>
+        <a href="">
+          <i class='bx bx-log-out icon'></i>
+        </a>
+      </li> 
     </ul>
   </div>
 </div>

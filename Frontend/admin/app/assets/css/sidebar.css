@@ -1,21 +1,77 @@
 /* Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+*{
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 :root {
+  /* Color */
   --siderbar-color: #fff;
   --primary-color: #695cfe;
+  --body-color: #e4e9f7;
+  --toggle-color: #ddd;
   --text-color: #707070;
 
+  /* Transition */
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
   --tran-04: all 0.4s ease;
   --tran-05: all 0.5s ease;
+}
+.admin-sidebar{
+  background: var(--siderbar-color);
+  width: 100%;
+  transition: var(--tran-05);
+}
+.admin-sidebar ul.bottom-content {
+  padding-bottom: 10px;
+  position: absolute;
+  bottom: 0;
+}
+.admin-sidebar ul.bottom-content .text{
+  padding-right: 45px;
+}
+.admin-sidebar .image{
+  min-width: 60px;
+  display: flex;
+  /* align-items: center; */
+}
+.admin-sidebar header .image-button{
+  display: flex;
+  align-items: center;
+}
+
+.admin-sidebar header .image-button img {
+  margin: 10px;
+  width: 40px;
+}
+header .image-button button{
+  margin: 0;
 }
 
 .admin-sidebar .text {
   padding-right: 10px;
   color: var(--text-color);
+  transition: var(--tran-03);
+  white-space: nowrap;
 }
 
+.admin-sidebar li{
+  list-style: none;
+  align-items: center;
+}
+
+.admin-sidebar .sidebar-menu{
+  display: flex;
+}
 .admin-sidebar button,
 .admin-sidebar li a {
-  height: 40px;
+  transition: var(--tran-02);
+  height: 40px;  
+  width: 100%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
 }
@@ -25,11 +81,6 @@
   font-size: 20px;
 }
 
-.admin-sidebar button,
-.admin-sidebar li a {
-  width: 100%;
-  border-radius: 6px;
-}
 .admin-sidebar button:hover,
 .admin-sidebar li a:hover {
   background: var(--primary-color);
@@ -45,3 +96,8 @@
 .admin-sidebar .sidebar-menu {
   flex-direction: column;
 }
+
+.admin-sidebar .close{
+  margin-top: 10px;
+}
+
