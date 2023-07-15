@@ -2,5 +2,5 @@
 
 public class TableListResponse<T> : Metadata
 {
-    public ICollection<T>? Data { get; set; }
+    public List<T>? Data { get; set; }
 }

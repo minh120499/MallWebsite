@@ -4,6 +4,6 @@ namespace Backend.Model.Response;
 
 public class SettingsResponse
 {
-    public ICollection<Facility>? Facilities;
-    public ICollection<Floor>? Floors;
+    public List<Facility>? Facilities { get; set; }
+    public List<Floor>? Floors { get; set; }
 }

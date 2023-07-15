@@ -5,39 +5,59 @@ using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
 
-namespace Backend.Service;
-
-public class FeedbacksService
+namespace Backend.Service
 {
-    private readonly IFeedbacksRepository _feedbacksRepository;
-
-    public FeedbacksService(IFeedbacksRepository feedbacksRepository)
+    public class FeedbacksService
     {
-        _feedbacksRepository = feedbacksRepository;
-    }
+        private readonly IFeedbacksRepository _feedbacksRepository;
 
-    public async Task<TableListResponse<Feedback>> GetByFilter(FilterModel filters)
-    {
-        var feedbacks = await _feedbacksRepository.GetByFilter(filters);
-        var total = await _feedbacksRepository.Count();
-        return new TableListResponse<Feedback>()
+        public FeedbacksService(IFeedbacksRepository feedbacksRepository)
         {
-            Total = total,
-            Limit = filters.Limit,
-            Page = filters.Page,
-            Data = feedbacks
-        };
-    }
+            _feedbacksRepository = feedbacksRepository;
+        }
 
-    public async Task<Feedback> Create(FeedbackRequest request)
-    {
-        Validations.Feedback(request);
-
-        var feedback = new Feedback()
+        public async Task<Feedback> GetById(int feedbackId)
         {
-            Name = request.Name,
-            Status = StatusConstraint.ACTIVE,
-        };
-        return await _feedbacksRepository.Add(feedback);
+            return await _feedbacksRepository.GetById(feedbackId);
+        }
+
+        public async Task<TableListResponse<Feedback>> GetByFilter(FilterModel filters)
+        {
+            var feedbacks = await _feedbacksRepository.GetByFilter(filters);
+            var total = await _feedbacksRepository.Count();
+            return new TableListResponse<Feedback>()
+            {
+                Total = total,
+                Limit = filters.Limit,
+                Page = filters.Page,
+                Data = feedbacks
+            };
+        }
+
+        public async Task<Feedback> Create(FeedbackRequest request)
+        {
+            Validations.Feedback(request);
+
+            var feedback = new Feedback()
+            {
+                // Content = request.Content,
+                // Rating = request.Rating,
+            };
+            return await _feedbacksRepository.Add(feedback);
+        }
+
+        public async Task<Feedback> Update(int feedbackId, FeedbackRequest request)
+        {
+            Validations.Feedback(request);
+
+            return await _feedbacksRepository.Update(feedbackId, request);
+        }
+
+        public async Task<bool> Delete(string ids)
+        {
+            var feedbackIds = ids.Split(',').Select(int.Parse).ToList();
+
+            return await _feedbacksRepository.Delete(feedbackIds);
+        }
     }
 }

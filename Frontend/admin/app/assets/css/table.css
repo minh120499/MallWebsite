@@ -183,3 +183,12 @@
   visibility: hidden;
 }
 /* Pagination */
+
+/* Line item */
+.table-line-header {
+  display: flex;
+}
+.table-line-row {
+  display: flex;
+}
+/* Line item */

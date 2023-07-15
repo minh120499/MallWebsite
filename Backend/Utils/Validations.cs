@@ -43,7 +43,7 @@ public static class Validations
     public static void Employee(EmployeeRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Name is null or "")
+        if (request.FullName is null or "")
         {
             errors.Add(new Dictionary<string, string>()
             {
@@ -111,7 +111,7 @@ public static class Validations
     public static void Order(OrderRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Name is null or "")
+        if (request.Source is null)
         {
             errors.Add(new Dictionary<string, string>()
             {
@@ -128,7 +128,7 @@ public static class Validations
     public static void OrderLineItem(OrderLineItemRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Name is null or "")
+        if (request.Quantity < 1)
         {
             errors.Add(new Dictionary<string, string>()
             {
@@ -162,7 +162,7 @@ public static class Validations
     public static void StoreProduct(StoreProductRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Name is null or "")
+        if (request.Product is null)
         {
             errors.Add(new Dictionary<string, string>()
             {

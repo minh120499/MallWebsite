@@ -1,4 +1,5 @@
 ﻿using Backend.Model;
+using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Service;
@@ -24,25 +25,40 @@ public class SettingsController : ControllerBase
     public async Task<IActionResult> Get()
     {
         var filters = new FilterModel();
+        var response = new SettingsResponse
+        {
+            Facilities = null,
+            Floors = null
+        };
 
         var facilities = await _facilitiesService.GetByFilter(filters);
         var floors = await _floorsService.GetByFilter(filters);
-        return Ok(new SettingsResponse()
-        {
-            Facilities = facilities,
-            Floors = floors
-        });
+        response.Facilities = facilities.Data;
+        response.Floors = floors.Data;
+        return Ok(response);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SettingsRequest request)
     {
-        var facilities = await _facilitiesService.Update(request.Facilities);
-        var floors = await _floorsService.Update(request.Floors);
-        return Ok(new SettingsResponse()
+        var response = new SettingsResponse
         {
-            Facilities = facilities,
-            Floors = floors
-        });
+            Facilities = null,
+            Floors = null
+        };
+
+        if (request.Facilities.Count > 0)
+        {
+            var facilities = await _facilitiesService.Update(request.Facilities);
+            response.Facilities = facilities;
+        }
+
+        if (request.Floors.Count > 0)
+        {
+            var floors = await _floorsService.Update(request.Floors);
+            response.Floors = floors;
+        }
+
+        return Ok(response);
     }
 }

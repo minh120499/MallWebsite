@@ -5,40 +5,60 @@ using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
 
-namespace Backend.Service;
-
-public class VariantsService
+namespace Backend.Service
 {
-    private readonly IVariantsRepository _variantsRepository;
-
-    public VariantsService(IVariantsRepository variantsRepository)
+    public class VariantsService
     {
-        _variantsRepository = variantsRepository;
-    }
+        private readonly IVariantsRepository _variantsRepository;
 
-    public async Task<TableListResponse<Variant>> GetByFilter(FilterModel filters)
-    {
-        var variants = await _variantsRepository.GetByFilter(filters);
-        var total = await _variantsRepository.Count();
-        return new TableListResponse<Variant>()
+        public VariantsService(IVariantsRepository variantsRepository)
         {
-            Total = total,
-            Limit = filters.Limit,
-            Page = filters.Page,
-            Data = variants
-        };
-    }
+            _variantsRepository = variantsRepository;
+        }
 
-    public async Task<Variant> Create(VariantRequest request)
-    {
-        Validations.Variant(request);
-
-        var variant = new Variant()
+        public async Task<Variant> GetById(int variantId)
         {
-            Name = request.Name,
-            Image = request.Image,
-            Status = StatusConstraint.ACTIVE,
-        };
-        return await _variantsRepository.Add(variant);
+            return await _variantsRepository.GetById(variantId);
+        }
+
+        public async Task<TableListResponse<Variant>> GetByFilter(FilterModel filters)
+        {
+            var variants = await _variantsRepository.GetByFilter(filters);
+            var total = await _variantsRepository.Count();
+            return new TableListResponse<Variant>()
+            {
+                Total = total,
+                Limit = filters.Limit,
+                Page = filters.Page,
+                Data = variants
+            };
+        }
+
+        public async Task<Variant> Create(VariantRequest request)
+        {
+            Validations.Variant(request);
+
+            var variant = new Variant()
+            {
+                ProductId = request.ProductId,
+                // Size = request.Size,
+                // Color = request.Color,
+            };
+            return await _variantsRepository.Add(variant);
+        }
+
+        public async Task<Variant> Update(int variantId, VariantRequest request)
+        {
+            Validations.Variant(request);
+
+            return await _variantsRepository.Update(variantId, request);
+        }
+
+        public async Task<bool> Delete(string ids)
+        {
+            var variantIds = ids.Split(',').Select(int.Parse).ToList();
+
+            return await _variantsRepository.Delete(variantIds);
+        }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using Backend.Model;
 using Backend.Model.Entities;
+using Backend.Model.Request;
 
 namespace Backend.Repository;
 
 public interface IProductsRepository
 {
-    public Task<List<Product>> GetByFilter(FilterModel filters);
-    public Task<Product> Add(Product banner);
-    public Task<int> Count();
+    Task<Product> GetById(int productId);
+    Task<List<Product>> GetByFilter(FilterModel filters);
+    Task<Product> Add(Product product);
+    Task<Product> Update(int productId, ProductRequest request);
+    Task<int> Count();
+    Task<bool> Delete(List<int> ids);
 }

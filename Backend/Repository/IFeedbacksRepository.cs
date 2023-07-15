@@ -1,11 +1,15 @@
 ﻿using Backend.Model;
 using Backend.Model.Entities;
+using Backend.Model.Request;
 
 namespace Backend.Repository;
 
 public interface IFeedbacksRepository
 {
-    public Task<List<Feedback>> GetByFilter(FilterModel filters);
-    public Task<Feedback> Add(Feedback banner);
-    public Task<int> Count();
+    Task<Feedback> GetById(int feedbackId);
+    Task<List<Feedback>> GetByFilter(FilterModel filters);
+    Task<Feedback> Add(Feedback feedback);
+    Task<Feedback> Update(int feedbackId, FeedbackRequest request);
+    Task<int> Count();
+    Task<bool> Delete(List<int> ids);
 }

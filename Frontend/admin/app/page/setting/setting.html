@@ -9,40 +9,38 @@
         <empty-data>
       </div>
       <div class="setting-box-main" ng-if="facilities && facilities.length > 0">
-        <table class="content-table">
-          <thead>
-            <tr>
-              <th>Stt</th>
-              <th>Name</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="item in facilities">
-              <td>{{ $index + 1 }}</td>
-              <td ng-if="item.status">
+        <div class="content-table">
+          <div class="table-line-header">
+            <div>Stt</div>
+            <div>Name</div>
+            <div>Status</div>
+            <div></div>
+          </div>
+          <div>
+            <div class="table-line-row" ng-repeat="item in facilities">
+              <div>{{ $index + 1 }}</div>
+              <div ng-if="item.status">
                 {{ item.name }}
-              </td>
-              <td ng-if="!item.status">
+              </div>
+              <div ng-if="!item.status">
                 <div class="form-item">
                   <input ng-change="changeFacility(this, $index)" ng-model="name" placeholder="Name..." />
                 </div>
-              </td>
-              <td ng-if="item.status">
+              </div>
+              <div ng-if="item.status">
                 {{ item.name }}
-              </td>
-              <td ng-if="!item.status">
+              </div>
+              <div ng-if="!item.status">
                 active
-              </td>
-              <td class="column-action">
+              </div>
+              <div class="column-action">
                 <button class="edit" ng-click="edit($index, item, 'facilities')" />
                 <button class="delete" ng-click="delete($index)" />
                 <button ng-click="remove($index, 'facilities')">x</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="action-box">
         <div class="button-save" ng-click="saveSetting()">Save</div>
@@ -56,30 +54,28 @@
         <empty-data>
       </div>
       <div class="setting-box-main" ng-if="floors && floors.length > 0">
-        <table class="content-table">
-          <thead>
-            <tr>
-              <th>Stt</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="item in floors">
-              <td>{{ item.id }}</td>
-              <td>{{ item.image }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.status }}</td>
-              <td class="column-action">
+        <div class="content-table">
+          <div>
+            <div>Stt</div>
+            <div>Image</div>
+            <div>Name</div>
+            <div>Status</div>
+            <div></div>
+          </div>
+          <div>
+            <div ng-repeat="item in floors">
+              <div>{{ item.id }}</div>
+              <div>{{ item.image }}</div>
+              <div>{{ item.name }}</div>
+              <div>{{ item.status }}</div>
+              <div class="column-action">
                 <button class="edit" ng-click="edit($index, item, 'floors')" />
                 <button class="delete" />
                 <button ng-click="remove($index, 'floors')">x</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="action-box">
         <div class="button-save" ng-click="saveSetting()">Save</div>

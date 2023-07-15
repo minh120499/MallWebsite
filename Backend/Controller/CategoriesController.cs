@@ -1,6 +1,5 @@
 ﻿using Backend.Exceptions;
 using Backend.Model;
-using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Service;
@@ -26,8 +25,16 @@ public class CategoriesController : ControllerBase
         {
             throw new FormValidationException("Page must be greater than 0");
         }
+
         var categories = await _categoriesService.GetByFilter(filters);
         return Ok(categories);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int id)
+    {
+        var category = await _categoriesService.GetById(id);
+        return Ok(category);
     }
 
     [HttpPost]
@@ -35,5 +42,19 @@ public class CategoriesController : ControllerBase
     {
         var response = await _categoriesService.Create(request);
         return Ok(response);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CategoryRequest request)
+    {
+        var response = await _categoriesService.Update(id, request);
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromQuery] string ids)
+    {
+        await _categoriesService.Delete(ids);
+        return Ok(new SuccessResponse());
     }
 }

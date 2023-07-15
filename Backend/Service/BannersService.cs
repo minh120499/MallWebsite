@@ -16,6 +16,11 @@ public class BannersService
         _bannersRepository = bannersRepository;
     }
 
+    public async Task<Banner> GetById(int bannerId)
+    {
+        return await _bannersRepository.GetById(bannerId);
+    }
+
     public async Task<TableListResponse<Banner>> GetByFilter(FilterModel filters)
     {
         var banners = await _bannersRepository.GetByFilter(filters);
@@ -40,5 +45,19 @@ public class BannersService
             Status = StatusConstraint.ACTIVE,
         };
         return await _bannersRepository.Add(banner);
+    }
+
+    public async Task<Banner> Update(int bannerId, BannerRequest request)
+    {
+        Validations.Banner(request);
+
+        return await _bannersRepository.Update(bannerId, request);
+    }
+
+    public async Task<bool> Delete(string ids)
+    {
+        var bannerIds = ids.Split(',').Select(int.Parse).ToList();
+
+        return await _bannersRepository.Delete(bannerIds);
     }
 }

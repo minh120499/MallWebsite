@@ -1,12 +1,15 @@
 ﻿using Backend.Model;
 using Backend.Model.Entities;
+using Backend.Model.Request;
 
 namespace Backend.Repository;
 
 public interface IEmployeesRepository
 {
-    public Task<List<Employee>> GetByFilter(FilterModel filters);
-    
-    public Task<Employee> Add(Employee employee);
-    public Task<int> Count();
+    Task<Employee> GetById(int employeeId);
+    Task<List<Employee>> GetByFilter(FilterModel filters);
+    Task<Employee> Add(Employee employee);
+    Task<Employee> Update(int employeeId, EmployeeRequest request);
+    Task<int> Count();
+    Task<bool> Delete(List<string> ids);
 }

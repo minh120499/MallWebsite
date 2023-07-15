@@ -9,23 +9,28 @@ namespace Backend.Service;
 
 public class CategoriesService
 {
-    private readonly ICategoriesRepository _bannersRepository;
+    private readonly ICategoriesRepository _categoriesRepository;
 
-    public CategoriesService(ICategoriesRepository bannersRepository)
+    public CategoriesService(ICategoriesRepository categoriesRepository)
     {
-        _bannersRepository = bannersRepository;
+        _categoriesRepository = categoriesRepository;
+    }
+    
+    public async Task<Category> GetById(int categoryId)
+    {
+        return await _categoriesRepository.GetById(categoryId);
     }
 
     public async Task<TableListResponse<Category>> GetByFilter(FilterModel filters)
     {
-        var banners = await _bannersRepository.GetByFilter(filters);
-        var total = await _bannersRepository.Count();
+        var categories = await _categoriesRepository.GetByFilter(filters);
+        var total = await _categoriesRepository.Count();
         return new TableListResponse<Category>()
         {
             Total = total,
             Limit = filters.Limit,
             Page = filters.Page,
-            Data = banners
+            Data = categories
         };
     }
 
@@ -33,12 +38,27 @@ public class CategoriesService
     {
         Validations.Category(request);
 
-        var banner = new Category()
+        var category = new Category()
         {
             Name = request.Name,
             Image = request.Image,
+            Type = request.Type,
             Status = StatusConstraint.ACTIVE,
         };
-        return await _bannersRepository.Add(banner);
+        return await _categoriesRepository.Add(category);
+    }
+
+    public async Task<Category> Update(int categoryId, CategoryRequest request)
+    {
+        Validations.Category(request);
+
+        return await _categoriesRepository.Update(categoryId, request);
+    }
+
+    public async Task<bool> Delete(string ids)
+    {
+        var categoriesIds = ids.Split(',').Select(int.Parse).ToList();
+
+        return await _categoriesRepository.Delete(categoriesIds);
     }
 }

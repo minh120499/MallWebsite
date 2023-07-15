@@ -1,43 +1,105 @@
-﻿using Backend.Model;
+﻿using Backend.Exceptions;
+using Backend.Model;
 using Backend.Model.Entities;
+using Backend.Model.Request;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Repository.Implements;
-
-public class StoresRepository : IStoresRepository
+namespace Backend.Repository.Implements
 {
-    private readonly ApplicationDbContext _context;
-
-    public StoresRepository(ApplicationDbContext context)
+    public class StoresRepository : IStoresRepository
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public async Task<List<Store>> GetByFilter(FilterModel filters)
-    {
-        var banners = await _context.Stores
-            // .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
-            .OrderBy(u => u.Id)
-            .Skip((filters.Page - 1) * filters.Limit)
-            .Take(filters.Limit)
-            .ToListAsync();
-        return banners;
-    }
-
-    public async Task<Store> Add(Store store)
-    {
-        try
+        public StoresRepository(ApplicationDbContext context)
         {
-            store.CreateOn = DateTime.Now;
-            store.ModifiedOn = DateTime.Now;
-            await _context.Stores.AddAsync(store);
-            await _context.SaveChangesAsync();
-            
+            _context = context;
+        }
+
+        public async Task<Store> GetById(int storeId)
+        {
+            var store = await _context.Stores.FindAsync(storeId);
+
+            if (store == null)
+            {
+                throw new NotFoundException("Store not found.");
+            }
+
             return store;
         }
-        catch (Exception e)
+
+        public async Task<List<Store>> GetByFilter(FilterModel filters)
         {
-            throw new Exception(e.Message);
+            var stores = await _context.Stores
+                .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+                .OrderBy(u => u.Id)
+                .Skip((filters.Page - 1) * filters.Limit)
+                .Take(filters.Limit)
+                .Reverse()
+                .ToListAsync();
+            return stores;
+        }
+
+        public async Task<Store> Add(Store store)
+        {
+            try
+            {
+                store.CreateOn = DateTime.Now;
+                store.ModifiedOn = DateTime.Now;
+                await _context.Stores.AddAsync(store);
+                await _context.SaveChangesAsync();
+
+                return store;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<Store> Update(int storeId, StoreRequest request)
+        {
+            try
+            {
+                var store = await GetById(storeId);
+
+                store.Name = request.Name;
+                store.FloorId = request.FloorId;
+                store.Floor = request.Floor;
+                store.CategoryId = request.CategoryId;
+                store.Category = request.Category;
+                store.Facilities = request.Facilities;
+                store.Banners = request.Banners;
+                store.Description = request.Description;
+                store.Status = request.Status;
+                store.ModifiedOn = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                return store;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<int> Count()
+        {
+            return await _context.Stores.CountAsync();
+        }
+
+        public async Task<bool> Delete(List<int> ids)
+        {
+            try
+            {
+                var stores = await _context.Stores.Where(s => ids.Contains(s.Id)).ToListAsync();
+                _context.Stores.RemoveRange(stores);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }
