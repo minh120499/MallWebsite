@@ -31,7 +31,9 @@ namespace Backend.Repository.Implements
         public async Task<List<Facility>> GetByFilter(FilterModel filters)
         {
             var facilities = await _context.Facilities
-                .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+                .Where(u => u.Name != null &&
+                            u.Name!.Contains(filters.Query ?? "") &&
+                            u.Status!.Equals(StatusConstraint.ACTIVE))
                 .OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
@@ -65,6 +67,7 @@ namespace Backend.Repository.Implements
 
                 facility.Name = request.Name;
                 facility.Status = request.Status;
+                facility.Description = request.Description;
                 facility.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();
 
@@ -90,6 +93,8 @@ namespace Backend.Repository.Implements
 
                         findFacility.Name = facility.Name;
                         findFacility.Status = facility.Status;
+                        findFacility.Description = facility.Description;
+
                         findFacility.ModifiedOn = DateTime.Now;
                         _context.Facilities.Update(findFacility);
                     }

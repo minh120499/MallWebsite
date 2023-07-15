@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230712120942_Init")]
+    [Migration("20230715103246_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -76,6 +76,9 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
 
@@ -96,6 +99,8 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -200,6 +205,9 @@ namespace Backend.Migrations
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -258,10 +266,6 @@ namespace Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
@@ -362,9 +366,6 @@ namespace Backend.Migrations
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
@@ -387,8 +388,6 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -667,6 +666,13 @@ namespace Backend.Migrations
                     b.Navigation("Store");
                 });
 
+            modelBuilder.Entity("Backend.Model.Entities.Category", b =>
+                {
+                    b.HasOne("Backend.Model.Entities.Product", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryId");
+                });
+
             modelBuilder.Entity("Backend.Model.Entities.Employee", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Store", "Store")
@@ -717,17 +723,6 @@ namespace Backend.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Backend.Model.Entities.Product", b =>
-                {
-                    b.HasOne("Backend.Model.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
@@ -848,6 +843,8 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Model.Entities.Product", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("Variants");
                 });
 

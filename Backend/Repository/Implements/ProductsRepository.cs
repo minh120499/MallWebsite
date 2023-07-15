@@ -67,8 +67,7 @@ namespace Backend.Repository.Implements
                 product.Name = request.Name;
                 product.Description = request.Description;
                 product.Brand = request.Brand;
-                product.CategoryId = request.CategoryId;
-                product.Category = request.Category;
+                product.Categories = request.Categories;
                 product.Variants = request.Variants;
                 product.Status = request.Status;
                 product.ModifiedOn = DateTime.Now;

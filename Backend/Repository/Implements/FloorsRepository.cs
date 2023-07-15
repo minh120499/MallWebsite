@@ -64,7 +64,6 @@ namespace Backend.Repository.Implements
                 var floor = await GetById(floorId);
 
                 floor.Name = request.Name;
-                floor.Area = request.Area;
                 floor.Description = request.Description;
                 floor.Status = request.Status;
                 floor.ModifiedOn = DateTime.Now;

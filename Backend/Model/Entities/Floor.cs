@@ -11,10 +11,7 @@ public class Floor
 
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
-    
-    [Required(AllowEmptyStrings = false)]
-    public string? Area { get; set; }
-    
+
     public string? Description { get; set; }
 
     public string? Status { get; set; }

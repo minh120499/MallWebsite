@@ -15,10 +15,8 @@ public class ProductRequest
     public string? Description { get; set; }
     
     public string? Brand { get; set; }
-    
-    public int CategoryId { get; set; }
 
-    public Category? Category { get; set; }
+    public List<Category>? Categories { get; set; }
     
     public List<Variant>? Variants { get; set; }
 

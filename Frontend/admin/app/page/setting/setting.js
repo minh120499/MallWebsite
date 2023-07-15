@@ -29,10 +29,9 @@ angular.module('myApp.setting', ['ngRoute'])
       $scope.changeFacility = (e, idx) => {
         $scope.facilities = $scope.facilities.map((f, i) => {
           if (i !== idx) return f;
-          return {
-            ...f,
-            name: e.name
-          }
+          if (e.name !== undefined) f.name = e.name;
+          if (e.description !== undefined) f.description = e.description;
+          return f;
         });
       }
 
@@ -40,7 +39,6 @@ angular.module('myApp.setting', ['ngRoute'])
         $scope.floors = $scope.floors.map((f, i) => {
           if (i !== idx) return f;
           if (e.name !== undefined) f.name = e.name;
-          if (e.area !== undefined) f.area = e.area;
           if (e.description !== undefined) f.description = e.description;
           return f;
         });

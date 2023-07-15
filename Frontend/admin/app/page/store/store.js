@@ -31,7 +31,7 @@ angular.module('myApp.store', ['ngRoute'])
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
-    $scope.storeName = "";
+    $scope.name = "";
     $scope.location = "";
 
     $scope.uploadImage = function () {
@@ -48,7 +48,6 @@ function loadStore($http, $scope) {
   $scope.isLoading = true;
   $http.get('/api/stores')
     .then(function (response) {
-      console.log(response);
       $scope.data = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
@@ -56,7 +55,6 @@ function loadStore($http, $scope) {
       $scope.isLoading = false;
     })
     .catch(function (error) {
-      console.log('Error fetching data:', error);
       $scope.error = error;
       $scope.isLoading = false;
     });
@@ -65,11 +63,13 @@ function loadStore($http, $scope) {
 function createStore($http, $scope, request) {
   $scope.isLoading = true;
   $http.post('/api/stores', request)
-    .then(function (response) {
-      console.log('Store created successfully:', response.data);
+    .then(function () {
+      showSuccessToast("Create store success!");
+      loadStore($http, $scope);
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 

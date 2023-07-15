@@ -18,12 +18,9 @@ public class Product
     public string? Description { get; set; }
     
     public string? Brand { get; set; }
-    
-    [Required]
-    public int CategoryId { get; set; }
 
     [ForeignKey("CategoryId")]
-    public Category? Category { get; set; }
+    public List<Category>? Categories { get; set; }
     
     public List<Variant>? Variants { get; set; }
 
