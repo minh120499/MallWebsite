@@ -61,4 +61,32 @@ public class SettingsController : ControllerBase
 
         return Ok(response);
     }
+    
+    [HttpPut("facilities/{id:int}")]
+    public async Task<IActionResult> UpdateFacilities([FromRoute] int id, [FromBody] FacilityRequest request)
+    {
+        var response = await _facilitiesService.Update(id, request);
+        return Ok(response);
+    }
+    
+    [HttpPut("floors/{id:int}")]
+    public async Task<IActionResult> UpdateFloors([FromRoute] int id, [FromBody] FloorRequest request)
+    {
+        var response = await _floorsService.Update(id, request);
+        return Ok(response);
+    }
+
+    [HttpDelete("facilities")]
+    public async Task<IActionResult> DeleteFacilities([FromQuery] string ids)
+    {
+        await _facilitiesService.Delete(ids);
+        return Ok(new SuccessResponse());
+    }
+
+    [HttpDelete("floors")]
+    public async Task<IActionResult> DeleteFloors([FromQuery] string ids)
+    {
+        await _floorsService.Delete(ids);
+        return Ok(new SuccessResponse());
+    }
 }

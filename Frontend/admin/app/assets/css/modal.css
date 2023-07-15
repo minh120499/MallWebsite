@@ -1,0 +1,152 @@
+/* Colors */
+:root {
+  --white: #fff;
+  --light: #b8ae9c;
+  --dark: #595241;
+  --blue: #accfcc;
+  --red: #8a0917;
+  --bHeight: 4px;
+}
+
+.lede {
+  font-size: 1.25em;
+}
+
+.code {
+  padding: 2px;
+  font-size: 0.9em;
+  border-radius: 4px;
+  font-family: "Source Code Pro", Menlo, Consolas, Monaco, monospace;
+  background: hsla(100, 0%, 100%, 0.5);
+}
+
+/* Horizontal & vertical centering */
+.center {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.center__inner {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Modal */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+
+/* Display the modal overlay when the input[type=radio] is checked */
+.modal__state:checked + .modal__overlay {
+  opacity: 1;
+  animation: fade-in 0.4s;
+  display: block;
+}
+
+@keyframes scoot-up {
+  0% {
+    margin-top: 80px;
+  }
+  100% {
+    margin-top: 50px;
+  }
+}
+
+.modal {
+  position: relative;
+  margin: 50px;
+  margin-top: 80px;
+  padding: 40px 20px;
+  background: var(--light);
+  text-align: left;
+  box-shadow: 0px 0px 38px rgba(0, 0, 0, 0.2);
+}
+
+.modal__state:checked + .modal__overlay .modal {
+  margin-top: 50px;
+  animation: scoot-up 0.2s;
+  animation-timing-function: ease-out;
+  transform-origin: 50% 0px;
+}
+
+.modal__close {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+}
+
+.modal__overlay-close {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* The input[type=radio] that's toggled when the label is clicked */
+.modal__state {
+  display: none;
+}
+
+/* Button styles */
+.button {
+  display: inline-block;
+  padding: 1em;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 var(--bHeight) 0 var(--blue);
+  background: var(--blue);
+  color: var(--dark);
+}
+
+.button:hover,
+.button:focus {
+  cursor: pointer;
+  background-color: lighten(var(--blue), 10%);
+  box-shadow: 0 var(--bHeight) 0 var(--blue);
+}
+
+.button:active {
+  margin-top: var(--bHeight);
+  margin-bottom: calc(-1 * var(--bHeight));
+  box-shadow: 0 0 0 var(--blue);
+}
+
+/* Close button */
+.button--close {
+  padding: 0.2em 0.5em;
+  background-color: var(--red);
+  box-shadow: 0 var(--bHeight) 0 var(--red);
+  color: var(--white);
+}
+
+.button--inline {
+  padding: 0.25em 0.5em;
+}
+
+.button--close:hover,
+.button--close:focus {
+  background-color: lighten(var(--red), 10%);
+  box-shadow: 0 var(--bHeight) 0 var(--red);
+}
+
+.button--close:active {
+  box-shadow: 0 0 0 var(--red);
+}
