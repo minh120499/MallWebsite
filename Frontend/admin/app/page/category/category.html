@@ -1,0 +1,94 @@
+<div ng-controller="CategoryListCtrl">
+  <a href="#/categories/create">
+    <i class='bx bx-edit'></i>
+    <span>Create</span>
+  </a>
+  <div ng-if="isLoading">
+    <div class="spinner">Loading...</div>
+  </div>
+  <div ng-if="!isLoading">
+    <div ng-if="total === 0">
+      <empty-data>
+    </div>
+    <div ng-if="data && data.length > 0">
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Stt</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in data">
+            <!-- index -->
+            <td>{{ $index + 1}}</td>
+
+            <!-- Name -->
+            <td>
+              <div ng-if="editIndex !== $index">
+                {{ item.name }}
+              </div>
+              <div ng-if="editIndex === $index">
+                <div class="form-item">
+                  <input ng-change="changeCategory(this)" ng-model="editItem.name" placeholder="Name..." />
+                </div>
+              </div>
+            </td>
+
+            <!-- Image -->
+            <td>
+              <div ng-if="editIndex !== $index">
+                {{ item.image }}
+              </div>
+              <div ng-if="editIndex === $index">
+                <div class="form-item">
+                  <input ng-change="changeCategory(this)" ng-model="editItem.image" placeholder="Image..." />
+                </div>
+              </div>
+            </td>
+
+            <!-- Type -->
+            <td>
+              <div ng-if="editIndex !== $index">
+                {{ item.type }}
+              </div>
+              <div ng-if="editIndex === $index">
+                <select ng-model="editItem.type" class="form-item select-dropdown">
+                  <option value="product">Product</option>
+                  <option value="store">Store</option>
+                </select>
+              </div>
+            </td>
+
+            <!-- Status -->
+            <td>
+              <badge ng-if="editIndex !== $index" type="item.status"></badge>
+              <div ng-if="editItem.status === 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+              <div ng-if="editItem.status !== 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+            </td>
+
+            <!-- Action -->
+            <td class="column-action">
+              <button class="edit" ng-click="edit($index)" ng-if="editIndex !== $index"></button>
+
+              <button ng-click="handleEdit($index)" ng-if="editIndex === $index">
+                <i class='bx bxs-save'></i>
+              </button>
+
+              <button class="delete" ng-click="delete(item.id)" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination></pagination>
+    </div>
+  </div>
+</div>

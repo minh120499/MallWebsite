@@ -5,6 +5,7 @@
 }
 
 .form-group {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 16px;

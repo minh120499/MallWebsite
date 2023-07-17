@@ -34,12 +34,21 @@ angular.module('myApp.store', ['ngRoute'])
     $scope.name = "";
     $scope.location = "";
 
+    loadSetting($http, $scope);
+
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
     $scope.createStore = function () {
-      createStore($http, $scope, { name: $scope.storeName, location: $scope.location });
+      const request = {
+        name: $scope.name,
+        floorId: $scope.floorId,
+        categoryId: $scope.categoryId,
+        description: $scope.description,
+        
+      }
+      // createStore($http, $scope, { name: $scope.id, location: $scope.location });
     };
   }]);
 
@@ -95,24 +104,19 @@ function uploadImage($scope) {
   })
 };
 
-// function resetButton() {
-//   var resetbtn = $('#reset')
-//   resetbtn.on('click', function () {
-//     reset()
-//   })
-// }
+function loadSetting($http, $scope) {
+  $scope.isLoading = true;
 
-// function reset() {
-
-//   $('#title').val('')
-//   $('.select-option .head').html('Category')
-//   $('select#category').val('')
-
-//   var images = $('.images .img')
-//   for (var i = 0; i < images.length; i++) {
-//     $(images)[i].remove()
-//   }
-
-//   var topic = $('#topic').val('')
-//   var message = $('#msg').val('')
-// }
+  $http.get(`/api/settings`)
+    .then(function (response) {
+      $scope.facilities = response.data.facilities || [];
+      $scope.floors = response.data.floors || [];
+      $scope.initFacilities = response.data.facilities;
+      $scope.initFloors = response.data.floors;
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
