@@ -4,16 +4,13 @@ angular.module('myApp', [
   .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('');
 
+    $routeProvider
+      .when('/', {
+        templateUrl: 'pages/homepage/homepage.html',
+      })
+      .otherwise({ redirectTo: '/' });
   }]);
 
 angular.module('myApp').component('app', {
   templateUrl: 'app.html',
-});
-
-angular.module('myApp').component('appHeader', {
-  templateUrl: 'header.html',
-});
-
-angular.module('myApp').component('appFooter', {
-  templateUrl: 'footer.html',
 });
