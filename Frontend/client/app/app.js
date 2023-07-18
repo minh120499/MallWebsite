@@ -1,16 +1,13 @@
-angular.module('myApp', [
-  'ngRoute',
-])
-  .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-    $locationProvider.hashPrefix('');
+angular.module('myApp', ['ngRoute', 'myApp.homepage']).config([
+  '$locationProvider',
+  '$routeProvider',
+  function ($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('')
 
-    $routeProvider
-      .when('/', {
-        templateUrl: 'pages/homepage/homepage.html',
-      })
-      .otherwise({ redirectTo: '/' });
-  }]);
+    $routeProvider.otherwise({ redirectTo: '/' })
+  },
+])
 
 angular.module('myApp').component('app', {
   templateUrl: 'app.html',
-});
+})
