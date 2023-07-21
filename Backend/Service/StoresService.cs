@@ -4,20 +4,21 @@ using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
-using System.Threading.Tasks;
 
 namespace Backend.Service
 {
     public class StoresService
     {
         private readonly IStoresRepository _storesRepository;
+        private readonly IBannersRepository _bannersRepository;
 
-        public StoresService(IStoresRepository storesRepository)
+        public StoresService(IStoresRepository storesRepository, IBannersRepository bannersRepository)
         {
             _storesRepository = storesRepository;
+            _bannersRepository = bannersRepository;
         }
 
-        public async Task<Store> GetById(int storeId)
+        public async Task<StoreResponse> GetById(int storeId)
         {
             return await _storesRepository.GetById(storeId);
         }
@@ -35,19 +36,30 @@ namespace Backend.Service
             };
         }
 
-        public async Task<Store> Create(StoreRequest request)
+        public async Task<StoreResponse> Create(StoreRequest request)
         {
             Validations.Store(request);
 
             var store = new Store()
             {
                 Name = request.Name,
-                // Location = request.Location,
+                Image = request.Image,
+                FloorId = request.FloorId,
+                CategoryId = request.CategoryId,
+                Facilities = request.FacilityIds,
+                Status = request.Status,
+                Description = request.Description,
             };
-            return await _storesRepository.Add(store);
+            
+            var storeEntity = await _storesRepository.Add(store);
+            // await _bannersRepository.Update(new BannerRequest()
+            // {
+            //     Id = request.Banners
+            // });
+            return await _storesRepository.GetById(storeEntity.Id);
         }
 
-        public async Task<Store> Update(int storeId, StoreRequest request)
+        public async Task<StoreResponse> Update(int storeId, StoreRequest request)
         {
             Validations.Store(request);
 

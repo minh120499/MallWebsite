@@ -1,5 +1,4 @@
 ﻿using Backend.Model;
-using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Service;

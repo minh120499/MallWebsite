@@ -34,15 +34,17 @@ angular.module('myApp.banner', ['ngRoute'])
       };
     }])
 
-  .controller('BannerCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('BannerCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Banner';
 
-    $scope.data = undefined;
+    $scope.banners = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
     $scope.bannerName = "";
     $scope.fileData = "";
     $scope.fileName = "";
+
+    loadStore($http, $scope, paginationService);
 
     $scope.uploadImage = function () {
       uploadImage($scope);
@@ -65,7 +67,7 @@ function loadBanner($http, $scope, paginationService) {
   $http.get(`/api/banners${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log("Banner", response);
-      $scope.data = response.data.data;
+      $scope.banners = response.data.data;
       $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)
@@ -111,6 +113,31 @@ function uploadImage($scope) {
     $(this).remove()
   })
 };
+
+function loadStore($http, $scope, paginationService) {
+  $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  $http.get('/api/stores')
+    .then(function (response) {
+      $scope.data = response.data.data;
+      $scope.limit = response.data.limit;
+      $scope.page = response.data.page;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
 
 // function resetButton() {
 //   var resetbtn = $('#reset')

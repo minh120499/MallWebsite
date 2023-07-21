@@ -4,7 +4,6 @@ using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Service;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Backend.Controller
 {

@@ -6,12 +6,26 @@
   <div class="form-group">
     <div class="form-item">
       <label class="label" for="banner-name">Name</label>
-      <input id="banner-name" ng-model="bannerName" placeholder="Name..."/>
+      <input id="banner-name" ng-model="bannerName" placeholder="Name..." />
     </div>
 
     <div class="form-item">
       <label class="label" for="banner-store">Store</label>
-      <input id="banner-store" placeholder="Store..."/>
+      <select ng-model="storeId" class="form-item select-dropdown">
+        <option ng-repeat="store in stores" value="{{store.id}}" ng-bind="store.name"></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label class="label" for="banner-start">Start</label>
+      <input id="banner-start" ng-model="bannerStart" type="datetime-local" />
+    </div>
+
+    <div class="form-item">
+      <label class="label" for="banner-end">End</label>
+      <input id="banner-end" ng-model="bannerEnd" type="datetime-local" />
     </div>
   </div>
 

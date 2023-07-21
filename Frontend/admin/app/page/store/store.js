@@ -22,19 +22,24 @@ angular.module('myApp.store', ['ngRoute'])
     loadStore($http, $scope);
   }])
 
-  .controller('StoreCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('StoreCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Store';
-    
+
     $scope.limit = 10;
     $scope.page = 1;
     $scope.total = 0;
-    $scope.data = undefined;
     $scope.error = undefined;
+    $scope.facilities = undefined;
+    $scope.floors = undefined;
+    $scope.categories = undefined;
     $scope.isLoading = false;
     $scope.name = "";
     $scope.location = "";
 
-    loadSetting($http, $scope);
+    loadCategory($http, $scope, paginationService)
+      .then(() => {
+        loadSetting($http, $scope);
+      });
 
     $scope.uploadImage = function () {
       uploadImage($scope);
@@ -45,13 +50,15 @@ angular.module('myApp.store', ['ngRoute'])
         name: $scope.name,
         floorId: $scope.floorId,
         categoryId: $scope.categoryId,
+        floorId: $scope.floorId,
+        FacilityIds: $scope.facilityId,
         description: $scope.description,
-        
+        image: $scope.image,
       }
-      // createStore($http, $scope, { name: $scope.id, location: $scope.location });
+      console.log($scope, request);
+      createStore($http, $scope, request);
     };
   }]);
-
 
 function loadStore($http, $scope) {
   $scope.isLoading = true;
@@ -71,6 +78,7 @@ function loadStore($http, $scope) {
 
 function createStore($http, $scope, request) {
   $scope.isLoading = true;
+  console.log($scope);
   $http.post('/api/stores', request)
     .then(function () {
       showSuccessToast("Create store success!");
@@ -107,7 +115,7 @@ function uploadImage($scope) {
 function loadSetting($http, $scope) {
   $scope.isLoading = true;
 
-  $http.get(`/api/settings`)
+  return $http.get(`/api/settings`)
     .then(function (response) {
       $scope.facilities = response.data.facilities || [];
       $scope.floors = response.data.floors || [];
@@ -116,6 +124,32 @@ function loadSetting($http, $scope) {
       $scope.isLoading = false;
     })
     .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
+
+function loadCategory($http, $scope, paginationService) {
+  $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
+    .then(function (response) {
+      console.log("Category", response);
+      $scope.categories = response.data.data;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
       $scope.error = error;
       $scope.isLoading = false;
     });

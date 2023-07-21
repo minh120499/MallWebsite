@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Model.Response;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -15,7 +16,7 @@ namespace Backend.Repository.Implements
             _context = context;
         }
 
-        public async Task<Store> GetById(int storeId)
+        public async Task<StoreResponse> GetById(int storeId)
         {
             var store = await _context.Stores.FindAsync(storeId);
 
@@ -24,7 +25,7 @@ namespace Backend.Repository.Implements
                 throw new NotFoundException("Store not found.");
             }
 
-            return store;
+            return new StoreResponse();
         }
 
         public async Task<List<Store>> GetByFilter(FilterModel filters)
@@ -45,10 +46,10 @@ namespace Backend.Repository.Implements
             {
                 store.CreateOn = DateTime.Now;
                 store.ModifiedOn = DateTime.Now;
-                await _context.Stores.AddAsync(store);
+                var entity = await _context.Stores.AddAsync(store);
                 await _context.SaveChangesAsync();
 
-                return store;
+                return entity.Entity;
             }
             catch (Exception e)
             {
@@ -56,25 +57,25 @@ namespace Backend.Repository.Implements
             }
         }
 
-        public async Task<Store> Update(int storeId, StoreRequest request)
+        public async Task<StoreResponse> Update(int storeId, StoreRequest request)
         {
             try
             {
                 var store = await GetById(storeId);
 
                 store.Name = request.Name;
-                store.FloorId = request.FloorId;
+                // store.FloorId = request.FloorId;
                 store.Floor = request.Floor;
-                store.CategoryId = request.CategoryId;
+                // store.CategoryId = request.CategoryId;
                 store.Category = request.Category;
-                store.Facilities = request.Facilities;
+                // store.Facilities = request.FacilityIds;
                 store.Banners = request.Banners;
                 store.Description = request.Description;
                 store.Status = request.Status;
                 store.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();
 
-                return store;
+                return await GetById(storeId);
             }
             catch (Exception e)
             {

@@ -11,6 +11,7 @@ public class Store
     
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
+    public string? Image { get; set; }
     
     [Required]
     public int FloorId { get; set; }
@@ -24,7 +25,7 @@ public class Store
     [ForeignKey("CategoryId")]
     public Category? Category { get; set; }
     
-    public List<Facility>? Facilities { get; set; }
+    public string? Facilities { get; set; }
     
     public List<Banner>? Banners { get; set; }
     
