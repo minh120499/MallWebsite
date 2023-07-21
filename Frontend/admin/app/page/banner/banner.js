@@ -23,7 +23,7 @@ angular.module('myApp.banner', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.data = undefined;
+      $scope.banners = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
 
@@ -51,7 +51,14 @@ angular.module('myApp.banner', ['ngRoute'])
     };
 
     $scope.createBanner = function () {
-      createBanner($http, $scope, { name: $scope.bannerName, image: $scope.fileData });
+      const request = {
+        name: $scope.bannerName,
+        storeId: $scope.storeId,
+        image: $scope.fileData,
+        startOn: $scope.bannerStart,
+        endOn: $scope.bannerEnd
+      }
+      createBanner($http, $scope, request);
     };
   }]);
 
@@ -85,10 +92,11 @@ function createBanner($http, $scope, request) {
   $scope.isLoading = true;
   $http.post('/api/banners', request)
     .then(function (response) {
-      console.log('Banner created successfully:', response.data);
+      showSuccessToast("Create banner success!");
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 
@@ -124,7 +132,7 @@ function loadStore($http, $scope, paginationService) {
 
   $http.get('/api/stores')
     .then(function (response) {
-      $scope.data = response.data.data;
+      $scope.stores = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
       $scope.total = response.data.total;

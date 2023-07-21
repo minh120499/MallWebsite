@@ -41,7 +41,10 @@ public class BannersService
         var banner = new Banner()
         {
             Name = request.Name,
+            StoreId = request.StoreId,
             Image = request.Image,
+            StartOn = request.StartOn,
+            EndOn = request.EndOn,
             Status = StatusConstraint.ACTIVE,
         };
         return await _bannersRepository.Add(banner);

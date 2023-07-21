@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements;
@@ -29,14 +30,29 @@ public class BannersRepository : IBannersRepository
 
     public async Task<List<Banner>> GetByFilter(FilterModel filters)
     {
-        var banners = await _context.Banners
-            .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
-            .OrderBy(u => u.Id)
+        IQueryable<Banner> query = _context.Banners
+            .Include(u => u.Store);
+
+        if (filters.Ids.Any())
+        {
+            query = query.Where(u => filters.Ids.Contains(u.Id));
+        }
+
+        if (!string.IsNullOrEmpty(filters.Status))
+        {
+            query = query.Where(u => u.Status == filters.Status);
+        }
+
+        if (!string.IsNullOrEmpty(filters.Query))
+        {
+            query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
+        }
+
+        query = query.OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
-            .Reverse()
-            .ToListAsync();
-        return banners;
+            .Reverse();
+        return await query.ToListAsync();
     }
 
     public async Task<Banner> Add(Banner banner)
@@ -45,6 +61,12 @@ public class BannersRepository : IBannersRepository
         {
             banner.CreateOn = DateTime.Now;
             banner.ModifiedOn = DateTime.Now;
+            banner.Status = StatusConstraint.ACTIVE;
+            if (banner is { StartOn: { }, EndOn: { } })
+            {
+                banner.Expire = (banner.EndOn - banner.StartOn).Value.Days;
+            }
+
             await _context.Banners.AddAsync(banner);
             await _context.SaveChangesAsync();
 
@@ -76,6 +98,19 @@ public class BannersRepository : IBannersRepository
         {
             throw new Exception(e.Message);
         }
+    }
+
+    public async Task<List<Banner>> UpdateByStore(List<Banner> banners, int storeId)
+    {
+        foreach (var banner in banners)
+        {
+            banner.StoreId = storeId;
+        }
+
+        _context.Banners.UpdateRange(banners);
+        await _context.SaveChangesAsync();
+
+        return banners;
     }
 
     public async Task<int> Count()

@@ -51,11 +51,11 @@ angular.module('myApp.store', ['ngRoute'])
         floorId: $scope.floorId,
         categoryId: $scope.categoryId,
         floorId: $scope.floorId,
+        bannersIds: $scope.banners,
         FacilityIds: $scope.facilityId,
         description: $scope.description,
         image: $scope.image,
       }
-      console.log($scope, request);
       createStore($http, $scope, request);
     };
   }]);

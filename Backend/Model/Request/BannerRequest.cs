@@ -10,6 +10,4 @@ public class BannerRequest
     public DateTime? StartOn { get; set; }
     public DateTime? EndOn { get; set; }
     public string? Status { get; set; }
-    public DateTime? CreateOn { get; set; }
-    public DateTime? ModifiedOn { get; set; }
 }

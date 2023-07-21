@@ -17,6 +17,30 @@ public static class Validations
             });
         }
 
+        if (request.StoreId == 0)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "store_id", "store_id is not blank" }
+            });
+        }
+
+        if (request.StartOn == null)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "start_on", "start_on is not blank" }
+            });
+        }
+        
+        if (request.EndOn != null && request.EndOn < request.StartOn)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "end_on", "end date must be greater than start date" }
+            });
+        }
+
         if (errors.Count > 0)
         {
             throw new FormValidationException(errors);
@@ -235,6 +259,22 @@ public static class Validations
             errors.Add(new Dictionary<string, string>()
             {
                 { "name", "name is not blank" }
+            });
+        }
+
+        if (request.FloorId == 0)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "floor_id", "floor_id is not blank" }
+            });
+        }
+
+        if (request.CategoryId == 0)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "category_id", "category_id is not blank" }
             });
         }
 

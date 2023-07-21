@@ -3,6 +3,7 @@ using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -46,6 +47,7 @@ namespace Backend.Repository.Implements
             {
                 store.CreateOn = DateTime.Now;
                 store.ModifiedOn = DateTime.Now;
+                store.Status = StatusConstraint.ACTIVE;
                 var entity = await _context.Stores.AddAsync(store);
                 await _context.SaveChangesAsync();
 

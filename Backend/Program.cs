@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Backend;
 using Backend.Exceptions;
 using Backend.Repository;
@@ -58,7 +59,8 @@ builder.Services.AddScoped<StoreProductsService>();
 builder.Services.AddScoped<IVariantsRepository, VariantsRepository>();
 builder.Services.AddScoped<VariantsService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>

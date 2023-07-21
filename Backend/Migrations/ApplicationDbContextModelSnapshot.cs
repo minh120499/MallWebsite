@@ -60,7 +60,8 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId");
+                    b.HasIndex("StoreId")
+                        .IsUnique();
 
                     b.ToTable("Banners");
                 });
@@ -215,12 +216,7 @@ namespace Backend.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StoreId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StoreId");
 
                     b.ToTable("Facilities");
                 });
@@ -406,8 +402,14 @@ namespace Backend.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Facilities")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FloorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -655,8 +657,8 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Model.Entities.Banner", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Store", "Store")
-                        .WithMany("Banners")
-                        .HasForeignKey("StoreId")
+                        .WithOne("Banner")
+                        .HasForeignKey("Backend.Model.Entities.Banner", "StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -679,13 +681,6 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Store");
-                });
-
-            modelBuilder.Entity("Backend.Model.Entities.Facility", b =>
-                {
-                    b.HasOne("Backend.Model.Entities.Store", null)
-                        .WithMany("Facilities")
-                        .HasForeignKey("StoreId");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Order", b =>
@@ -847,9 +842,7 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
                 {
-                    b.Navigation("Banners");
-
-                    b.Navigation("Facilities");
+                    b.Navigation("Banner");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.StoreProduct", b =>

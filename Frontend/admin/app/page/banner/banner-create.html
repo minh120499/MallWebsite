@@ -12,7 +12,7 @@
     <div class="form-item">
       <label class="label" for="banner-store">Store</label>
       <select ng-model="storeId" class="form-item select-dropdown">
-        <option ng-repeat="store in stores" value="{{store.id}}" ng-bind="store.name"></option>
+        <option ng-repeat="store in stores" value="{{store.id}}" ng-bind="store.name + ' - ' + store.floor.name"></option>
       </select>
     </div>
   </div>

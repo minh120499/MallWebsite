@@ -1,4 +1,5 @@
-﻿using Backend.Model;
+﻿using Backend.Exceptions;
+using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
@@ -40,6 +41,7 @@ namespace Backend.Service
         {
             Validations.Store(request);
 
+
             var store = new Store()
             {
                 Name = request.Name,
@@ -50,12 +52,30 @@ namespace Backend.Service
                 Status = request.Status,
                 Description = request.Description,
             };
+
+
+            Store storeEntity;
+            if (request.BannersIds is null or "")
+            {
+                storeEntity = await _storesRepository.Add(store);
+                return await _storesRepository.GetById(storeEntity.Id);
+            }
+
+            var ids = request.BannersIds.Split(",").Select(int.Parse).ToList();
+
+            var banners = await _bannersRepository.GetByFilter(new FilterModel()
+            {
+                Ids = ids
+            });
+
+            if (ids.Count != banners.Count)
+            {
+                throw new NotFoundException("Banner not not exists");
+            }
             
-            var storeEntity = await _storesRepository.Add(store);
-            // await _bannersRepository.Update(new BannerRequest()
-            // {
-            //     Id = request.Banners
-            // });
+            storeEntity = await _storesRepository.Add(store);
+            await _bannersRepository.UpdateByStore(banners, storeEntity.Id);
+
             return await _storesRepository.GetById(storeEntity.Id);
         }
 

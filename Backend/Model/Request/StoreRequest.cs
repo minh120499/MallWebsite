@@ -18,9 +18,10 @@ public class StoreRequest
     public Category? Category { get; set; }
 
     public List<Facility>? Facilities { get; set; }
-    public string FacilityIds { get; set; }
+    public string? FacilityIds { get; set; }
 
     public List<Banner>? Banners { get; set; }
+    public string? BannersIds { get; set; }
 
     public string? Description { get; set; }
     public string? Status { get; set; }
