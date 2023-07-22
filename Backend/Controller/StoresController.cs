@@ -36,6 +36,13 @@ namespace Backend.Controller
             var store = await _storesService.GetById(id);
             return Ok(store);
         }
+        
+        [HttpGet("{id:int}/products")]
+        public async Task<IActionResult> GetProducts([FromRoute] int id, [FromQuery] FilterModel filters)
+        {
+            var store = await _storesService.GetProducts(id, filters);
+            return Ok(store);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] StoreRequest request)

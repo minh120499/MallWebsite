@@ -1,19 +1,23 @@
-﻿using Backend.Model;
+﻿using Backend.Exceptions;
+using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Service;
 
 public class BannersService
 {
     private readonly IBannersRepository _bannersRepository;
+    private readonly IWebHostEnvironment _environment;
 
-    public BannersService(IBannersRepository bannersRepository)
+    public BannersService(IBannersRepository bannersRepository, IWebHostEnvironment environment)
     {
         _bannersRepository = bannersRepository;
+        _environment = environment;
     }
 
     public async Task<Banner> GetById(int bannerId)
@@ -62,5 +66,11 @@ public class BannersService
         var bannerIds = ids.Split(',').Select(int.Parse).ToList();
 
         return await _bannersRepository.Delete(bannerIds);
+    }
+
+    [NonAction]
+    private string GetFilepath(string productcode)
+    {
+        return this._environment.WebRootPath + "\\Upload\\product\\" + productcode;
     }
 }

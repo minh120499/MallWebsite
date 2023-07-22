@@ -32,6 +32,7 @@ namespace Backend.Repository.Implements
         public async Task<List<Store>> GetByFilter(FilterModel filters)
         {
             var stores = await _context.Stores
+                .Include(s => s.Floor)
                 .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
                 .OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
@@ -39,6 +40,21 @@ namespace Backend.Repository.Implements
                 .Reverse()
                 .ToListAsync();
             return stores;
+        }
+
+        public async Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters)
+        {
+            var storeProducts = await _context.StoreProducts
+                .Where(sp => sp.StoreId == storeId)
+                .Include(sp => sp.Product)
+                .ThenInclude(p => p!.Variants)
+                .Include(sp => sp.Store)
+                .OrderBy(u => u.Id)
+                .Skip((filters.Page - 1) * filters.Limit)
+                .Take(filters.Limit)
+                .Reverse()
+                .ToListAsync();
+            return storeProducts;
         }
 
         public async Task<Store> Add(Store store)
@@ -88,6 +104,13 @@ namespace Backend.Repository.Implements
         public async Task<int> Count()
         {
             return await _context.Stores.CountAsync();
+        }
+
+        public async Task<int> CountProducts(int storeId)
+        {
+            return await _context.StoreProducts
+                .Where(sp => sp.StoreId == storeId)
+                .CountAsync();
         }
 
         public async Task<bool> Delete(List<int> ids)

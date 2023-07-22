@@ -58,6 +58,8 @@ builder.Services.AddScoped<StoreProductsService>();
 // Variant
 builder.Services.AddScoped<IVariantsRepository, VariantsRepository>();
 builder.Services.AddScoped<VariantsService>();
+// ProductCategory
+builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

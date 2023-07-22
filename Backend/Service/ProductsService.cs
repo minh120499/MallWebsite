@@ -10,10 +10,18 @@ namespace Backend.Service
     public class ProductsService
     {
         private readonly IProductsRepository _productsRepository;
+        private readonly IStoreProductsRepository _storeProductsRepository;
+        private readonly IVariantsRepository _variantsRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
 
-        public ProductsService(IProductsRepository productsRepository)
+        public ProductsService(IProductsRepository productsRepository,
+            IProductCategoryRepository productCategoryRepository, IStoreProductsRepository storeProductsRepository,
+            IVariantsRepository variantsRepository)
         {
             _productsRepository = productsRepository;
+            _productCategoryRepository = productCategoryRepository;
+            _storeProductsRepository = storeProductsRepository;
+            _variantsRepository = variantsRepository;
         }
 
         public async Task<Product> GetById(int productId)
@@ -21,16 +29,34 @@ namespace Backend.Service
             return await _productsRepository.GetById(productId);
         }
 
-        public async Task<TableListResponse<Product>> GetByFilter(FilterModel filters)
+        public async Task<TableListResponse<ProductResponse>> GetByFilter(FilterModel filters)
         {
             var products = await _productsRepository.GetByFilter(filters);
+            var productsResponse = products.Select((p) => new ProductResponse()
+            {
+                Id = p.Id,
+                Code = p.Code,
+                Image = p.Image,
+                Name = p.Name,
+                Description = p.Description,
+                Brand = p.Brand,
+                Categories = p.ProductCategory!.Select(pc => pc.Category!.Name ?? "").ToList(),
+                Variants = p.Variants!.Select(v =>
+                {
+                    v.Product = null;
+                    return v;
+                }).ToList(),
+                Status = p.Status,
+                CreateOn = p.CreateOn,
+                ModifiedOn = p.ModifiedOn,
+            }).ToList();
             var total = await _productsRepository.Count();
-            return new TableListResponse<Product>()
+            return new TableListResponse<ProductResponse>()
             {
                 Total = total,
                 Limit = filters.Limit,
                 Page = filters.Page,
-                Data = products
+                Data = productsResponse
             };
         }
 
@@ -40,11 +66,47 @@ namespace Backend.Service
 
             var product = new Product()
             {
+                Code = request.Code,
+                Image = request.Image,
                 Name = request.Name,
-                // Price = request.Price,
                 Description = request.Description,
+                Brand = request.Brand,
             };
-            return await _productsRepository.Add(product);
+
+            var productResponse = await _productsRepository.Add(product);
+            if (request.Categories != null)
+            {
+                var productCategory = request.Categories
+                    .Select(c => new ProductCategory
+                    {
+                        ProductId = productResponse.Id,
+                        CategoryId = c.Id
+                    }).ToList();
+                await _productCategoryRepository.Add(productCategory);
+            }
+
+            if (request.Variant == null)
+            {
+                await _variantsRepository.Add(new Variant()
+                {
+                    Name = request.Name,
+                    ProductId = productResponse.Id,
+                    Code = request.Code,
+                    Description = request.Description,
+                    Image = request.Image,
+                    Price = request.Price,
+                    InStock = request.InStock,
+                });
+            }
+
+            await _storeProductsRepository.Add(new StoreProduct()
+            {
+                StoreId = request.StoreId,
+                ProductId = productResponse.Id,
+            });
+
+
+            return await _productsRepository.GetById(productResponse.Id);
         }
 
         public async Task<Product> Update(int productId, ProductRequest request)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230721100933_Init")]
+    [Migration("20230722091730_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -63,8 +63,7 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId")
-                        .IsUnique();
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Banners");
                 });
@@ -76,9 +75,6 @@ namespace Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
@@ -100,8 +96,6 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -388,6 +382,21 @@ namespace Backend.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Backend.Model.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategory");
+                });
+
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
                 {
                     b.Property<int>("Id")
@@ -444,14 +453,8 @@ namespace Backend.Migrations
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("InStock")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<float?>("Price")
-                        .HasColumnType("real");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -491,6 +494,9 @@ namespace Backend.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("InStock")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -504,11 +510,11 @@ namespace Backend.Migrations
                     b.Property<int?>("OrderLineItemId")
                         .HasColumnType("int");
 
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("StoreProductId")
                         .HasColumnType("int");
@@ -660,19 +666,12 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Model.Entities.Banner", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Store", "Store")
-                        .WithOne("Banner")
-                        .HasForeignKey("Backend.Model.Entities.Banner", "StoreId")
+                        .WithMany("Banners")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Store");
-                });
-
-            modelBuilder.Entity("Backend.Model.Entities.Category", b =>
-                {
-                    b.HasOne("Backend.Model.Entities.Product", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Employee", b =>
@@ -720,6 +719,25 @@ namespace Backend.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Backend.Model.Entities.ProductCategory", b =>
+                {
+                    b.HasOne("Backend.Model.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Model.Entities.Product", "Product")
+                        .WithMany("ProductCategory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Category", "Category")
@@ -746,7 +764,7 @@ namespace Backend.Migrations
                         .HasForeignKey("ProductId");
 
                     b.HasOne("Backend.Model.Entities.Store", "Store")
-                        .WithMany()
+                        .WithMany("StoreProducts")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -838,14 +856,16 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Model.Entities.Product", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("ProductCategory");
 
                     b.Navigation("Variants");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
                 {
-                    b.Navigation("Banner");
+                    b.Navigation("Banners");
+
+                    b.Navigation("StoreProducts");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.StoreProduct", b =>

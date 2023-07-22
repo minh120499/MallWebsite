@@ -28,7 +28,7 @@
         <tbody>
           <tr ng-repeat="banner in banners">
             <td>{{ $index + 1 }}</td>
-            <td>{{ banner.image }}</td>
+            <td><img ng-src="{{ banner.image }}" /></td>
             <td>{{ banner.name }}</td>
             <td>{{ banner.store.name }}</td>
             <td>{{ banner.status }}</td>

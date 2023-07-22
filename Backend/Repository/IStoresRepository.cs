@@ -9,8 +9,11 @@ public interface IStoresRepository
 {
     Task<StoreResponse> GetById(int storeId);
     Task<List<Store>> GetByFilter(FilterModel filters);
+
+    Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters);
     Task<Store> Add(Store store);
     Task<StoreResponse> Update(int storeId, StoreRequest request);
     Task<int> Count();
+    Task<int> CountProducts(int storeId);
     Task<bool> Delete(List<int> ids);
 }

@@ -18,7 +18,12 @@ public class ProductRequest
 
     public List<Category>? Categories { get; set; }
     
-    public List<Variant>? Variants { get; set; }
+    public List<VariantRequest>? Variant { get; set; }
 
+    public int StoreId { get; set; }
+
+    public float? Price { get; set; }
+
+    public int? InStock { get; set; }
     public string? Status { get; set; }
 }

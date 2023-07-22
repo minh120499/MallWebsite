@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -45,10 +46,10 @@ namespace Backend.Repository.Implements
             {
                 variant.CreateOn = DateTime.Now;
                 variant.ModifiedOn = DateTime.Now;
-                await _context.Variants.AddAsync(variant);
+                var response = await _context.Variants.AddAsync(variant);
                 await _context.SaveChangesAsync();
 
-                return variant;
+                return response.Entity;
             }
             catch (Exception e)
             {
@@ -69,7 +70,6 @@ namespace Backend.Repository.Implements
                 variant.Name = request.Name;
                 variant.Options = request.Options;
                 variant.Description = request.Description;
-                variant.Status = request.Status;
                 variant.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();
 

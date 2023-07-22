@@ -72,7 +72,7 @@ namespace Backend.Service
             {
                 throw new NotFoundException("Banner not not exists");
             }
-            
+
             storeEntity = await _storesRepository.Add(store);
             await _bannersRepository.UpdateByStore(banners, storeEntity.Id);
 
@@ -91,6 +91,35 @@ namespace Backend.Service
             var storeIds = ids.Split(',').Select(int.Parse).ToList();
 
             return await _storesRepository.Delete(storeIds);
+        }
+
+        public async Task<TableListResponse<StoreProductResponse>> GetProducts(int id, FilterModel filters)
+        {
+            var storeProduct = await _storesRepository.GetProducts(id, filters);
+            var total = await _storesRepository.CountProducts(storeProduct.First().StoreId);
+            var storeProductResponse = storeProduct.Select((sp) => new StoreProductResponse()
+            {
+                Id = sp.Id,
+                Code = sp.Product!.Code,
+                Image = sp.Product!.Image,
+                Name = sp.Product!.Name,
+                Description = sp.Product!.Description,
+                Brand = sp.Product!.Brand,
+                ProductCategory = sp.Product!.ProductCategory,
+                Variants = sp.Product!.Variants,
+                Status = sp.Product!.Status,
+                CreateOn = sp.Product!.CreateOn,
+                ModifiedOn = sp.Product!.ModifiedOn,
+                Store = sp.Store,
+            }).ToList();
+
+            return new TableListResponse<StoreProductResponse>()
+            {
+                Data = storeProductResponse,
+                Limit = filters.Limit,
+                Page = filters.Page,
+                Total = total
+            };
         }
     }
 }

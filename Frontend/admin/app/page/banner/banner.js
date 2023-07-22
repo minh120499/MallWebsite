@@ -56,7 +56,8 @@ angular.module('myApp.banner', ['ngRoute'])
         storeId: $scope.storeId,
         image: $scope.fileData,
         startOn: $scope.bannerStart,
-        endOn: $scope.bannerEnd
+        endOn: $scope.bannerEnd,
+        imageFiles: $scope.fileData
       }
       createBanner($http, $scope, request);
     };

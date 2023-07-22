@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -17,7 +18,11 @@ namespace Backend.Repository.Implements
 
         public async Task<Product> GetById(int productId)
         {
-            var product = await _context.Products.FindAsync(productId);
+            var product = await _context.Products
+                .Include(p => p.ProductCategory)!
+                .ThenInclude(pc => pc.Category)
+                .Include(p => p.Variants)
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             if (product == null)
             {
@@ -31,6 +36,9 @@ namespace Backend.Repository.Implements
         {
             var products = await _context.Products
                 .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+                .Include(p => p.Variants)
+                .Include(p => p.ProductCategory)!
+                .ThenInclude(c => c.Category)
                 .OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
@@ -45,10 +53,11 @@ namespace Backend.Repository.Implements
             {
                 product.CreateOn = DateTime.Now;
                 product.ModifiedOn = DateTime.Now;
-                await _context.Products.AddAsync(product);
+                product.Status = StatusConstraint.ACTIVE;
+                var response = await _context.Products.AddAsync(product);
                 await _context.SaveChangesAsync();
 
-                return product;
+                return response.Entity;
             }
             catch (Exception e)
             {
@@ -67,8 +76,7 @@ namespace Backend.Repository.Implements
                 product.Name = request.Name;
                 product.Description = request.Description;
                 product.Brand = request.Brand;
-                product.Categories = request.Categories;
-                product.Variants = request.Variants;
+                // product.Variants = request.Variants;
                 product.Status = request.Status;
                 product.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();

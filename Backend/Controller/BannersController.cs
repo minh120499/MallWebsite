@@ -41,6 +41,7 @@ public class BannersController : ControllerBase
     public async Task<IActionResult> Create([FromBody] BannerRequest request)
     {
         var response = await _bannersService.Create(request);
+        
         return Ok(response);
     }
 

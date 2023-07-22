@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -44,10 +45,11 @@ namespace Backend.Repository.Implements
             {
                 storeProduct.CreateOn = DateTime.Now;
                 storeProduct.ModifiedOn = DateTime.Now;
-                await _context.StoreProducts.AddAsync(storeProduct);
+                storeProduct.Status = StatusConstraint.ACTIVE;
+                var response = await _context.StoreProducts.AddAsync(storeProduct);
                 await _context.SaveChangesAsync();
 
-                return storeProduct;
+                return response.Entity;
             }
             catch (Exception e)
             {
@@ -65,9 +67,7 @@ namespace Backend.Repository.Implements
                 storeProduct.Store = request.Store;
                 storeProduct.ProductId = request.ProductId;
                 storeProduct.Product = request.Product;
-                storeProduct.Variants = request.Variants;
-                storeProduct.Price = request.Price;
-                storeProduct.InStock = request.InStock;
+                storeProduct.Variants = request.Variants!;
                 storeProduct.Status = request.Status;
                 storeProduct.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();

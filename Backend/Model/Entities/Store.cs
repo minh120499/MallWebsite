@@ -27,11 +27,12 @@ public class Store
     
     public string? Facilities { get; set; }
     
-    public Banner? Banner { get; set; }
+    public List<Banner> Banners { get; set; } = new List<Banner>();
     
     public string? Description { get; set; }
     public string? Status { get; set; }
 
+    public List<StoreProduct> StoreProducts { get; set; } = new List<StoreProduct>();
     public DateTime? CreateOn { get; set; }
     
     public DateTime? ModifiedOn { get; set; }
