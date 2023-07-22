@@ -199,4 +199,8 @@
   align-self: center;
   padding: 8px;
 }
+
+.content-table .column-image {
+  width: 50px;
+}
 /* Line item */

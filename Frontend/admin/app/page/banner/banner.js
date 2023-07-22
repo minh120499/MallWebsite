@@ -108,11 +108,13 @@ function uploadImage($scope) {
   uploader.click();
 
   uploader.on('change', function () {
+    images.innerHtml = ''
     var file = uploader[0].files[0];
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
       $scope.fileData = event.target.result;
+      $scope.images = [event.target.result];
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
