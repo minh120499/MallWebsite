@@ -1,4 +1,11 @@
-angular.module('myApp', ['ngRoute', 'myApp.homepage'])
+angular.module('myApp', [
+  'ngRoute',
+  'myApp.dine',
+  'myApp.homepage',
+  'myApp.info',
+  'myApp.play',
+  'myApp.shop',
+])
 
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     var backendUrl = 'http://localhost:5062';

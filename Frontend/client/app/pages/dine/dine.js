@@ -1,14 +1,14 @@
-angular.module('myApp.homepage', ['ngRoute'])
+angular.module('myApp.dine', ['ngRoute'])
   .config([
     '$routeProvider',
     function ($routeProvider) {
-      $routeProvider.when('/', {
-        templateUrl: 'pages/homepage/homepage.html',
-        controller: 'HomePageCtrl',
+      $routeProvider.when('/dine', {
+        templateUrl: 'pages/dine/dine.html',
+        controller: 'DineCtrl',
       })
     },
   ])
-  .controller('HomePageCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+  .controller('DineCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
     function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Home';
 

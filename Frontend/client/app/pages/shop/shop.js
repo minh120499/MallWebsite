@@ -1,14 +1,14 @@
-angular.module('myApp.homepage', ['ngRoute'])
+angular.module('myApp.shop', ['ngRoute'])
   .config([
     '$routeProvider',
     function ($routeProvider) {
-      $routeProvider.when('/', {
-        templateUrl: 'pages/homepage/homepage.html',
-        controller: 'HomePageCtrl',
+      $routeProvider.when('/shop', {
+        templateUrl: 'pages/shop/shop.html',
+        controller: 'ShopCtrl',
       })
     },
   ])
-  .controller('HomePageCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+  .controller('ShopCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
     function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Home';
 

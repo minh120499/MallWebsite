@@ -1,14 +1,14 @@
-angular.module('myApp.homepage', ['ngRoute'])
+angular.module('myApp.play', ['ngRoute'])
   .config([
     '$routeProvider',
     function ($routeProvider) {
-      $routeProvider.when('/', {
-        templateUrl: 'pages/homepage/homepage.html',
-        controller: 'HomePageCtrl',
+      $routeProvider.when('/play', {
+        templateUrl: 'pages/play/play.html',
+        controller: 'PlayCtrl',
       })
     },
   ])
-  .controller('HomePageCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+  .controller('PlayCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
     function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Home';
 

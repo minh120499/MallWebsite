@@ -1,14 +1,14 @@
-angular.module('myApp.homepage', ['ngRoute'])
+angular.module('myApp.info', ['ngRoute'])
   .config([
     '$routeProvider',
     function ($routeProvider) {
-      $routeProvider.when('/', {
-        templateUrl: 'pages/homepage/homepage.html',
-        controller: 'HomePageCtrl',
+      $routeProvider.when('/info', {
+        templateUrl: 'pages/info/info.html',
+        controller: 'InfoCtrl',
       })
     },
   ])
-  .controller('HomePageCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+  .controller('InfoCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
     function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Home';
 
