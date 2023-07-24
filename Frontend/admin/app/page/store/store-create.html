@@ -36,6 +36,18 @@
 
   <div class="form-group">
     <div class="form-item">
+      <label for="store-phone">Phone</label>
+      <input id="store-phone" ng-model="phone" placeholder="Phone..." />
+    </div>
+    
+    <div class="form-item">
+      <label for="store-email">Email</label>
+      <input id="store-email" ng-model="email" placeholder="Email..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
       <label for="store-banner">Banners</label>
       <input id="store-banner" ng-model="banners" placeholder="Banners..." />
     </div>
@@ -45,6 +57,16 @@
       <input id="store-description" ng-model="description" placeholder="Description..." />
     </div>
   </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <div class="input-upload">
+        <button class="button" ng-click="uploadImage()">Upload file</button>
+      </div>
+    </div>
+    <div class="form-item"></div>
+  </div>
+  <div class="images"></div>
 </div>
 
 <!-- <script>

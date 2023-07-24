@@ -12,7 +12,7 @@
         <thead>
           <tr>
             <th>Stt</th>
-            <th>Image</th>
+            <th class="column-image">Image</th>
             <th>Name</th>
             <th>Floor</th>
             <th>Category</th>
@@ -26,7 +26,9 @@
         <tbody>
           <tr ng-repeat="item in data">
             <td>{{ $index + 1}}</td>
-            <td>{{ item.image }}</td>
+            <td>
+              <img ng-src="{{ item.image }}"/>
+            </td>
             <td>{{ item.name }}</td>
             <td>{{ item.floor.name }}</td>
             <td>{{ item.category.name }}</td>

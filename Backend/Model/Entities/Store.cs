@@ -14,6 +14,14 @@ public class Store
     public string? Image { get; set; }
     
     [Required]
+    [Phone]
+    public string? Phone { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string? Email { get; set; }
+    
+    [Required]
     public int FloorId { get; set; }
 
     [ForeignKey("FloorId")]

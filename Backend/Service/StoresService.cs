@@ -46,6 +46,8 @@ namespace Backend.Service
             {
                 Name = request.Name,
                 Image = request.Image,
+                Phone = request.Phone,
+                Email = request.Email,
                 FloorId = request.FloorId,
                 CategoryId = request.CategoryId,
                 Facilities = request.FacilityIds,

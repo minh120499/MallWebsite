@@ -82,9 +82,10 @@ namespace Backend.Repository.Implements
                 var store = await GetById(storeId);
 
                 store.Name = request.Name;
-                // store.FloorId = request.FloorId;
+                store.Image = request.Image;
                 store.Floor = request.Floor;
-                // store.CategoryId = request.CategoryId;
+                store.Phone = request.Phone;
+                store.Email = request.Email;
                 store.Category = request.Category;
                 // store.Facilities = request.FacilityIds;
                 store.Banners = request.Banners;

@@ -54,7 +54,9 @@ angular.module('myApp.store', ['ngRoute'])
         bannersIds: $scope.banners,
         FacilityIds: $scope.facilityId,
         description: $scope.description,
-        image: $scope.image,
+        image: $scope.fileData,
+        phone: $scope.phone,
+        email: $scope.email,
       }
       createStore($http, $scope, request);
     };
