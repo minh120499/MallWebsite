@@ -1,0 +1,221 @@
+<div ng-controller="MallCtrl">
+  <div ng-if="isLoading">
+    <div class="spinner">Loading...</div>
+  </div>
+  <div class="setting-layout" ng-if="!isLoading">
+
+    <!-- Facilities -->
+    <div class=" setting-box">
+      <h3>Facilities</h3>
+      <div class="setting-box-main" ng-if="!facilities || !facilities.length">
+        <empty-data>
+      </div>
+      <div class="setting-box-main" ng-if="facilities && facilities.length > 0">
+        <div class="content-table">
+          <div class="table-line-header">
+            <div style="width: 50px;">Stt</div>
+            <div style="flex-grow: 1">Name</div>
+            <div style="width: 450px;">Description</div>
+            <div style="width: 100px;">Status</div>
+            <div style="width: 100px;"></div>
+          </div>
+          <div>
+            <div class="table-line-row" ng-repeat="item in facilities">
+              <!-- index -->
+              <div style="width: 50px;">{{ $index + 1 }}</div>
+
+              <!-- Name -->
+              <div style="flex-grow: 1" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
+                {{ item.name }}
+              </div>
+              <div style="flex-grow: 1;" ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFacility(this, $index)" ng-model="name" placeholder="Name..." />
+                </div>
+              </div>
+              <div style="flex-grow: 1;" ng-if="editIndex === $index && editContext === 'facilities'">
+                <div class="form-item">
+                  <input ng-change="changeFacility(this, $index)" ng-model="editItem.name" placeholder="Name..." />
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div style="width: 450px;" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
+                {{ item.description }}
+              </div>
+              <div style="width: 450px;" ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFacilities(this, $index)" ng-model="description" placeholder="Description..." />
+                </div>
+              </div>
+              <div style="width: 450px;" ng-if="editIndex === $index && editContext === 'facilities'">
+                <div class="form-item">
+                  <input ng-change="changeFacilities(this, $index)" ng-model="editItem.description"
+                    placeholder="Description..." />
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div style="width: 100px;" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
+                <badge type="item.status"></badge>
+              </div>
+              <div style="width: 100px;" ng-if="!item.status">
+                <badge type="item.status || 'active'"></badge>
+              </div>
+              <div style="width: 100px;" ng-if="editIndex === $index && editContext === 'facilities'">
+                <div ng-if="editItem.status === 'active'" ng-click="toggleStatus()">
+                  <badge type="editItem.status"></badge>
+                </div>
+                <div ng-if="editItem.status !== 'active'" ng-click="toggleStatus()">
+                  <badge type="editItem.status"></badge>
+                </div>
+              </div>
+
+              <!-- Action -->
+              <div style="width: 100px;" class="column-action">
+                <div ng-if="item.status">
+                  <button class="edit" ng-click="edit($index, 'facilities')"
+                    ng-if="editIndex !== $index || editContext !== 'facilities'"></button>
+
+                  <button ng-click="handleEdit($index, 'facilities')"
+                    ng-if="editIndex === $index && editContext === 'facilities'">
+                    <i class='bx bxs-save'></i>
+                  </button>
+
+                  <button class="delete" ng-click="delete(item.id, 'facilities')" />
+                </div>
+                <div ng-if="!item.status">
+                  <button ng-click="remove($index, 'facilities')">x</button>
+                </div>
+              </div>
+              <!-- Action -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action-box">
+        <div ng-if="isChangeFacilities">
+          <div class="button-save" ng-click="saveSetting()">Save</div>
+        </div>
+        <div class="button-add" ng-click="addFacilityLine()">Add</div>
+      </div>
+    </div>
+    <!-- Facilities -->
+
+
+    <!-- Floors -->
+    <div class="setting-box">
+      <h3>Floors</h3>
+      <div class="setting-box-main" ng-if="!floors || !floors.length">
+        <empty-data>
+      </div>
+      <div class="setting-box-main" ng-if="floors && floors.length > 0">
+        <div class="content-table">
+          <div class="table-line-header">
+            <div style="width: 50px;">Stt</div>
+            <div class="grow">Name</div>
+            <div style="width: 200px;">Area</div>
+            <div style="width: 450px;">Description</div>
+            <div style="width: 100px;">Status</div>
+            <div style="width: 100px;"></div>
+          </div>
+          <div>
+            <div class="table-line-row" ng-repeat="item in floors">
+              <!-- index -->
+              <div style="width: 50px;">{{ $index + 1 }}</div>
+
+              <!-- Name -->
+              <div class="grow" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
+                {{ item.name }}
+              </div>
+              <div class="grow" ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="name" placeholder="Name..." />
+                </div>
+              </div>
+              <div class="grow" ng-if="editIndex === $index && editContext === 'floors'">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="editItem.name" placeholder="Name..." />
+                </div>
+              </div>
+
+              <!-- Area -->
+              <!-- <div style="width: 200px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
+                {{ item.area }}
+              </div>
+              <div style="width: 200px;" ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="area" placeholder="Area..." />
+                </div>
+              </div>
+              <div style="width: 200px;" ng-if="editIndex === $index && editContext === 'floors'">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="editItem.area" placeholder="Area..." />
+                </div>
+              </div> -->
+
+              <!-- Description -->
+              <div style="width: 450px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
+                {{ item.description }}
+              </div>
+              <div style="width: 450px;" ng-if="!item.status">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="description" placeholder="Description..." />
+                </div>
+              </div>
+              <div style="width: 450px;" ng-if="editIndex === $index && editContext === 'floors'">
+                <div class="form-item">
+                  <input ng-change="changeFloors(this, $index)" ng-model="editItem.description"
+                    placeholder="Description..." />
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div style="width: 100px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
+                <badge type="item.status"></badge>
+              </div>
+              <div style="width: 100px;" ng-if="!item.status">
+                <badge type="item.status || 'active'"></badge>
+              </div>
+              <div style="width: 100px;" ng-if="editIndex === $index && editContext === 'floors'">
+                <div ng-if="editItem.status === 'active'" ng-click="toggleStatus()">
+                  <badge type="editItem.status"></badge>
+                </div>
+                <div ng-if="editItem.status !== 'active'" ng-click="toggleStatus()">
+                  <badge type="editItem.status"></badge>
+                </div>
+              </div>
+
+              <!-- Action -->
+              <div style="width: 100px;" class="column-action">
+                <div ng-if="item.status">
+                  <button class="edit" ng-click="edit($index, 'floors')"
+                    ng-if="editIndex !== $index || editContext !== 'floors'"></button>
+
+                  <button ng-click="handleEdit($index, 'floors')"
+                    ng-if="editIndex === $index && editContext === 'floors'">
+                    <i class='bx bxs-save'></i>
+                  </button>
+
+                  <button class="delete" ng-click="delete(item.id, 'floors')" />
+                </div>
+                <div ng-if="!item.status">
+                  <button ng-click="remove($index, 'floors')">x</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action-box">
+        <div ng-if="isChangeFloors">
+          <div class="button-save" ng-click="saveSetting()">Save</div>
+        </div>
+        <div class="button-add" ng-click="addFloorLine()"">Add</div>
+      </div>
+    </div>
+    <!-- Floors -->
+  </div>
+</div>

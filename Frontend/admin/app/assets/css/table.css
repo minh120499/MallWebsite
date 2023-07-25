@@ -232,3 +232,24 @@
   padding: 4px;
 }
 /* Pagination */
+
+/* Line item */
+.table-line-header {
+  background-color: #009879;
+  color: #f3f3f3;
+}
+.table-line-header,
+.table-line-row {
+  display: flex;
+}
+
+.table-line-header div,
+.table-line-row div {
+  align-self: center;
+  padding: 8px;
+}
+
+.content-table .column-image {
+  width: 50px;
+}
+/* Line item */

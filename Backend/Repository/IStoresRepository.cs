@@ -1,10 +1,19 @@
 ﻿using Backend.Model;
 using Backend.Model.Entities;
+using Backend.Model.Request;
+using Backend.Model.Response;
 
 namespace Backend.Repository;
 
 public interface IStoresRepository
 {
-    public Task<List<Store>> GetByFilter(FilterModel filters);
-    public Task<Store> Add(Store banner);
+    Task<StoreResponse> GetById(int storeId);
+    Task<List<Store>> GetByFilter(FilterModel filters);
+
+    Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters);
+    Task<Store> Add(Store store);
+    Task<StoreResponse> Update(int storeId, StoreRequest request);
+    Task<int> Count();
+    Task<int> CountProducts(int storeId);
+    Task<bool> Delete(List<int> ids);
 }

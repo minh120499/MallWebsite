@@ -1,48 +1,68 @@
-﻿using Backend.Model;
+﻿using Backend.Exceptions;
+using Backend.Model;
 using Backend.Model.Request;
+using Backend.Model.Response;
 using Backend.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controller;
-
-[ApiController]
-[Route("api/stores")]
-public class StoresController : ControllerBase
+namespace Backend.Controller
 {
-    private readonly StoresService _storeService;
-    private readonly StoreProductsService _storeProductsService;
-
-    public StoresController(StoresService storeService, StoreProductsService storeProductsService)
+    [ApiController]
+    [Route("api/stores")]
+    public class StoresController : ControllerBase
     {
-        _storeService = storeService;
-        _storeProductsService = storeProductsService;
-    }
+        private readonly StoresService _storesService;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] FilterModel filters)
-    {
-        var store = await _storeService.GetByFilter(filters);
-        return Ok(store);
-    }
+        public StoresController(StoresService storesService)
+        {
+            _storesService = storesService;
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] StoreRequest request)
-    {
-        var response = await _storeService.Create(request);
-        return Ok(response);
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] FilterModel filters)
+        {
+            if (filters.Page < 1)
+            {
+                throw new FormValidationException("Page must be greater than 0");
+            }
 
-    [HttpGet("{id:int}/products")]
-    public async Task<IActionResult> GetProducts(int id, [FromQuery] FilterModel filters)
-    {
-        var storeItems = await _storeProductsService.GetByFilter(filters);
-        return Ok(storeItems);
-    }
+            var stores = await _storesService.GetByFilter(filters);
+            return Ok(stores);
+        }
 
-    [HttpPost("{id:int}/products")]
-    public async Task<IActionResult> AddProduct(int id, [FromBody] StoreProductRequest request)
-    {
-        var response = await _storeProductsService.Create(request);
-        return Ok(response);
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var store = await _storesService.GetById(id);
+            return Ok(store);
+        }
+        
+        [HttpGet("{id:int}/products")]
+        public async Task<IActionResult> GetProducts([FromRoute] int id, [FromQuery] FilterModel filters)
+        {
+            var store = await _storesService.GetProducts(id, filters);
+            return Ok(store);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] StoreRequest request)
+        {
+            var response = await _storesService.Create(request);
+            return Ok(response);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StoreRequest request)
+        {
+            var response = await _storesService.Update(id, request);
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] string ids)
+        {
+            await _storesService.Delete(ids);
+            return Ok(new SuccessResponse());
+        }
     }
 }

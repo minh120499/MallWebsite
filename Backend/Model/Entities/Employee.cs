@@ -7,7 +7,8 @@ namespace Backend.Model.Entities;
 [Table("Employees")]
 public class Employee : IdentityUser
 {
-    [Phone] public string? Phone { get; set; }
+    [Phone]
+    public string? Phone { get; set; }
 
     [Required(AllowEmptyStrings = false)] 
     public string FullName { get; set; } = "";
@@ -22,11 +23,7 @@ public class Employee : IdentityUser
 
     public string? Status { get; set; }
 
-    [Timestamp]
-    [Required]
     public DateTime? CreateOn { get; set; }
     
-    [Timestamp]
-    [Required]
     public DateTime? ModifiedOn { get; set; }
 }

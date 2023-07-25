@@ -3,12 +3,61 @@
   <div class="form-group">
     <div class="form-item">
       <label for="product-name">Name</label>
-      <input id="product-name" ng-model="productName" placeholder="Name..."/>
+      <input id="product-name" ng-model="name" placeholder="Name..." />
     </div>
 
     <div class="form-item">
-      <label for="product-location">Location</label>
-      <input id="product-location" ng-model="location" placeholder="Location..."/>
+      <label for="product-code">Code</label>
+      <input id="product-code" ng-model="code" placeholder="Code..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-brand">Brand</label>
+      <input id="product-brand" ng-model="brand" placeholder="Brand..." />
+    </div>
+
+    <div class="form-item">
+      <label for="product-category">Categories</label>
+      <select ng-model="categoryId" class="form-item select-dropdown">
+        <option value="">Select category</option>
+        <option ng-repeat="category in categories" value="{{category.id}}" ng-bind="category.name"></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-store">Store</label>
+      <select ng-model="storeId" class="form-item select-dropdown">
+        <option value="">Select store</option>
+        <option ng-repeat="store in stores" value="{{store.id}}" ng-bind="store.name"></option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <label for="product-price">Price</label>
+      <input id="product-price" ng-model="price" placeholder="Price..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-stock">InStock</label>
+      <input id="product-stock" ng-model="stock" placeholder="InStock..." />
+    </div>
+
+    <div class="form-item">
+      <label for="product-description">Description</label>
+      <input id="product-description" ng-model="description" placeholder="Description..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-variants">Variants</label>
+      <input id="product-variants" ng-model="variants" placeholder="Variants..." />
     </div>
   </div>
 </div>

@@ -1,0 +1,5 @@
+import './dine/dine.js'
+import './homepage/homepage.js'
+import './info/info.js'
+import './play/play.js'
+import './shop/shop.js'

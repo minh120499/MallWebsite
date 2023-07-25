@@ -1,0 +1,30 @@
+<div id="banner">
+  <div class="slick" ng-if="banners.length > 0">
+    <div ng-repeat="banner in banners">
+      <img ng-src="{{ banner.image }}" />
+    </div>
+  </div>
+</div>
+
+<div id="brand">
+  <h3>BRAND AT RMALL</h3>
+  <div class="slick" ng-if="banners.length > 0">
+    <div ng-repeat="banner in banners">
+      <img ng-src="{{ banner.image }}" />
+    </div>
+  </div>
+</div>
+
+<!-- <script>
+  $(document).ready(function () {
+    $('.slick').slick({
+      // autoplay: true,
+      autoplaySpeed: 2000,
+      dots: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+      nextArrow: '<button class="slide-arrow next-arrow"></button>',
+    })
+  })
+</script> -->

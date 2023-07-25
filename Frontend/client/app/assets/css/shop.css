@@ -1,0 +1,51 @@
+.shop-container {
+  background-color: #efefef;
+  gap: 24px;
+}
+
+/* 
+  * filter
+*/
+
+/* 
+  * serach
+*/
+
+.search-box {
+  display: flex;
+  gap: 8px;
+}
+
+.search-input input {
+  width: 100%;
+  border: 1px solid;
+  border-radius: 8px;
+}
+
+/* 
+  * shop list
+*/
+
+.shop-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shop-item {
+  display: flex;
+  align-items: center;
+  /* background: red; */
+}
+
+.shop-item img {
+  width: 380px;
+  height: 380px;
+}
+
+.shop-info {
+  width: 250px;
+  height: 100px;
+  background: red;
+  transform: translateX(-50%);
+}

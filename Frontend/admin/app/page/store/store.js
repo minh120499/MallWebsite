@@ -22,33 +22,50 @@ angular.module('myApp.store', ['ngRoute'])
     loadStore($http, $scope);
   }])
 
-  .controller('StoreCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('StoreCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Store';
-    
+
     $scope.limit = 10;
     $scope.page = 1;
     $scope.total = 0;
-    $scope.data = undefined;
     $scope.error = undefined;
+    $scope.facilities = undefined;
+    $scope.floors = undefined;
+    $scope.categories = undefined;
     $scope.isLoading = false;
-    $scope.storeName = "";
+    $scope.name = "";
     $scope.location = "";
+
+    loadCategory($http, $scope, paginationService)
+      .then(() => {
+        loadSetting($http, $scope);
+      });
 
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
     $scope.createStore = function () {
-      createStore($http, $scope, { name: $scope.storeName, location: $scope.location });
+      const request = {
+        name: $scope.name,
+        floorId: $scope.floorId,
+        categoryId: $scope.categoryId,
+        floorId: $scope.floorId,
+        bannersIds: $scope.banners,
+        FacilityIds: $scope.facilityId,
+        description: $scope.description,
+        image: $scope.fileData,
+        phone: $scope.phone,
+        email: $scope.email,
+      }
+      createStore($http, $scope, request);
     };
   }]);
-
 
 function loadStore($http, $scope) {
   $scope.isLoading = true;
   $http.get('/api/stores')
     .then(function (response) {
-      console.log(response);
       $scope.data = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
@@ -56,7 +73,6 @@ function loadStore($http, $scope) {
       $scope.isLoading = false;
     })
     .catch(function (error) {
-      console.log('Error fetching data:', error);
       $scope.error = error;
       $scope.isLoading = false;
     });
@@ -64,12 +80,15 @@ function loadStore($http, $scope) {
 
 function createStore($http, $scope, request) {
   $scope.isLoading = true;
+  console.log($scope);
   $http.post('/api/stores', request)
-    .then(function (response) {
-      console.log('Store created successfully:', response.data);
+    .then(function () {
+      showSuccessToast("Create store success!");
+      loadStore($http, $scope);
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 
@@ -95,24 +114,45 @@ function uploadImage($scope) {
   })
 };
 
-// function resetButton() {
-//   var resetbtn = $('#reset')
-//   resetbtn.on('click', function () {
-//     reset()
-//   })
-// }
+function loadSetting($http, $scope) {
+  $scope.isLoading = true;
 
-// function reset() {
+  return $http.get(`/api/settings`)
+    .then(function (response) {
+      $scope.facilities = response.data.facilities || [];
+      $scope.floors = response.data.floors || [];
+      $scope.initFacilities = response.data.facilities;
+      $scope.initFloors = response.data.floors;
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
 
-//   $('#title').val('')
-//   $('.select-option .head').html('Category')
-//   $('select#category').val('')
+function loadCategory($http, $scope, paginationService) {
+  $scope.isLoading = true;
 
-//   var images = $('.images .img')
-//   for (var i = 0; i < images.length; i++) {
-//     $(images)[i].remove()
-//   }
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
 
-//   var topic = $('#topic').val('')
-//   var message = $('#msg').val('')
-// }
+  return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
+    .then(function (response) {
+      console.log("Category", response);
+      $scope.categories = response.data.data;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}

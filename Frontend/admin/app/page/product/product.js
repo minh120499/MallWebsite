@@ -15,27 +15,31 @@ angular.module('myApp.product', ['ngRoute'])
   .controller('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
     document.title = 'Product List';
 
-    $scope.data = undefined;
+    $scope.products = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
 
     loadProduct($http, $scope);
   }])
 
-  .controller('ProductCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('ProductCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Product';
-    
+
     $scope.limit = 10;
     $scope.page = 1;
     $scope.total = 0;
-    $scope.data = undefined;
+    $scope.products = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
-    $scope.productName = "";
+    $scope.name = "";
     $scope.store = "";
     $scope.stock = "";
     $scope.price = "";
 
+    loadCategory($http, $scope, paginationService)
+      .then(() => {
+        loadStore($http, $scope, paginationService);
+      });
 
     $scope.uploadImage = function () {
       uploadImage($scope);
@@ -43,10 +47,16 @@ angular.module('myApp.product', ['ngRoute'])
 
     $scope.createProduct = function () {
       createProduct($http, $scope, {
-        name: $scope.productName,
-        storeId: $scope.store,
-        available: $scope.stock,
-        price: $scope.price
+        name: $scope.name,
+        code: $scope.code,
+        image: $scope.image,
+        description: $scope.description,
+        brand: $scope.brand,
+        categories: $scope.categories,
+        variant: $scope.variant,
+        price: $scope.price,
+        inStock: $scope.stock,
+        storeId: $scope.storeId,
       });
     };
   }]);
@@ -102,6 +112,57 @@ function uploadImage($scope) {
     $(this).remove()
   })
 };
+
+function loadCategory($http, $scope, paginationService) {
+  $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
+    .then(function (response) {
+      console.log("Category", response);
+      $scope.categories = response.data.data;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
+
+function loadStore($http, $scope, paginationService) {
+  $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  return $http.get('/api/stores')
+    .then(function (response) {
+      $scope.stores = response.data.data;
+      $scope.limit = response.data.limit;
+      $scope.page = response.data.page;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
 
 // function resetButton() {
 //   var resetbtn = $('#reset')

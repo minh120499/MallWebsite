@@ -1,25 +1,24 @@
 <div id="toast"></div>
 
 <script>
-  /* 
-  function showSuccessToast() {
+  function showSuccessToast(title, message, duration) {
     toast({
-      title: "Thành công!",
-      message: "Bạn đã đăng ký thành công tài khoản tại F8.",
+      title,
+      message,
       type: "success",
-      duration: 5000
+      duration: duration || 5000
     });
   }
 
-  function showErrorToast() {
+  function showErrorToast(title, message, duration) {
     toast({
-      title: "Thất bại!",
-      message: "Có lỗi xảy ra, vui lòng liên hệ quản trị viên.",
+      title,
+      message,
       type: "error",
-      duration: 5000
+      duration: duration || 5000
     });
   }
-  */
+
   function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     const main = document.getElementById("toast");
     if (main) {

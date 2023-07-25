@@ -23,7 +23,7 @@ angular.module('myApp.banner', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.data = undefined;
+      $scope.banners = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
 
@@ -34,22 +34,32 @@ angular.module('myApp.banner', ['ngRoute'])
       };
     }])
 
-  .controller('BannerCreateCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('BannerCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Banner';
 
-    $scope.data = undefined;
+    $scope.banners = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
     $scope.bannerName = "";
     $scope.fileData = "";
     $scope.fileName = "";
 
+    loadStore($http, $scope, paginationService);
+
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
 
     $scope.createBanner = function () {
-      createBanner($http, $scope, { name: $scope.bannerName, image: $scope.fileData });
+      const request = {
+        name: $scope.bannerName,
+        storeId: $scope.storeId,
+        image: $scope.fileData,
+        startOn: $scope.bannerStart,
+        endOn: $scope.bannerEnd,
+        imageFiles: $scope.fileData
+      }
+      createBanner($http, $scope, request);
     };
   }]);
 
@@ -65,7 +75,7 @@ function loadBanner($http, $scope, paginationService) {
   $http.get(`/api/banners${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log("Banner", response);
-      $scope.data = response.data.data;
+      $scope.banners = response.data.data;
       $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)
@@ -83,10 +93,11 @@ function createBanner($http, $scope, request) {
   $scope.isLoading = true;
   $http.post('/api/banners', request)
     .then(function (response) {
-      console.log('Banner created successfully:', response.data);
+      showSuccessToast("Create banner success!");
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 
@@ -97,11 +108,13 @@ function uploadImage($scope) {
   uploader.click();
 
   uploader.on('change', function () {
+    images.innerHtml = ''
     var file = uploader[0].files[0];
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
       $scope.fileData = event.target.result;
+      $scope.images = [event.target.result];
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
@@ -111,6 +124,31 @@ function uploadImage($scope) {
     $(this).remove()
   })
 };
+
+function loadStore($http, $scope, paginationService) {
+  $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  $http.get('/api/stores')
+    .then(function (response) {
+      $scope.stores = response.data.data;
+      $scope.limit = response.data.limit;
+      $scope.page = response.data.page;
+      $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
 
 // function resetButton() {
 //   var resetbtn = $('#reset')

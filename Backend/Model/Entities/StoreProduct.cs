@@ -20,10 +20,7 @@ public class StoreProduct
 
     public Product? Product { get; set; }
 
-    public List<Variant>? Variants { get; set; }
-    public float? Price { get; set; }
-
-    public int? InStock { get; set; }
+    public List<Variant> Variants { get; set; } = new List<Variant>();
     public string? Status { get; set; }
     public DateTime? CreateOn { get; set; }
     public DateTime? ModifiedOn { get; set; }

@@ -10,23 +10,33 @@
     <div ng-if="total === 0">
       <empty-data>
     </div>
-    <div ng-if="data && data.length > 0">
+    <div ng-if="banners && banners.length > 0">
       <table class="content-table">
         <thead>
           <tr>
             <th>Stt</th>
-            <th>Image</th>
+            <th class="column-image">Image</th>
             <th>Name</th>
+            <th>Store</th>
             <th>Status</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Expire</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in data">
-            <td>{{ item.id }}</td>
-            <td>{{ item.image }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.status }}</td>
+          <tr ng-repeat="banner in banners">
+            <td>{{ $index + 1 }}</td>
+            <td>
+              <img ng-src="{{ banner.image }}" />
+            </td>
+            <td>{{ banner.name }}</td>
+            <td>{{ banner.store.name }}</td>
+            <td>{{ banner.status }}</td>
+            <td>{{ banner.startOn }}</td>
+            <td>{{ banner.endOn }}</td>
+            <td>{{ banner.expire }}</td>
             <td class="column-action">
               <button class="edit">
                 <i class='bx bx-edit-alt icon'></i>
@@ -38,7 +48,7 @@
           </tr>
         </tbody>
       </table>
+      <pagination></pagination>
     </div>
-    <pagination></pagination>
   </div>
 </div>

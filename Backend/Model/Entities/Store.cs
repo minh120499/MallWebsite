@@ -11,6 +11,15 @@ public class Store
     
     [Required(AllowEmptyStrings = false)]
     public string? Name { get; set; }
+    public string? Image { get; set; }
+    
+    [Required]
+    [Phone]
+    public string? Phone { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string? Email { get; set; }
     
     [Required]
     public int FloorId { get; set; }
@@ -24,11 +33,14 @@ public class Store
     [ForeignKey("CategoryId")]
     public Category? Category { get; set; }
     
-    public List<Facility>? Facilities { get; set; }
+    public string? Facilities { get; set; }
+    
+    public List<Banner> Banners { get; set; } = new List<Banner>();
     
     public string? Description { get; set; }
     public string? Status { get; set; }
 
+    public List<StoreProduct> StoreProducts { get; set; } = new List<StoreProduct>();
     public DateTime? CreateOn { get; set; }
     
     public DateTime? ModifiedOn { get; set; }

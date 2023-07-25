@@ -20,7 +20,5 @@ public class Feedback
     
     public string? Status { get; set; }
     
-    [Timestamp]
-    [Required]
     public DateTime? CreateOn { get; set; }
 }

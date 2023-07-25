@@ -21,13 +21,22 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
     public DbSet<OrderLineItem> OrderLineItems { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Store> Stores { get; set; } = null!;
-    public DbSet<StoreBanner> StoreBanners { get; set; } = null!;
     public DbSet<StoreProduct> StoreProducts { get; set; } = null!;
     public DbSet<Variant> Variants { get; set; } = null!;
+
+    public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<ProductCategory>()
+            .HasKey(pc => new { pc.ProductId, pc.CategoryId });
+
+        builder.Entity<ProductCategory>()
+            .HasOne(pc => pc.Product)
+            .WithMany(p => p.ProductCategory)
+            .HasForeignKey(pc => pc.ProductId);
+
         base.OnModelCreating(builder);
         foreach (var entityType in builder.Model.GetEntityTypes())
         {

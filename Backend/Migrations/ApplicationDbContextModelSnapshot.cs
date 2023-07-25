@@ -33,6 +33,12 @@ namespace Backend.Migrations
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("EndOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Expire")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -43,10 +49,18 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("StartOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Banners");
                 });
@@ -60,18 +74,12 @@ namespace Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreateOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -79,6 +87,9 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -102,9 +113,6 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreateOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -125,9 +133,6 @@ namespace Backend.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NormalizedEmail")
@@ -190,27 +195,22 @@ namespace Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreateOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StoreId");
 
                     b.ToTable("Facilities");
                 });
@@ -224,9 +224,6 @@ namespace Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreateOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -256,10 +253,6 @@ namespace Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
@@ -296,6 +289,12 @@ namespace Backend.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("SaleById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("SourceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -303,6 +302,10 @@ namespace Backend.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SaleById");
+
+                    b.HasIndex("SourceId");
 
                     b.ToTable("Orders");
                 });
@@ -334,6 +337,8 @@ namespace Backend.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("OrderLineItems");
                 });
 
@@ -347,9 +352,6 @@ namespace Backend.Migrations
 
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
@@ -374,9 +376,22 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Backend.Model.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
@@ -396,8 +411,14 @@ namespace Backend.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Facilities")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FloorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -418,59 +439,6 @@ namespace Backend.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("Backend.Model.Entities.StoreBanner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BannerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreateOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EndOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("Expire")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("StartOn")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BannerId");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("StoreBanners");
-                });
-
             modelBuilder.Entity("Backend.Model.Entities.StoreProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -482,14 +450,8 @@ namespace Backend.Migrations
                     b.Property<DateTime?>("CreateOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("InStock")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<float?>("Price")
-                        .HasColumnType("real");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -529,6 +491,9 @@ namespace Backend.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("InStock")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -539,17 +504,23 @@ namespace Backend.Migrations
                     b.Property<string>("Options")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("OrderLineItemId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("StoreProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderLineItemId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("StoreProductId");
 
@@ -689,6 +660,17 @@ namespace Backend.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Backend.Model.Entities.Banner", b =>
+                {
+                    b.HasOne("Backend.Model.Entities.Store", "Store")
+                        .WithMany("Banners")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
             modelBuilder.Entity("Backend.Model.Entities.Employee", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Store", "Store")
@@ -700,11 +682,19 @@ namespace Backend.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Backend.Model.Entities.Facility", b =>
+            modelBuilder.Entity("Backend.Model.Entities.Order", b =>
                 {
-                    b.HasOne("Backend.Model.Entities.Store", null)
-                        .WithMany("Facilities")
-                        .HasForeignKey("StoreId");
+                    b.HasOne("Backend.Model.Entities.Employee", "SaleBy")
+                        .WithMany()
+                        .HasForeignKey("SaleById");
+
+                    b.HasOne("Backend.Model.Entities.Store", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId");
+
+                    b.Navigation("SaleBy");
+
+                    b.Navigation("Source");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.OrderLineItem", b =>
@@ -715,10 +705,18 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Model.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Backend.Model.Entities.Product", b =>
+            modelBuilder.Entity("Backend.Model.Entities.ProductCategory", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Category", "Category")
                         .WithMany()
@@ -726,7 +724,15 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Model.Entities.Product", "Product")
+                        .WithMany("ProductCategory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
@@ -748,25 +754,6 @@ namespace Backend.Migrations
                     b.Navigation("Floor");
                 });
 
-            modelBuilder.Entity("Backend.Model.Entities.StoreBanner", b =>
-                {
-                    b.HasOne("Backend.Model.Entities.Banner", "Banner")
-                        .WithMany()
-                        .HasForeignKey("BannerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Model.Entities.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Banner");
-
-                    b.Navigation("Store");
-                });
-
             modelBuilder.Entity("Backend.Model.Entities.StoreProduct", b =>
                 {
                     b.HasOne("Backend.Model.Entities.Product", "Product")
@@ -774,7 +761,7 @@ namespace Backend.Migrations
                         .HasForeignKey("ProductId");
 
                     b.HasOne("Backend.Model.Entities.Store", "Store")
-                        .WithMany()
+                        .WithMany("StoreProducts")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -786,9 +773,21 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Model.Entities.Variant", b =>
                 {
+                    b.HasOne("Backend.Model.Entities.OrderLineItem", null)
+                        .WithMany("Variants")
+                        .HasForeignKey("OrderLineItemId");
+
+                    b.HasOne("Backend.Model.Entities.Product", "Product")
+                        .WithMany("Variants")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Backend.Model.Entities.StoreProduct", null)
                         .WithMany("Variants")
                         .HasForeignKey("StoreProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -847,9 +846,23 @@ namespace Backend.Migrations
                     b.Navigation("OrdersLineItems");
                 });
 
+            modelBuilder.Entity("Backend.Model.Entities.OrderLineItem", b =>
+                {
+                    b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("Backend.Model.Entities.Product", b =>
+                {
+                    b.Navigation("ProductCategory");
+
+                    b.Navigation("Variants");
+                });
+
             modelBuilder.Entity("Backend.Model.Entities.Store", b =>
                 {
-                    b.Navigation("Facilities");
+                    b.Navigation("Banners");
+
+                    b.Navigation("StoreProducts");
                 });
 
             modelBuilder.Entity("Backend.Model.Entities.StoreProduct", b =>
