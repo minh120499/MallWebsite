@@ -51,15 +51,23 @@
 }
 
 .content-table .edit {
-  background-image: url("https://icons.veryicon.com/png/128/miscellaneous/cookd-pc/editoutlined.png");
-  background-color: #ffd591;
+  /* background-image: url("https://icons.veryicon.com/png/128/miscellaneous/cookd-pc/editoutlined.png"); */
+  border: 1px solid #000;
+  align-items: center;
 }
-
+.content-table .edit:hover {
+  background-color: #ff9d00;
+  color: #fff;
+}
 .content-table .delete {
-  background-image: url("https://www.pngkey.com/png/full/208-2086552_picture-library-bin-trash-can-svg-png-icon.png");
-  background-color: #ff7875;
+  /* background-image: url("https://www.pngkey.com/png/full/208-2086552_picture-library-bin-trash-can-svg-png-icon.png"); */
+  border: 1px solid #000;
+  align-items: center;
 }
-
+.content-table .delete:hover {
+  background-color: #f50400;
+  color: #fff;
+}
 .content-table .column-action button {
   width: 24px;
   height: 24px;
@@ -181,5 +189,46 @@
 
 .pagination-dropdown-hide {
   visibility: hidden;
+}
+.pagination-option {
+  position: relative;
+}
+
+.pagination-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.pagination-option:focus .pagination-dropdown {
+  display: block;
+}
+
+.pagination-select {
+  cursor: pointer;
+}
+
+.pagination-select:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
+}
+.pagination-option {
+  position: relative;
+}
+
+.pagination-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 4px;
 }
 /* Pagination */

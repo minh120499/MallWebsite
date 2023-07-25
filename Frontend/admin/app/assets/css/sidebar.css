@@ -1,11 +1,4 @@
 /* Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
-*{
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 :root {
   /* Color */
   --siderbar-color: #fff;
@@ -31,7 +24,7 @@
   bottom: 0;
 }
 .admin-sidebar ul.bottom-content .text{
-  padding-right: 45px;
+  padding-right: 35px;
 }
 .admin-sidebar .image{
   min-width: 60px;

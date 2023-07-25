@@ -1,6 +1,6 @@
 <div class="pagination-container">
   <div class="pagination-item pagination-prev" ng-class="{'pagination-disable': page === 1, '': page !== 1}">
-    P
+    <i class='bx bx-chevron-left'></i>
   </div>
   <ul class="pagination-list" ng-repeat="pageNumber in pagination">
     <li class="pagination-item pagination-item-active"
@@ -11,11 +11,11 @@
   </ul>
   <div class="pagination-item pagination-next"
     ng-class="{'pagination-disable': paginationLength === 1, '': paginationLength !== 1}">
-    N
+    <i class='bx bx-chevron-right' ></i>
   </div>
   <div class="pagination-option" tabindex="0">
     <div>10 / page</div>
-    <div class="pagination-dropdown pagination-dropdown-hide">
+    <div class="pagination-dropdown pagination-dropdown-hide1">
       <div class="pagination-select" ng-click="handleLimitClick(10)">10 / page</div>
       <div class="pagination-select" ng-click="handleLimitClick(25)">25 / page</div>
       <div class="pagination-select" ng-click="handleLimitClick(50)">50 / page</div>
