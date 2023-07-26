@@ -16,7 +16,7 @@
           <tr>
             <th>Stt</th>
             <th>Name</th>
-            <th>Image</th>
+            <th class="column-image">Image</th>
             <th>Type</th>
             <th>Status</th>
             <th></th>
@@ -42,7 +42,7 @@
             <!-- Image -->
             <td>
               <div ng-if="editIndex !== $index">
-                {{ item.image }}
+                <img ng-src="{{ item.image }}" />
               </div>
               <div ng-if="editIndex === $index">
                 <div class="form-item">
