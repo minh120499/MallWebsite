@@ -10,69 +10,16 @@
       <button class="search-btn">search</button>
     </div>
   </div>
-  <div class="shop-box" ng-repeat="store in stores">
-    <div class="shop-item">
+  <div class="shop-box">
+    <a href="{{store.id}}" class="shop-item hover-effect" ng-repeat="store in stores"
+      ng-class="{'flex-direction-left': !isLeft($index)}">
       <img ng-src="{{store.image}}" />
-      <div class="shop-info">
+      <div class="shop-info" ng-class="{'transform-left': !isLeft($index)}">
         <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
+        <p>Floor: {{ store.floor.name }}</p>
+        <p>Phone: {{ store.name }}</p>
       </div>
-    </div>
-
-    <div class="shop-item">
-      <img ng-src="{{store.image}}" />
-      <div class="shop-info">
-        <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
-      </div>
-    </div>
-
-    <div class="shop-item">
-      <img ng-src="{{store.image}}" />
-      <div class="shop-info">
-        <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
-      </div>
-    </div>
-
-    <div class="shop-item">
-      <img ng-src="{{store.image}}" />
-      <div class="shop-info">
-        <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
-      </div>
-    </div>
-
-    <div class="shop-item">
-      <img ng-src="{{store.image}}" />
-      <div class="shop-info">
-        <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
-      </div>
-    </div>
-
-    <div class="shop-item">
-      <img ng-src="{{store.image}}" />
-      <div class="shop-info">
-        <h3>{{ store.name }}</h3>
-        <p>Floor {{ store.floor.name }}</p>
-        <p>Phone {{ store.name }}</p>
-      </div>
-    </div>
+    </a>
   </div>
-</div>
-
-<div>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
+  <pagination></pagination>
 </div>

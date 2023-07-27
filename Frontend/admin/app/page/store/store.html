@@ -27,7 +27,7 @@
           <tr ng-repeat="item in data">
             <td>{{ $index + 1}}</td>
             <td>
-              <img ng-src="{{ item.image }}"/>
+              <img ng-src="{{ item.image }}" />
             </td>
             <td>{{ item.name }}</td>
             <td>{{ item.floor.name }}</td>
@@ -43,6 +43,7 @@
           </tr>
         </tbody>
       </table>
+      <pagination></pagination>
     </div>
   </div>
 </div>

@@ -23,6 +23,10 @@ angular.module('myApp.shop', ['ngRoute'])
       $scope.error = undefined;
       $scope.isLoading = false;
 
+      $scope.isLeft = function(index) {
+        return index % 4 === 0 || index % 4 === 1;
+      };
+
       loadStore($http, $scope, paginationService)
 
       $scope.handlePageClick = function () {

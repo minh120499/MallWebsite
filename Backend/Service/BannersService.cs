@@ -41,12 +41,20 @@ public class BannersService
     public async Task<Banner> Create(BannerRequest request)
     {
         Validations.Banner(request);
-
+        var image = "/Image/";
+        if (request.FormFile != null)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image", request.FormFile.FileName);
+            await using var stream = File.Create(path);
+            await request.FormFile.CopyToAsync(stream);
+            image += request.FormFile.FileName;
+        }
+        
         var banner = new Banner()
         {
             Name = request.Name,
             StoreId = request.StoreId,
-            Image = request.Image,
+            Image = image,
             StartOn = request.StartOn,
             EndOn = request.EndOn,
             Status = StatusConstraint.ACTIVE,

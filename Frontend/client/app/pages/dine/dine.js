@@ -19,12 +19,15 @@ angular.module('myApp.dine', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.banners = undefined;
+      $scope.stores = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
 
-      loadBanner($http, $scope, paginationService)
-        .then(startSlick);
+      $scope.isLeft = function(index) {
+        return index % 4 === 0 || index % 4 === 1;
+      };
+
+      loadStore($http, $scope, paginationService)
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -32,7 +35,7 @@ angular.module('myApp.dine', ['ngRoute'])
     }]);
 
 
-function loadBanner($http, $scope, paginationService) {
+function loadStore($http, $scope, paginationService) {
   $scope.isLoading = true;
 
   var params = new URLSearchParams();
@@ -40,9 +43,9 @@ function loadBanner($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  return $http.get(`/api/banners${params.size ? "?" + params.toString() : ""}`)
+  return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
-      $scope.banners = response.data.data;
+      $scope.stores = response.data.data;
       $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)
@@ -54,17 +57,3 @@ function loadBanner($http, $scope, paginationService) {
       $scope.isLoading = false;
     });
 };
-
-const startSlick = () => {
-  setTimeout(() => {
-    $('.slick').slick({
-      // autoplay: true,
-      autoplaySpeed: 2000,
-      dots: true,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      prevArrow: '<button class="slide-arrow prev-arrow"></button>',
-      nextArrow: '<button class="slide-arrow next-arrow"></button>',
-    })
-  })
-}

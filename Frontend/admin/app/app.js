@@ -9,6 +9,7 @@ angular.module('myApp', [
   'myApp.setting',
   'myApp.category',
 ])
+  .constant('BE_URL', 'http://localhost:5062/')
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     var backendUrl = 'http://localhost:5062';
 

@@ -12,14 +12,14 @@ angular.module('myApp.store', ['ngRoute'])
       });
   }])
 
-  .controller('StoreListCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('StoreListCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Store List';
 
     $scope.data = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
 
-    loadStore($http, $scope);
+    loadStore($http, $scope, paginationService);
   }])
 
   .controller('StoreCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
@@ -62,14 +62,23 @@ angular.module('myApp.store', ['ngRoute'])
     };
   }]);
 
-function loadStore($http, $scope) {
+function loadStore($http, $scope, paginationService) {
   $scope.isLoading = true;
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
   $http.get('/api/stores')
     .then(function (response) {
       $scope.data = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
       $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
     })
     .catch(function (error) {

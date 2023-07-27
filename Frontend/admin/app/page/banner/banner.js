@@ -12,12 +12,13 @@ angular.module('myApp.banner', ['ngRoute'])
       });
   }])
 
-  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
-    function ($scope, $http, $rootScope, $location, paginationService) {
+  .controller('BannerListCtrl', ['$scope', '$http', '$rootScope', '$location', 'BE_URL', 'paginationService',
+    function ($scope, $http, $rootScope, $location, BE_URL, paginationService) {
       document.title = 'Banner List';
 
       const { query, page, limit } = $location.search();
 
+      $scope.BE_URL = BE_URL;
       $scope.limit = Number(limit || 10);
       $scope.page = Number(page || 1);
       $scope.total = 0;
@@ -34,7 +35,7 @@ angular.module('myApp.banner', ['ngRoute'])
       };
     }])
 
-  .controller('BannerCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
+  .controller('BannerCreateCtrl', ['$scope', '$http', '$filter', 'paginationService', function ($scope, $http, $filter, paginationService) {
     document.title = 'Create Banner';
 
     $scope.banners = undefined;
@@ -51,15 +52,13 @@ angular.module('myApp.banner', ['ngRoute'])
     };
 
     $scope.createBanner = function () {
-      const request = {
-        name: $scope.bannerName,
-        storeId: $scope.storeId,
-        image: $scope.fileData,
-        startOn: $scope.bannerStart,
-        endOn: $scope.bannerEnd,
-        imageFiles: $scope.fileData
-      }
-      createBanner($http, $scope, request);
+      const formData = new FormData();
+      if ($scope.bannerName) formData.append("name", $scope.bannerName)
+      if ($scope.storeId) formData.append("storeId", $scope.storeId)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      if ($scope.bannerStart) formData.append("startOn", $filter('date')($scope.bannerStart, 'yyyy-MM-ddTHH:mm:ss'))
+      if ($scope.bannerEnd) formData.append("endOn", $scope.bannerEnd)
+      createBanner($http, $scope, formData);
     };
   }]);
 
@@ -91,7 +90,11 @@ function loadBanner($http, $scope, paginationService) {
 
 function createBanner($http, $scope, request) {
   $scope.isLoading = true;
-  $http.post('/api/banners', request)
+
+  $http.post('/api/banners', request, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
     .then(function (response) {
       showSuccessToast("Create banner success!");
     })
@@ -113,8 +116,10 @@ function uploadImage($scope) {
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
-      $scope.fileData = event.target.result;
-      $scope.images = [event.target.result];
+      $scope.$apply(function () {
+        $scope.fileData = file;
+        $scope.images = [event.target.result];
+      });
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
