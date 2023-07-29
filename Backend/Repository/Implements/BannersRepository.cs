@@ -47,6 +47,11 @@ public class BannersRepository : IBannersRepository
         {
             query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
         }
+        
+        if (!string.IsNullOrEmpty(filters.Type))
+        {
+            query = query.Where(u => u.Name != null && u.Name.Equals(filters.Type));
+        }
 
         query = query.OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)

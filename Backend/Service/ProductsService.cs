@@ -4,6 +4,7 @@ using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
+using Newtonsoft.Json;
 
 namespace Backend.Service
 {
@@ -76,11 +77,12 @@ namespace Backend.Service
             var productResponse = await _productsRepository.Add(product);
             if (request.Categories != null)
             {
-                var productCategory = request.Categories
+                var categoriesIds = JsonConvert.DeserializeObject<List<string>>(request.CategoriesIds)!;
+                var productCategory = categoriesIds
                     .Select(c => new ProductCategory
                     {
                         ProductId = productResponse.Id,
-                        CategoryId = c.Id
+                        CategoryId = Convert.ToInt32(c)
                     }).ToList();
                 await _productCategoryRepository.Add(productCategory);
             }

@@ -11,26 +11,53 @@
       <table class="content-table">
         <thead>
           <tr>
-            <th>Stt</th>
+            <th class="column-index">Stt</th>
+            <th class="column-image">Image</th>
+            <th>Code</th>
             <th>Name</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th></th>
+            <th>Categories</th>
+            <th>Price</th>
+            <th>InStock</th>
+            <th class="column-status">Status</th>
+            <th class="column-actions"></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="item in data">
-            <td>{{ item.id }}</td>
+            <td>{{ (page - 1) * limit + $index + 1}}</td>
+            <td>
+              <div class="table-row-image" ng-if="item.image">
+                <img ng-src="{{BE_URL + item.image}}" />
+              </div>
+            </td>
+            <td>{{ item.code }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.location }}</td>
-            <td>{{ item.status }}</td>
-            <td class="column-action">
-              <button class="edit" />
-              <button class="delete" />
+            <td>{{ item.categories.join(", ") }}</td>
+            <td>{{ item.variants[0].price }}</td>
+            <td>{{ item.variants[0].inStock }}</td>
+            <td>
+              <badge ng-if="editIndex !== $index" type="item.status"></badge>
+              <div ng-if="editItem.status === 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+              <div ng-if="editItem.status !== 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+            </td>
+            <td>
+              <div class="column-action">
+                <button class="edit">
+                  <i class='bx bx-edit-alt'></i>
+                </button>
+                <button class="delete">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+      <pagination></pagination>
     </div>
   </div>
 </div>

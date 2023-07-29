@@ -9,4 +9,5 @@ public class FilterModel
     public int Page { get; set; } = 1;
     public string Status { get; set; } = StatusConstraint.ACTIVE;
     public List<int> Ids { get; set; } = new List<int>();
+    public string? Type { get; set; }
 }

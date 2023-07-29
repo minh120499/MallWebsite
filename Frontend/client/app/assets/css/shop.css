@@ -6,7 +6,20 @@
 /* 
   * filter
 */
-
+.shop-filter-box {
+  position: sticky;
+  padding: 1.5rem 2rem;
+  top: 0;
+  z-index: 5;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  width: max-content;
+  display: flex;
+  gap: 16px;
+  background: #efefef;
+  width: 100%;
+  justify-content: center;
+}
 /* 
   * serach
 */

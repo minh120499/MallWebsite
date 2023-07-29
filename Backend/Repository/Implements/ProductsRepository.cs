@@ -34,17 +34,37 @@ namespace Backend.Repository.Implements
 
         public async Task<List<Product>> GetByFilter(FilterModel filters)
         {
-            var products = await _context.Products
-                .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+            IQueryable<Product> query = _context.Products
                 .Include(p => p.Variants)
                 .Include(p => p.ProductCategory)!
-                .ThenInclude(c => c.Category)
-                .OrderBy(u => u.Id)
+                .ThenInclude(c => c.Category);
+
+            if (filters.Ids.Any())
+            {
+                query = query.Where(u => filters.Ids.Contains(u.Id));
+            }
+
+            if (!string.IsNullOrEmpty(filters.Status))
+            {
+                query = query.Where(u => u.Status == filters.Status);
+            }
+
+            if (!string.IsNullOrEmpty(filters.Query))
+            {
+                query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
+            }
+
+            if (!string.IsNullOrEmpty(filters.Type))
+            {
+                query = query.Where(u => u.Name != null && u.Name.Equals(filters.Type));
+            }
+
+            query = query.OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
-                .Reverse()
-                .ToListAsync();
-            return products;
+                .Reverse();
+            
+            return await query.ToListAsync();
         }
 
         public async Task<Product> Add(Product product)

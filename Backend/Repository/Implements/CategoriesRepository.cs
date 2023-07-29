@@ -30,14 +30,33 @@ public class CategoriesRepository : ICategoriesRepository
 
     public async Task<List<Category>> GetByFilter(FilterModel filters)
     {
-        var categories = await _context.Categories
-            .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
-            .OrderBy(u => u.Id)
+        IQueryable<Category> query = _context.Categories;
+
+        if (filters.Ids.Any())
+        {
+            query = query.Where(u => filters.Ids.Contains(u.Id));
+        }
+
+        if (!string.IsNullOrEmpty(filters.Status))
+        {
+            query = query.Where(u => u.Status == filters.Status);
+        }
+
+        if (!string.IsNullOrEmpty(filters.Query))
+        {
+            query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
+        }
+        
+        if (!string.IsNullOrEmpty(filters.Type))
+        {
+            query = query.Where(u => u.Name != null && u.Name.Equals(filters.Type));
+        }
+
+        query = query.OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
-            .Reverse()
-            .ToListAsync();
-        return categories;
+            .Reverse();
+        return await query.ToListAsync();
     }
 
     public async Task<Category> Add(Category category)

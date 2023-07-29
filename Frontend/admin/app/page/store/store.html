@@ -27,7 +27,9 @@
           <tr ng-repeat="item in data">
             <td>{{ (page - 1) * limit + $index + 1}}</td>
             <td>
-              <img ng-src="{{BE_URL + item.image}}" />
+              <div class="table-row-image" ng-if="item.image">
+                <img ng-src="{{BE_URL + item.image}}" />
+              </div>
             </td>
             <td>{{ item.name }}</td>
             <td>{{ item.floor.name }}</td>

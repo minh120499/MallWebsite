@@ -12,8 +12,8 @@ angular.module('myApp.product', ['ngRoute'])
       });
   }])
 
-  .controller('ProductListCtrl', ['$scope', '$location', '$http', 'BE_URL',
-    function ($scope, $location, $http, BE_URL) {
+  .controller('ProductListCtrl', ['$scope', '$location', '$http', 'BE_URL', 'paginationService',
+    function ($scope, $location, $http, BE_URL, paginationService) {
       document.title = 'Product List';
 
       const { query, page, limit } = $location.search();
@@ -27,7 +27,7 @@ angular.module('myApp.product', ['ngRoute'])
       $scope.error = undefined;
       $scope.isLoading = false;
 
-      loadProduct($http, $scope);
+      loadProduct($http, $scope, paginationService);
     }])
 
   .controller('ProductCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
@@ -60,25 +60,35 @@ angular.module('myApp.product', ['ngRoute'])
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
       if ($scope.description) formData.append("description", $scope.description)
       if ($scope.brand) formData.append("brand", $scope.brand)
-      if ($scope.categories) formData.append("categories", $scope.categories)
+      if ($scope.categories) formData.append("categories", JSON.stringify($scope.categories))
+      if ($scope.categories) formData.append("categoriesIds", JSON.stringify([$scope.categoryId]))
       if ($scope.variant) formData.append("variant", $scope.variant)
       if ($scope.price) formData.append("price", $scope.price)
-      if ($scope.stock) formData.append("stock", $scope.stock)
+      if ($scope.stock) formData.append("inStock", $scope.stock)
       if ($scope.storeId) formData.append("storeId", $scope.storeId)
       createProduct($http, $scope, formData);
     };
   }]);
 
 
-function loadProduct($http, $scope) {
+function loadProduct($http, $scope, paginationService) {
   $scope.isLoading = true;
-  $http.get('/api/products')
+
+  var params = new URLSearchParams();
+  $scope.page && params.append('page', $scope.page);
+  $scope.limit && params.append('limit', $scope.limit);
+  $scope.query && params.append('query', $scope.query);
+
+  $http.get(`/api/products${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log(response);
       $scope.data = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
       $scope.total = response.data.total;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
     })
     .catch(function (error) {
@@ -95,9 +105,10 @@ function createProduct($http, $scope, formData) {
     transformRequest: angular.identity
   })
     .then(function (response) {
-      console.log('Product created successfully:', response.data);
+      showSuccessToast("Create product success!");
     })
     .catch(function (error) {
+      showErrorToast(getErrorsMessage(error));
       $scope.error = error.data ? error.data : error
     });
 }
@@ -109,11 +120,15 @@ function uploadImage($scope) {
   uploader.click();
 
   uploader.on('change', function () {
+    images.innerHtml = ''
     var file = uploader[0].files[0];
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
-      $scope.fileData = file;
+      $scope.$apply(function () {
+        $scope.fileData = file;
+        $scope.images = [event.target.result];
+      });
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
