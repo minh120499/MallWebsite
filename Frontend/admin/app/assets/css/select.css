@@ -16,6 +16,15 @@
 
 .select-dropdown {
   position: relative;
+  height: 43px;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.select-dropdown-item {
+  padding: 10px;
+  height: 40px !important;
+  background-color: red;
 }
 
 .select-arrow {
@@ -27,7 +36,6 @@
   line-height: inherit;
   color: var(--color-darks);
 }
-
 
 /* fasdfdsa */
 

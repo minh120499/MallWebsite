@@ -182,6 +182,47 @@
 .pagination-dropdown-hide {
   visibility: hidden;
 }
+.pagination-option {
+  position: relative;
+}
+
+.pagination-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.pagination-option:focus .pagination-dropdown {
+  display: block;
+}
+
+.pagination-select {
+  cursor: pointer;
+}
+
+.pagination-select:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
+}
+.pagination-option {
+  position: relative;
+}
+
+.pagination-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 4px;
+}
 /* Pagination */
 
 /* Line item */

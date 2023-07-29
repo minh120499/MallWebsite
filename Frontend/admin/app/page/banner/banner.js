@@ -138,7 +138,7 @@ function loadStore($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  $http.get('/api/stores')
+  $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       $scope.stores = response.data.data;
       $scope.limit = response.data.limit;

@@ -2,9 +2,9 @@ export default angular.module('myApp')
   .component('pagination', {
     templateUrl: 'components/pagination/pagination.html',
     controller: ['$scope', '$location', 'paginationService', function PaginationController($scope, $location, paginationService) {
-      $scope.total = paginationService.getTotal();
-      $scope.page = paginationService.getPage();
-      $scope.limit = paginationService.getLimit();
+      $scope.total = paginationService.getTotal() || 0;
+      $scope.page = paginationService.getPage() || 1;
+      $scope.limit = paginationService.getLimit() || 10;
 
       $scope.pagination = Array.from({ length: Math.ceil($scope.total / ($scope.limit || 10)) }, (_, index) => ({
         page: index + 1,
@@ -12,16 +12,21 @@ export default angular.module('myApp')
       }));
       $scope.paginationLength = $scope.pagination.length;
 
-
-
       $scope.handlePageClick = function (page) {
         paginationService.setPage(page);
         $location.search('page', page);
       };
 
       $scope.handleLimitClick = function (limit) {
-        paginationService.setLimit(limit);
-        $location.search('limit', limit);
+        if (limit * $scope.page > $scope.total) {
+          paginationService.setLimit(limit);
+          $location.search('limit', limit);
+          paginationService.setPage(1);
+          $location.search('page', 1);
+        } else {
+          paginationService.setLimit(limit);
+          $location.search('limit', limit);
+        }
       };
     }]
   });

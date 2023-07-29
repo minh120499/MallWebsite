@@ -12,16 +12,23 @@ angular.module('myApp.product', ['ngRoute'])
       });
   }])
 
-  .controller('ProductListCtrl', ['$scope', '$http', 'BE_URL', function ($scope, $http, BE_URL) {
-    document.title = 'Product List';
+  .controller('ProductListCtrl', ['$scope', '$location', '$http', 'BE_URL',
+    function ($scope, $location, $http, BE_URL) {
+      document.title = 'Product List';
 
-    $scope.BE_URL = BE_URL;
-    $scope.products = undefined;
-    $scope.error = undefined;
-    $scope.isLoading = false;
+      const { query, page, limit } = $location.search();
+      $scope.limit = Number(limit || 10);
+      $scope.page = Number(page || 1);
+      $scope.total = 0;
+      $scope.query = query || "";
 
-    loadProduct($http, $scope);
-  }])
+      $scope.BE_URL = BE_URL;
+      $scope.products = undefined;
+      $scope.error = undefined;
+      $scope.isLoading = false;
+
+      loadProduct($http, $scope);
+    }])
 
   .controller('ProductCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Product';
@@ -151,7 +158,7 @@ function loadStore($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  return $http.get('/api/stores')
+  return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       $scope.stores = response.data.data;
       $scope.limit = response.data.limit;

@@ -12,9 +12,15 @@ angular.module('myApp.store', ['ngRoute'])
       });
   }])
 
-  .controller('StoreListCtrl', ['$scope', '$http', 'BE_URL', 'paginationService',
-    function ($scope, $http, BE_URL, paginationService) {
+  .controller('StoreListCtrl', ['$scope', '$http', '$location', 'BE_URL', 'paginationService',
+    function ($scope, $http, $location, BE_URL, paginationService) {
       document.title = 'Store List';
+
+      const { query, page, limit } = $location.search();
+      $scope.limit = Number(limit || 10);
+      $scope.page = Number(page || 1);
+      $scope.total = 0;
+      $scope.query = query || "";
 
       $scope.BE_URL = BE_URL;
       $scope.data = undefined;
@@ -70,7 +76,7 @@ function loadStore($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  $http.get('/api/stores')
+  $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       $scope.data = response.data.data;
       $scope.limit = response.data.limit;

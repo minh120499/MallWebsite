@@ -11,14 +11,15 @@
   </ul>
   <div class="pagination-item pagination-next"
     ng-class="{'pagination-disable': paginationLength === 1, '': paginationLength !== 1}">
-    <i class='bx bx-chevron-right' ></i>
+    <i class='bx bx-chevron-right'></i>
   </div>
   <div class="pagination-option" tabindex="0">
-    <div>10 / page</div>
+    <div>{{ limit }} / page</div>
     <div class="pagination-dropdown pagination-dropdown-hide1">
       <div class="pagination-select" ng-click="handleLimitClick(10)">10 / page</div>
       <div class="pagination-select" ng-click="handleLimitClick(25)">25 / page</div>
       <div class="pagination-select" ng-click="handleLimitClick(50)">50 / page</div>
     </div>
   </div>
+  <!-- <div>{{ page * limit }} - {{ page * limit }} / {{ total }} record</div> -->
 </div>
