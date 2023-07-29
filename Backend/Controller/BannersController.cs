@@ -46,7 +46,7 @@ public class BannersController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] BannerRequest request)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromForm] BannerRequest request)
     {
         var response = await _bannersService.Update(id, request);
         return Ok(response);

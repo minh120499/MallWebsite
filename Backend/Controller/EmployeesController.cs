@@ -38,14 +38,14 @@ namespace Backend.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] EmployeeRequest request)
+        public async Task<IActionResult> Create([FromForm] EmployeeRequest request)
         {
             var response = await _employeesService.Create(request);
             return Ok(response);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] EmployeeRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] EmployeeRequest request)
         {
             var response = await _employeesService.Update(id, request);
             return Ok(response);

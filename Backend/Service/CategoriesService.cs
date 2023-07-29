@@ -37,11 +37,11 @@ public class CategoriesService
     public async Task<Category> Create(CategoryRequest request)
     {
         Validations.Category(request);
-
+        var image = await FileHelper.UploadImage(request.FormFile);
         var category = new Category()
         {
             Name = request.Name,
-            Image = request.Image,
+            Image = image,
             Type = request.Type,
             Status = StatusConstraint.ACTIVE,
         };

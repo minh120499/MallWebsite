@@ -72,7 +72,7 @@ namespace Backend.Repository.Implements
                 var product = await GetById(productId);
 
                 product.Code = request.Code;
-                product.Image = request.Image;
+                product.Image = await FileHelper.UploadImage(request.FormFile);
                 product.Name = request.Name;
                 product.Description = request.Description;
                 product.Brand = request.Brand;

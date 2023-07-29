@@ -14,18 +14,30 @@
       <table class="content-table">
         <thead>
           <tr>
-            <th>Stt</th>
-            <th>Name</th>
+            <th class="column-index">Stt</th>
             <th class="column-image">Image</th>
+            <th>Name</th>
             <th>Type</th>
-            <th>Status</th>
-            <th></th>
+            <th class="column-status">Status</th>
+            <th class="column-actions"></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="item in data">
             <!-- index -->
             <td>{{ $index + 1}}</td>
+
+            <!-- Image -->
+            <td>
+              <div class="table-row-image" ng-if="editIndex !== $index">
+                <img ng-src="{{BE_URL + item.image}}" />
+              </div>
+              <div class="table-row-image" ng-if="editIndex === $index">
+                <div class="form-item">
+                  <input ng-change="changeCategory(this)" ng-model="editItem.image" placeholder="Image..." />
+                </div>
+              </div>
+            </td>
 
             <!-- Name -->
             <td>
@@ -35,18 +47,6 @@
               <div ng-if="editIndex === $index">
                 <div class="form-item">
                   <input ng-change="changeCategory(this)" ng-model="editItem.name" placeholder="Name..." />
-                </div>
-              </div>
-            </td>
-
-            <!-- Image -->
-            <td>
-              <div ng-if="editIndex !== $index">
-                <img ng-src="{{ item.image }}" />
-              </div>
-              <div ng-if="editIndex === $index">
-                <div class="form-item">
-                  <input ng-change="changeCategory(this)" ng-model="editItem.image" placeholder="Image..." />
                 </div>
               </div>
             </td>
@@ -76,14 +76,20 @@
             </td>
 
             <!-- Action -->
-            <td class="column-action">
-              <button class="edit" ng-click="edit($index)" ng-if="editIndex !== $index"></button>
+            <td>
+              <div class="column-action">
+                <button class="edit" ng-click="edit($index)" ng-if="editIndex !== $index">
+                  <i class='bx bx-edit-alt'></i>
+                </button>
 
-              <button ng-click="handleEdit($index)" ng-if="editIndex === $index">
-                <i class='bx bxs-save'></i>
-              </button>
+                <button class="edit" ng-click="handleEdit($index)" ng-if="editIndex === $index">
+                  <i class='bx bx-save'></i>
+                </button>
 
-              <button class="delete" ng-click="delete(item.id)" />
+                <button class="delete" ng-click="delete(item.id)">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

@@ -83,9 +83,8 @@ public class BannersRepository : IBannersRepository
         try
         {
             var banner = await GetById(bannerId);
-
             banner.Name = request.Name;
-            banner.Image = request.Image;
+            banner.Image = await FileHelper.UploadImage(request.FormFile);
             banner.Expire = request.Expire;
             banner.Status = request.Status;
             banner.StoreId = request.StoreId;

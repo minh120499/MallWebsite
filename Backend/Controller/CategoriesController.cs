@@ -38,14 +38,14 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CategoryRequest request)
+    public async Task<IActionResult> Create([FromForm] CategoryRequest request)
     {
         var response = await _categoriesService.Create(request);
         return Ok(response);
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CategoryRequest request)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CategoryRequest request)
     {
         var response = await _categoriesService.Update(id, request);
         return Ok(response);

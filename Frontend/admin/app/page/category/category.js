@@ -12,12 +12,13 @@ angular.module('myApp.category', ['ngRoute'])
       });
   }])
 
-  .controller('CategoryListCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
-    function ($scope, $http, $rootScope, $location, paginationService) {
+  .controller('CategoryListCtrl', ['$scope', '$http', '$rootScope', '$location', 'BE_URL', 'paginationService',
+    function ($scope, $http, $rootScope, $location, BE_URL, paginationService) {
       document.title = 'Category List';
 
       const { query, page, limit } = $location.search();
 
+      $scope.BE_URL = BE_URL;
       $scope.limit = Number(limit || 10);
       $scope.page = Number(page || 1);
       $scope.total = 0;
@@ -76,11 +77,11 @@ angular.module('myApp.category', ['ngRoute'])
     };
 
     $scope.createCategory = function () {
-      createCategory($http, $scope, {
-        name: $scope.name,
-        type: $scope.type,
-        image: $scope.fileData,
-      });
+      const formData = new FormData();
+      if ($scope.name) formData.append("name", $scope.name)
+      if ($scope.type) formData.append("type", $scope.type)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      createCategory($http, $scope, formData);
     };
   }]);
 
@@ -110,9 +111,12 @@ function loadCategory($http, $scope, paginationService) {
     });
 }
 
-function createCategory($http, $scope, request) {
+function createCategory($http, $scope, formData) {
   $scope.isLoading = true;
-  $http.post('/api/categories', request)
+  $http.post('/api/categories', formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
     .then(function (response) {
       showSuccessToast("Create category success!");
     })
@@ -133,7 +137,7 @@ function uploadImage($scope) {
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
-      $scope.fileData = event.target.result;
+      $scope.fileData = file;
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
@@ -145,7 +149,18 @@ function uploadImage($scope) {
 };
 
 function editCategory($http, $scope, paginationService) {
-  $http.put(`/api/categories/${$scope.editItem.id}`, $scope.editItem)
+  const formData = new FormData();
+  if ($scope.editItem?.name) formData.append("name", $scope.editItem.name)
+  if ($scope.editItem?.type) formData.append("type", $scope.editItem.type)
+  if ($scope.editItem?.image) formData.append("image", $scope.editItem.image)
+  if ($scope.editItem?.fileData) formData.append("formFile", $scope.fileData)
+  if ($scope.editItem?.id) formData.append("id", $scope.editItem.id)
+  if ($scope.editItem?.status) formData.append("status", $scope.editItem.status)
+
+  $http.put(`/api/categories/${$scope.editItem.id}`, formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
     .then(function () {
       loadCategory($http, $scope, paginationService);
       $scope.editIndex = -1;

@@ -11,34 +11,48 @@
       <table class="content-table">
         <thead>
           <tr>
-            <th>Stt</th>
+            <th class="column-index">Stt</th>
             <th class="column-image">Image</th>
             <th>Name</th>
             <th>Floor</th>
             <th>Category</th>
             <th>Facilities</th>
             <!-- <th>Banners</th> -->
-            <th>Status</th>
+            <th class="column-status">Status</th>
             <th>Description</th>
-            <th></th>
+            <th class="column-actions"></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="item in data">
             <td>{{ $index + 1}}</td>
             <td>
-              <img ng-src="{{ item.image }}" />
+              <img ng-src="{{BE_URL + item.image}}" />
             </td>
             <td>{{ item.name }}</td>
             <td>{{ item.floor.name }}</td>
             <td>{{ item.category.name }}</td>
             <td>{{ item.facilities }}</td>
             <!-- <td>{{ item.banners }}</td> -->
-            <td>{{ item.status }}</td>
+            <td>
+              <badge ng-if="editIndex !== $index" type="item.status"></badge>
+              <div ng-if="editItem.status === 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+              <div ng-if="editItem.status !== 'active' && editIndex === $index" ng-click="toggleStatus()">
+                <badge type="editItem.status"></badge>
+              </div>
+            </td>
             <td>{{ item.description }}</td>
-            <td class="column-action">
-              <button class="edit" />
-              <button class="delete" />
+            <td>
+              <div class="column-action">
+                <button class="edit">
+                  <i class='bx bx-edit-alt'></i>
+                </button>
+                <button class="delete">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

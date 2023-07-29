@@ -1,5 +1,4 @@
-﻿using Backend.Exceptions;
-using Backend.Model;
+﻿using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Model.Response;
@@ -12,12 +11,10 @@ namespace Backend.Service;
 public class BannersService
 {
     private readonly IBannersRepository _bannersRepository;
-    private readonly IWebHostEnvironment _environment;
 
-    public BannersService(IBannersRepository bannersRepository, IWebHostEnvironment environment)
+    public BannersService(IBannersRepository bannersRepository)
     {
         _bannersRepository = bannersRepository;
-        _environment = environment;
     }
 
     public async Task<Banner> GetById(int bannerId)
@@ -41,14 +38,7 @@ public class BannersService
     public async Task<Banner> Create(BannerRequest request)
     {
         Validations.Banner(request);
-        var image = "/Image/";
-        if (request.FormFile != null)
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image", request.FormFile.FileName);
-            await using var stream = File.Create(path);
-            await request.FormFile.CopyToAsync(stream);
-            image += request.FormFile.FileName;
-        }
+        var image = await FileHelper.UploadImage(request.FormFile);
         
         var banner = new Banner()
         {
@@ -74,11 +64,5 @@ public class BannersService
         var bannerIds = ids.Split(',').Select(int.Parse).ToList();
 
         return await _bannersRepository.Delete(bannerIds);
-    }
-
-    [NonAction]
-    private string GetFilepath(string productcode)
-    {
-        return this._environment.WebRootPath + "\\Upload\\product\\" + productcode;
     }
 }

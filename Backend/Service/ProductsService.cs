@@ -63,11 +63,11 @@ namespace Backend.Service
         public async Task<Product> Create(ProductRequest request)
         {
             Validations.Product(request);
-
+            var image = await FileHelper.UploadImage(request.FormFile);
             var product = new Product()
             {
                 Code = request.Code,
-                Image = request.Image,
+                Image = image,
                 Name = request.Name,
                 Description = request.Description,
                 Brand = request.Brand,
@@ -93,7 +93,7 @@ namespace Backend.Service
                     ProductId = productResponse.Id,
                     Code = request.Code,
                     Description = request.Description,
-                    Image = request.Image,
+                    Image = image,
                     Price = request.Price,
                     InStock = request.InStock,
                 });

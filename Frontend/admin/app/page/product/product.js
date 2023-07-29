@@ -12,9 +12,10 @@ angular.module('myApp.product', ['ngRoute'])
       });
   }])
 
-  .controller('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('ProductListCtrl', ['$scope', '$http', 'BE_URL', function ($scope, $http, BE_URL) {
     document.title = 'Product List';
 
+    $scope.BE_URL = BE_URL;
     $scope.products = undefined;
     $scope.error = undefined;
     $scope.isLoading = false;
@@ -46,18 +47,18 @@ angular.module('myApp.product', ['ngRoute'])
     };
 
     $scope.createProduct = function () {
-      createProduct($http, $scope, {
-        name: $scope.name,
-        code: $scope.code,
-        image: $scope.image,
-        description: $scope.description,
-        brand: $scope.brand,
-        categories: $scope.categories,
-        variant: $scope.variant,
-        price: $scope.price,
-        inStock: $scope.stock,
-        storeId: $scope.storeId,
-      });
+      const formData = new FormData();
+      if ($scope.name) formData.append("name", $scope.name)
+      if ($scope.code) formData.append("code", $scope.code)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      if ($scope.description) formData.append("description", $scope.description)
+      if ($scope.brand) formData.append("brand", $scope.brand)
+      if ($scope.categories) formData.append("categories", $scope.categories)
+      if ($scope.variant) formData.append("variant", $scope.variant)
+      if ($scope.price) formData.append("price", $scope.price)
+      if ($scope.stock) formData.append("stock", $scope.stock)
+      if ($scope.storeId) formData.append("storeId", $scope.storeId)
+      createProduct($http, $scope, formData);
     };
   }]);
 
@@ -80,9 +81,12 @@ function loadProduct($http, $scope) {
     });
 }
 
-function createProduct($http, $scope, request) {
+function createProduct($http, $scope, formData) {
   $scope.isLoading = true;
-  $http.post('/api/products', request)
+  $http.post('/api/products', formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
     .then(function (response) {
       console.log('Product created successfully:', response.data);
     })
@@ -102,7 +106,7 @@ function uploadImage($scope) {
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
-      $scope.fileData = event.target.result;
+      $scope.fileData = file;
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])

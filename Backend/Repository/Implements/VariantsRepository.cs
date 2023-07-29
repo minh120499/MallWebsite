@@ -65,7 +65,7 @@ namespace Backend.Repository.Implements
 
                 variant.ProductId = request.ProductId;
                 variant.Product = request.Product;
-                variant.Image = request.Image;
+                variant.Image = await FileHelper.UploadImage(request.FormFile);
                 variant.Code = request.Code;
                 variant.Name = request.Name;
                 variant.Options = request.Options;

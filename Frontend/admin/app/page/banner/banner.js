@@ -88,10 +88,10 @@ function loadBanner($http, $scope, paginationService) {
     });
 }
 
-function createBanner($http, $scope, request) {
+function createBanner($http, $scope, formData) {
   $scope.isLoading = true;
 
-  $http.post('/api/banners', request, {
+  $http.post('/api/banners', formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity
   })

@@ -45,7 +45,8 @@
               </div>
               <div style="width: 450px;" ng-if="!item.status">
                 <div class="form-item">
-                  <input ng-change="changeFacilities(this, $index)" ng-model="description" placeholder="Description..." />
+                  <input ng-change="changeFacilities(this, $index)" ng-model="description"
+                    placeholder="Description..." />
                 </div>
               </div>
               <div style="width: 450px;" ng-if="editIndex === $index && editContext === 'facilities'">
@@ -72,17 +73,21 @@
               </div>
 
               <!-- Action -->
-              <div style="width: 100px;" class="column-action">
-                <div ng-if="item.status">
+              <div style="width: 100px;">
+                <div ng-if="item.status" class="column-action">
                   <button class="edit" ng-click="edit($index, 'facilities')"
-                    ng-if="editIndex !== $index || editContext !== 'facilities'"></button>
+                    ng-if="editIndex !== $index || editContext !== 'facilities'">
+                    <i class='bx bx-edit-alt'></i>
+                  </button>
 
-                  <button ng-click="handleEdit($index, 'facilities')"
+                  <button class="edit" ng-click="handleEdit($index, 'facilities')"
                     ng-if="editIndex === $index && editContext === 'facilities'">
                     <i class='bx bxs-save'></i>
                   </button>
 
-                  <button class="delete" ng-click="delete(item.id, 'facilities')" />
+                  <button class="delete" ng-click="delete(item.id, 'facilities')">
+                    <i class='bx bx-trash'></i>
+                  </button>
                 </div>
                 <div ng-if="!item.status">
                   <button ng-click="remove($index, 'facilities')">x</button>
@@ -188,17 +193,21 @@
               </div>
 
               <!-- Action -->
-              <div style="width: 100px;" class="column-action">
-                <div ng-if="item.status">
+              <div style="width: 100px;">
+                <div ng-if="item.status" class="column-action">
                   <button class="edit" ng-click="edit($index, 'floors')"
-                    ng-if="editIndex !== $index || editContext !== 'floors'"></button>
+                    ng-if="editIndex !== $index || editContext !== 'floors'">
+                    <i class='bx bx-edit-alt'></i>
+                  </button>
 
-                  <button ng-click="handleEdit($index, 'floors')"
+                  <button class="edit" ng-click="handleEdit($index, 'floors')"
                     ng-if="editIndex === $index && editContext === 'floors'">
                     <i class='bx bxs-save'></i>
                   </button>
 
-                  <button class="delete" ng-click="delete(item.id, 'floors')" />
+                  <button class="delete" ng-click="delete(item.id, 'floors')">
+                    <i class='bx bx-trash'></i>
+                  </button>
                 </div>
                 <div ng-if="!item.status">
                   <button ng-click="remove($index, 'floors')">x</button>

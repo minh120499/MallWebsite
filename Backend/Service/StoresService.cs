@@ -41,11 +41,11 @@ namespace Backend.Service
         {
             Validations.Store(request);
 
-
+            var image = await FileHelper.UploadImage(request.FormFile);
             var store = new Store()
             {
                 Name = request.Name,
-                Image = request.Image,
+                Image = image,
                 Phone = request.Phone,
                 Email = request.Email,
                 FloorId = request.FloorId,

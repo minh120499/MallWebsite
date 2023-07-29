@@ -82,7 +82,7 @@ namespace Backend.Repository.Implements
                 var store = await GetById(storeId);
 
                 store.Name = request.Name;
-                store.Image = request.Image;
+                store.Image = await FileHelper.UploadImage(request.FormFile);
                 store.Floor = request.Floor;
                 store.Phone = request.Phone;
                 store.Email = request.Email;

@@ -39,14 +39,14 @@ namespace Backend.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProductRequest request)
+        public async Task<IActionResult> Create([FromForm] ProductRequest request)
         {
             var response = await _productsService.Create(request);
             return Ok(response);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] ProductRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] ProductRequest request)
         {
             var response = await _productsService.Update(id, request);
             return Ok(response);

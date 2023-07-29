@@ -9,6 +9,7 @@ public class ProductRequest
     public string? Code { get; set; }
     
     public string? Image { get; set; }
+    public IFormFile? FormFile { get; set; }
 
     public string? Name { get; set; }
     

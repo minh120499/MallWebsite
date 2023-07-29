@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements;
@@ -63,7 +64,7 @@ public class CategoriesRepository : ICategoriesRepository
             var category = await GetById(categoryId);
 
             category.Name = request.Name;
-            category.Image = request.Image;
+            category.Image = await FileHelper.UploadImage(request.FormFile) ?? request.Image;
             category.Type = request.Type;
             category.Status = request.Status;
             category.ModifiedOn = DateTime.Now;

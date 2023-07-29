@@ -12,15 +12,17 @@ angular.module('myApp.store', ['ngRoute'])
       });
   }])
 
-  .controller('StoreListCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
-    document.title = 'Store List';
+  .controller('StoreListCtrl', ['$scope', '$http', 'BE_URL', 'paginationService',
+    function ($scope, $http, BE_URL, paginationService) {
+      document.title = 'Store List';
 
-    $scope.data = undefined;
-    $scope.error = undefined;
-    $scope.isLoading = false;
+      $scope.BE_URL = BE_URL;
+      $scope.data = undefined;
+      $scope.error = undefined;
+      $scope.isLoading = false;
 
-    loadStore($http, $scope, paginationService);
-  }])
+      loadStore($http, $scope, paginationService);
+    }])
 
   .controller('StoreCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Create Store';
@@ -46,19 +48,17 @@ angular.module('myApp.store', ['ngRoute'])
     };
 
     $scope.createStore = function () {
-      const request = {
-        name: $scope.name,
-        floorId: $scope.floorId,
-        categoryId: $scope.categoryId,
-        floorId: $scope.floorId,
-        bannersIds: $scope.banners,
-        FacilityIds: $scope.facilityId,
-        description: $scope.description,
-        image: $scope.fileData,
-        phone: $scope.phone,
-        email: $scope.email,
-      }
-      createStore($http, $scope, request);
+      const formData = new FormData();
+      if ($scope.name) formData.append("name", $scope.name)
+      if ($scope.floorId) formData.append("floorId", $scope.floorId)
+      if ($scope.categoryId) formData.append("categoryId", $scope.categoryId)
+      if ($scope.bannersIds) formData.append("bannersIds", $scope.bannersIds)
+      if ($scope.facilityIds) formData.append("facilityIds", $scope.facilityIds)
+      if ($scope.description) formData.append("description", $scope.description)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      if ($scope.phone) formData.append("phone", $scope.phone)
+      if ($scope.email) formData.append("email", $scope.email)
+      createStore($http, $scope, formData);
     };
   }]);
 
@@ -87,10 +87,13 @@ function loadStore($http, $scope, paginationService) {
     });
 }
 
-function createStore($http, $scope, request) {
+function createStore($http, $scope, formData) {
   $scope.isLoading = true;
   console.log($scope);
-  $http.post('/api/stores', request)
+  $http.post('/api/stores', formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
     .then(function () {
       showSuccessToast("Create store success!");
       loadStore($http, $scope);
@@ -112,7 +115,7 @@ function uploadImage($scope) {
     $scope.fileName = file.name;
     var reader = new FileReader()
     reader.onload = function (event) {
-      $scope.fileData = event.target.result;
+      $scope.fileData = file;
       images.prepend('<div class="img" style="background-image: url(\'' + event.target.result + '\');" rel="' + event.target.result + '"><span>remove</span></div>')
     }
     reader.readAsDataURL(uploader[0].files[0])
