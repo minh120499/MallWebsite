@@ -15,7 +15,7 @@ public class CategoriesService
     {
         _categoriesRepository = categoriesRepository;
     }
-    
+
     public async Task<Category> GetById(int categoryId)
     {
         return await _categoriesRepository.GetById(categoryId);
@@ -24,13 +24,12 @@ public class CategoriesService
     public async Task<TableListResponse<Category>> GetByFilter(FilterModel filters)
     {
         var categories = await _categoriesRepository.GetByFilter(filters);
-        var total = await _categoriesRepository.Count();
         return new TableListResponse<Category>()
         {
-            Total = total,
+            Total = categories.totalCount,
             Limit = filters.Limit,
             Page = filters.Page,
-            Data = categories
+            Data = categories.Item2
         };
     }
 

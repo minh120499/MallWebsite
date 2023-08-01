@@ -28,7 +28,7 @@ public class CategoriesRepository : ICategoriesRepository
         return category;
     }
 
-    public async Task<List<Category>> GetByFilter(FilterModel filters)
+    public async Task<(int totalCount, List<Category>)> GetByFilter(FilterModel filters)
     {
         IQueryable<Category> query = _context.Categories;
 
@@ -46,17 +46,20 @@ public class CategoriesRepository : ICategoriesRepository
         {
             query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
         }
-        
+
         if (!string.IsNullOrEmpty(filters.Type))
         {
-            query = query.Where(u => u.Name != null && u.Name.Equals(filters.Type));
+            query = query.Where(u => u.Type != null && u.Type.Equals(filters.Type));
         }
+
+        var totalCount = await query.CountAsync();
 
         query = query.OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
             .Reverse();
-        return await query.ToListAsync();
+
+        return (totalCount, await query.ToListAsync());
     }
 
     public async Task<Category> Add(Category category)

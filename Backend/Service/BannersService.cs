@@ -25,13 +25,12 @@ public class BannersService
     public async Task<TableListResponse<Banner>> GetByFilter(FilterModel filters)
     {
         var banners = await _bannersRepository.GetByFilter(filters);
-        var total = await _bannersRepository.Count();
         return new TableListResponse<Banner>()
         {
-            Total = total,
+            Total = banners.totalCount,
             Limit = filters.Limit,
             Page = filters.Page,
-            Data = banners
+            Data = banners.Item2
         };
     }
 

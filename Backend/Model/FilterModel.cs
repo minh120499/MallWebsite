@@ -10,4 +10,7 @@ public class FilterModel
     public string Status { get; set; } = StatusConstraint.ACTIVE;
     public List<int> Ids { get; set; } = new List<int>();
     public string? Type { get; set; }
+    
+    public string? Category { get; set; }
+    public int? CategoryId { get; set; }
 }

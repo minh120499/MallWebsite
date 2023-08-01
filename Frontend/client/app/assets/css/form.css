@@ -31,32 +31,17 @@
 .form-item input {
   max-width: 700px;
   flex: 1;
-  border: 2px solid var(--clr-gray200);
+  border: 2px solid #cfd8dc;
   outline: none;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 8px;
   color: initial;
   outline: none;
 }
 
-:root {
-  /* color variables */
-  --clr-primary: #9dedff;
-  --clr-primary-hover: #8ad6ff;
-  --clr-primary-dark: #7bdff6;
-  --clr-primary-light: #c7f5ff;
-  --clr-gray100: #f0f7f8;
-  --clr-gray200: #cfd8dc;
-  --clr-gray300: #a7b7be;
-  --clr-gray400: #6b7e86;
-  --clr-gray500: #425a65;
-  /* border radius */
-  --radius: 1rem;
-}
-
 .button-create {
   display: flex;
-  /* border: 1px solid rebeccapurple; */
+  border: 1px solid rebeccapurple;
   border-radius: 6px;
   align-items: center;
   gap: 8px;

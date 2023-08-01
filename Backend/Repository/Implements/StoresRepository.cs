@@ -29,10 +29,11 @@ namespace Backend.Repository.Implements
             return new StoreResponse();
         }
 
-        public async Task<List<Store>> GetByFilter(FilterModel filters)
+        public async Task<(int totalCount, List<Store>)> GetByFilter(FilterModel filters)
         {
             IQueryable<Store> query = _context.Stores
-                .Include(s => s.Floor);
+                .Include(s => s.Floor)
+                .Include(s => s.Category);
 
             if (filters.Ids.Any())
             {
@@ -49,16 +50,22 @@ namespace Backend.Repository.Implements
                 query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
             }
 
-            if (!string.IsNullOrEmpty(filters.Type))
+            if (!string.IsNullOrEmpty(filters.Category))
             {
-                query = query.Where(u => u.Name != null && u.Name.Equals(filters.Type));
+                query = query.Where(u =>
+                    (u.Category != null && u.Category.Name != null && u.Category != null &&
+                     u.Category.Name.Equals(filters.Category))
+                    || (u.CategoryId.Equals(filters.CategoryId)));
             }
+
+            var totalCount = await query.CountAsync();
 
             query = query.OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse();
-            return await query.ToListAsync();
+
+            return (totalCount, await query.ToListAsync());
         }
 
         public async Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters)

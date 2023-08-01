@@ -1,25 +1,70 @@
-<div class="info-container">
-  <div class="info-filter-box">
-    <div class="filter-box">
-      <h4>Filter</h4>
+<button ng-click="createFeedback()">Create</button>
+<div class="form-container">
+  <div class="form-group">
+    <div class="form-item">
+      <label for="feedback-name">Name</label>
+      <input id="feedback-name" ng-model="name" placeholder="Name..." />
     </div>
-    <div class="search-box">
-      <div class="search-input">
-        <input />
-      </div>
-      <button class="search-btn">search</button>
+
+    <div class="form-item">
+      <label for="feedback-name">Floor</label>
+      <!-- <span class="select-arrow"><i class="bx bx-chevron-down"></i></span> -->
+      <select ng-model="floorId" class="form-item select-dropdown">
+        <option value="">Select floor</option>
+        <option ng-repeat="floor in floors" value="{{floor.id}}" ng-bind="floor.name"></option>
+      </select>
     </div>
   </div>
-  <div class="info-box">
-    <a href="{{store.id}}" class="info-item hover-effect" ng-repeat="store in stores"
-      ng-class="{'flex-direction-left': !isLeft($index)}">
-      <img src="http://localhost:5062{{store.image}}" />
-      <div class="info-info" ng-class="{'transform-left': !isLeft($index)}">
-        <h3>{{ store.name }}</h3>
-        <p>Floor: {{ store.floor.name }}</p>
-        <p>Phone: {{ store.name }}</p>
-      </div>
-    </a>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="feedback-category">Category</label>
+      <select ng-model="categoryId" class="form-item select-dropdown">
+        <option value="">Select category</option>
+        <option ng-repeat="category in categories" value="{{category.id}}" ng-bind="category.name"></option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <label for="feedback-facility">Facilities</label>
+      <select ng-model="facilityId" class="form-item select-dropdown">
+        <option value="">Select facility</option>
+        <option ng-repeat="facility in facilities" value="{{facility.id}}" ng-bind="facility.name"></option>
+      </select>
+    </div>
   </div>
-  <pagination></pagination>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="feedback-phone">Phone</label>
+      <input id="feedback-phone" ng-model="phone" placeholder="Phone..." />
+    </div>
+
+    <div class="form-item">
+      <label for="feedback-email">Email</label>
+      <input id="feedback-email" ng-model="email" placeholder="Email..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="feedback-banner">Banners</label>
+      <input id="feedback-banner" ng-model="banners" placeholder="Banners..." />
+    </div>
+
+    <div class="form-item">
+      <label for="feedback-description">Description</label>
+      <input id="feedback-description" ng-model="description" placeholder="Description..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <div class="input-upload">
+        <button class="button" ng-click="uploadImage()">Upload file</button>
+      </div>
+    </div>
+    <div class="form-item"></div>
+  </div>
+  <div class="images"></div>
 </div>

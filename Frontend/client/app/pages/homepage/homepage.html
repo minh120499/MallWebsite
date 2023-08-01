@@ -1,16 +1,16 @@
 <div id="banner">
   <div class="slick" ng-if="banners.length > 0">
     <div ng-repeat="banner in banners">
-      <img ng-src="{{ banner.image }}" />
+      <img src="http://localhost:5062{{banner.image}}" />
     </div>
   </div>
 </div>
 
 <div id="brand">
   <h3>BRAND AT RMALL</h3>
-  <div class="slick" ng-if="banners.length > 0">
-    <div ng-repeat="banner in banners">
-      <img ng-src="{{ banner.image }}" />
+  <div class="slick" ng-if="stores.length > 0">
+    <div ng-repeat="store in stores">
+      <img src="http://localhost:5062{{store.image}}" />
     </div>
   </div>
 </div>

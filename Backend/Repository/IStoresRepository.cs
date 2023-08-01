@@ -8,7 +8,7 @@ namespace Backend.Repository;
 public interface IStoresRepository
 {
     Task<StoreResponse> GetById(int storeId);
-    Task<List<Store>> GetByFilter(FilterModel filters);
+    Task<(int totalCount, List<Store>)> GetByFilter(FilterModel filters);
 
     Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters);
     Task<Store> Add(Store store);

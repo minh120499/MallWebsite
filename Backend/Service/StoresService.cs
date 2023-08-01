@@ -27,13 +27,12 @@ namespace Backend.Service
         public async Task<TableListResponse<Store>> GetByFilter(FilterModel filters)
         {
             var stores = await _storesRepository.GetByFilter(filters);
-            var total = await _storesRepository.Count();
             return new TableListResponse<Store>()
             {
-                Total = total,
+                Total = stores.totalCount,
                 Limit = filters.Limit,
                 Page = filters.Page,
-                Data = stores
+                Data = stores.Item2
             };
         }
 
@@ -70,13 +69,13 @@ namespace Backend.Service
                 Ids = ids
             });
 
-            if (ids.Count != banners.Count)
+            if (banners.totalCount == 0)
             {
                 throw new NotFoundException("Banner not not exists");
             }
 
             storeEntity = await _storesRepository.Add(store);
-            await _bannersRepository.UpdateByStore(banners, storeEntity.Id);
+            await _bannersRepository.UpdateByStore(banners.Item2, storeEntity.Id);
 
             return await _storesRepository.GetById(storeEntity.Id);
         }
