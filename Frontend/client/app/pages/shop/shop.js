@@ -23,7 +23,7 @@ angular.module('myApp.shop', ['ngRoute'])
       $scope.error = undefined;
       $scope.isLoading = false;
 
-      $scope.isLeft = function(index) {
+      $scope.isLeft = function (index) {
         return index % 4 === 0 || index % 4 === 1;
       };
 
@@ -32,6 +32,27 @@ angular.module('myApp.shop', ['ngRoute'])
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
       };
+
+      $scope.onKeyPress = function(event) {
+        if (event.keyCode === 13) {
+          $scope.searchStore();
+        }
+      };
+
+      $scope.searchStore = function () {
+        const urlParams = window.location.hash.split("query=");
+        if (urlParams[1]) {
+          const queryValue = urlParams[1].split('&')[0];
+          if (queryValue === $scope.query) {
+            console.log(12);
+            return;
+          }
+        }
+        loadStore($http, $scope, paginationService);
+        $location.search('limit', $scope.limit);
+        $location.search('page', $scope.page);
+        $location.search('query', $scope.query);
+      }
     }]);
 
 

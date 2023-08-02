@@ -5,9 +5,9 @@
     </div>
     <div class="search-box">
       <div class="search-input">
-        <input />
+        <input ng-model="query" placeholder="Enter to search..." ng-keypress="onKeyPress($event)" />
       </div>
-      <button class="search-btn">search</button>
+      <button class="search-btn" ng-click="searchStore()">search</button>
     </div>
   </div>
   <div class="shop-box">
@@ -21,5 +21,6 @@
       </div>
     </a>
   </div>
-  <pagination></pagination>
+  <pagination ng-if="total !== 0"></pagination>
+  <empty-data ng-if="total === 0"></empty-data>
 </div>
