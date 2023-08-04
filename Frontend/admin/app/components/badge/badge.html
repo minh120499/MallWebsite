@@ -1,7 +1,9 @@
 <div class="badge badge-success" ng-if="$ctrl.type === 'active'">
   {{$ctrl.content ? $ctrl.content : $ctrl.type}}
+  <div ng-transclude></div>
 </div>
 
 <div class="badge badge-error" ng-if="$ctrl.type === 'inactive'">
   {{$ctrl.content ? $ctrl.content : $ctrl.type}}
+  <div ng-transclude></div>
 </div>

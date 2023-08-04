@@ -18,7 +18,7 @@
             <th class="column-image">Image</th>
             <th>Name</th>
             <th>Store</th>
-            <th>Status</th>
+            <th class="column-status">Status</th>
             <th>Start</th>
             <th>End</th>
             <th>Expire</th>
@@ -35,17 +35,23 @@
             </td>
             <td>{{ banner.name }}</td>
             <td>{{ banner.store.name }}</td>
-            <td>{{ banner.status }}</td>
+            <td>
+              <badge ng-if="editIndex !== $index" type="banner.status"></badge>
+            </td>
             <td>{{ banner.startOn }}</td>
             <td>{{ banner.endOn }}</td>
             <td>{{ banner.expire }}</td>
-            <td class="column-action">
-              <button class="edit">
-                <i class='bx bx-edit-alt icon'></i>
-              </button>
-              <button class="delete">
-                <i class='bx bx-trash icon'></i>
-              </button>
+            <td>
+              <div class="column-action">
+                <button class="edit">
+                  <a href="#/banners/{{banner.id}}/edit">
+                    <i class='bx bx-edit-alt icon'></i>
+                  </a>
+                </button>
+                <button class="delete" ng-click="showDeleteConfirm(banner)">
+                  <i class='bx bx-trash icon'></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -53,4 +59,24 @@
       <pagination></pagination>
     </div>
   </div>
+
+  <!-- Modal Section -->
+  <modal ng-if="deleteModal">
+    <button class="btn-close-modal" ng-click="closeDeleteConfirm()">
+      <i class='bx bx-x'></i>
+    </button>
+    <h3 class="title-modal">Delete banner</h3>
+    <div class="content-modal">
+      <p>Permanantly delete <b>{{ selectBanner.name }}</b>. You can't undo this.</p>
+    </div>
+    <div class="action-modal">
+      <button class="button outline-danger" ng-click="closeDeleteConfirm()">
+        Cancel
+      </button>
+      <button class="button primary-danger" ng-click="handleDeleteBanner()">
+        Delete
+      </button>
+    </div>
+  </modal>
+  <!-- Modal Section -->
 </div>

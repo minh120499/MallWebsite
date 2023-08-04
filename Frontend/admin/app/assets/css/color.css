@@ -6,3 +6,27 @@
   color: #fff;
   background-color: #b31e8d;
 }
+
+.outline-danger {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.primary-danger {
+  color: #fff;
+  background-color: #ff4d4f;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, .1);
+}
+
+.primary {
+  color: #fff;
+  background-color: #1677ff;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, .1);
+}
+
+
+/* .primary.danger {
+  color: #fff;
+  background-color: #ff4d4f;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, .1);
+} */

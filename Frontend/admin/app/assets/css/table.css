@@ -56,6 +56,9 @@
   background-color: #faad14;
   color: #fff;
 }
+.content-table .edit a {
+  display: flex;
+}
 .content-table .edit:hover {
   background-color: #ff9d00;
   color: #fff;

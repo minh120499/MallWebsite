@@ -9,6 +9,10 @@ angular.module('myApp.banner', ['ngRoute'])
       .when('/banners/create', {
         templateUrl: 'page/banner/banner-create.html',
         controller: 'BannerCreateCtrl'
+      })
+      .when('/banners/:id/edit', {
+        templateUrl: 'page/banner/banner-edit.html',
+        controller: 'BannerEditCtrl'
       });
   }])
 
@@ -23,6 +27,8 @@ angular.module('myApp.banner', ['ngRoute'])
       $scope.page = Number(page || 1);
       $scope.total = 0;
       $scope.query = query || "";
+      $scope.deleteModal = false;
+      $scope.selectBanner = {};
 
       $scope.banners = undefined;
       $scope.error = undefined;
@@ -33,6 +39,21 @@ angular.module('myApp.banner', ['ngRoute'])
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
       };
+
+      $scope.handleDeleteBanner = () => {
+        const ids = $scope.selectBanner.id;
+        deleteBanner($http, $scope, ids)
+          .then(() => {
+            loadBanner($http, $scope, paginationService);
+            $scope.deleteModal = false;
+          })
+      }
+
+      $scope.showDeleteConfirm = (banner) => {
+        $scope.deleteModal = true;
+        $scope.selectBanner = banner;
+      }
+      $scope.closeDeleteConfirm = () => $scope.deleteModal = false;
     }])
 
   .controller('BannerCreateCtrl', ['$scope', '$http', '$filter', 'paginationService', function ($scope, $http, $filter, paginationService) {
@@ -60,6 +81,45 @@ angular.module('myApp.banner', ['ngRoute'])
       if ($scope.bannerEnd) formData.append("endOn", $scope.bannerEnd)
       createBanner($http, $scope, formData);
     };
+  }])
+
+  .controller('BannerEditCtrl', ['$scope', '$http', '$filter', '$routeParams', 'paginationService', function ($scope, $http, $filter, $routeParams, paginationService) {
+    document.title = 'Edit Banner';
+
+    $scope.banners = undefined;
+    $scope.error = undefined;
+    $scope.isLoading = false;
+    $scope.bannerName = "";
+    $scope.fileData = "";
+    $scope.fileName = "";
+    $scope.bannerId = $routeParams.id;
+    $scope.storeId = 51;
+
+    loadStore($http, $scope, paginationService)
+      .then(() => {
+        getBannerById($http, $scope);
+      })
+
+
+    $scope.uploadImage = function () {
+      uploadImage($scope);
+    };
+
+    $scope.toggleStatus = () => {
+      $scope.bannerStatus = $scope.bannerStatus === "active" ? "inactive" : "active"
+    };
+
+    $scope.updateBanner = function () {
+      const formData = new FormData();
+      if ($scope.bannerName) formData.append("name", $scope.bannerName)
+      if ($scope.storeId) formData.append("storeId", $scope.storeId)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      if ($scope.bannerStart) formData.append("startOn", $filter('date')($scope.bannerStart, 'yyyy-MM-ddTHH:mm:ss'))
+      if ($scope.bannerEnd) formData.append("endOn", $scope.bannerEnd)
+      if ($scope.bannerStatus) formData.append("status", $scope.bannerStatus)
+      if ($scope.image) formData.append("image", $scope.image)
+      updateBanner($http, $scope, formData);
+    }
   }]);
 
 
@@ -88,6 +148,44 @@ function loadBanner($http, $scope, paginationService) {
     });
 }
 
+function getBannerById($http, $scope) {
+  $scope.isLoading = true;
+
+  $http.get(`/api/banners/${$scope.bannerId}`)
+    .then(function (response) {
+      console.log("Banner", response);
+      const { name, storeId, image, status, createOn, endOn } = response.data;
+      $scope.bannerName = name;
+      $scope.storeId = storeId;
+      $scope.image = image;
+      $scope.bannerStatus = status;
+      if (createOn) $scope.bannerStart = new Date(createOn);
+      if (endOn) $scope.bannerEnd = new Date(endOn);
+      $scope.isLoading = false;
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
+
+function updateBanner($http, $scope, formData) {
+  $scope.isLoading = true;
+
+  $http.put(`/api/banners/${$scope.bannerId}`, formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
+    .then(function (response) {
+      showSuccessToast("Update banner success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
+    });
+}
+
 function createBanner($http, $scope, formData) {
   $scope.isLoading = true;
 
@@ -97,6 +195,19 @@ function createBanner($http, $scope, formData) {
   })
     .then(function (response) {
       showSuccessToast("Create banner success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
+    });
+}
+
+function deleteBanner($http, $scope, ids) {
+  $scope.isLoading = true;
+
+  $http.delete(`/api/banners?ids=${ids}`)
+    .then(function (response) {
+      showSuccessToast("Delete banner success!");
     })
     .catch(function (error) {
       $scope.error = error.data ? error.data : error
@@ -138,7 +249,7 @@ function loadStore($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
+  return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       $scope.stores = response.data.data;
       $scope.limit = response.data.limit;
@@ -154,25 +265,3 @@ function loadStore($http, $scope, paginationService) {
       $scope.isLoading = false;
     });
 }
-
-// function resetButton() {
-//   var resetbtn = $('#reset')
-//   resetbtn.on('click', function () {
-//     reset()
-//   })
-// }
-
-// function reset() {
-
-//   $('#title').val('')
-//   $('.select-option .head').html('Category')
-//   $('select#category').val('')
-
-//   var images = $('.images .img')
-//   for (var i = 0; i < images.length; i++) {
-//     $(images)[i].remove()
-//   }
-
-//   var topic = $('#topic').val('')
-//   var message = $('#msg').val('')
-// }

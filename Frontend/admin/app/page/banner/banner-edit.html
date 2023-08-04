@@ -1,0 +1,57 @@
+<button class="button-create" ng-click="updateBanner()">
+  <span>Save</span>
+  <i class='bx bx-edit'></i>
+</button>
+<div class="form-container">
+  <div class="form-group">
+    <div class="form-item">
+      <label class="label" for="banner-status">Status</label>
+      <div>
+        <div ng-if="bannerStatus === 'active'" ng-click="toggleStatus()">
+          <badge type="bannerStatus"></badge>
+        </div>
+        <div ng-if="bannerStatus !== 'active'" ng-click="toggleStatus()">
+          <badge type="bannerStatus"></badge>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label class="label" for="banner-name">Name</label>
+      <input id="banner-name" ng-model="bannerName" placeholder="Name..." />
+    </div>
+
+    <div class="form-item">
+      <label class="label" for="banner-store">Store</label>
+      <select ng-model="storeId" class="form-item select-dropdown">
+        <option class="select-dropdown-item" ng-repeat="store in stores" value="{{store.id}}"
+          ng-bind="store.name + ' - ' + store.floor.name">
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label class="label" for="banner-start">Start</label>
+      <input id="banner-start" ng-model="bannerStart" type="datetime-local" />
+    </div>
+
+    <div class="form-item">
+      <label class="label" for="banner-end">End</label>
+      <input id="banner-end" ng-model="bannerEnd" type="datetime-local" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <div class="input-upload">
+        <button class="button" ng-click="uploadImage()">Upload file</button>
+      </div>
+    </div>
+    <div class="form-item"></div>
+  </div>
+  <div class="images"></div>
+</div>
