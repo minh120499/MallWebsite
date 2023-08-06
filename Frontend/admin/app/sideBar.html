@@ -1,6 +1,6 @@
 <div class="admin-sidebar" ng-class="{'collapse-expanded': sidebarVisible, 'collapse-collapsed': !sidebarVisible}">
   <div ng-show="sidebarVisible">
-    <header>
+    <header class="nav-link">
       <div class="image-button">
         <div class="image">
           <img src="assets\img\3u606rni.png" alt="logo">
@@ -42,12 +42,12 @@
         </a>
       </li>
       <li class="nav-link">
-        <a href="#">
+        <a href="#/orders">
           <i class='bx bx-cart icon'></i>
           <span class="text nav-text">Orders</span>
         </a>
       </li>
-      <li>
+      <li class="nav-link">
         <a href="#/users">
           <i class='bx bx-user icon'></i>
           <span class="text nav-text">Users</span>
@@ -67,7 +67,7 @@
       </li>
     </ul>
     <ul class="bottom-content">
-      <li>
+      <li class="nav-link">
         <a href="#">
           <i class='bx bx-log-out icon'></i>
           <span class="text nav-text">Logout</span>
@@ -77,43 +77,60 @@
   </div>
 
   <div class="close" ng-hide="sidebarVisible">
-    <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">
-      <i class='bx bx-show icon'></i>
-    </button>
+    <header  class="nav-link">
+      <button class="toggle-sidebar-btn" ng-click="toggleSidebar()">
+        <i class='bx bx-show icon'></i>
+      </button>
+    </header>
     <ul class="sidebar-menu">
-      <li>
+      <li class="nav-link">
         <a href="#">
-          <i class='bx bx-grid-alt icon'></i>
+          <i class='bx bx-home-alt-2 icon'></i>
         </a>
       </li>
-      <li>
-        <a href="#/users">
-          <i class='bx bx-user icon'></i>
-        </a>
-      </li>
-      <li>
+      <li class="nav-link">
         <a href="#/banners">
           <i class='bx bx-image-alt icon'></i>
         </a>
       </li>
-      <li>
+      <li class="nav-link">
+        <a href="#/categories">
+          <i class='bx bx-category icon'></i>
+        </a>
+      </li>
+      <li class="nav-link">
         <a href="#stores">
           <i class='bx bx-store icon'></i>
         </a>
       </li>
-      <li>
+      <li class="nav-link">
         <a href="#products">
           <i class='bx bx-package icon'></i>
         </a>
       </li>
-      <li>
-        <a href="#">
+      <li class="nav-link">
+        <a href="#/orders">
           <i class='bx bx-cart icon'></i>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="#/users">
+          <i class='bx bx-user icon'></i>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="#/feedbacks">
+          <i class='bx bx-envelope icon'></i>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="#/setting">
+          <i class='bx bx-cog icon'></i>
         </a>
       </li>
     </ul>
     <ul class="bottom-content">
-      <li>
+      <li class="nav-link">
         <a href="">
           <i class='bx bx-log-out icon'></i>
         </a>

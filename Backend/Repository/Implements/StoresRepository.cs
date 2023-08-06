@@ -72,13 +72,12 @@ namespace Backend.Repository.Implements
             return (totalCount, await query.ToListAsync());
         }
 
-        public async Task<List<StoreProduct>> GetProducts(int storeId, FilterModel filters)
+        public async Task<List<Product>> GetProducts(int storeId, FilterModel filters)
         {
-            var storeProducts = await _context.StoreProducts
+            var storeProducts = await _context.Products
                 .Where(sp => sp.StoreId == storeId)
-                .Include(sp => sp.Product)
-                .ThenInclude(p => p!.Variants)
                 .Include(sp => sp.Store)
+                .Include(sp => sp.Variants)
                 .OrderBy(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
@@ -120,7 +119,7 @@ namespace Backend.Repository.Implements
                 {
                     store.Image = request.Image;
                 }
-                
+
                 store.FloorId = request.FloorId;
                 store.Phone = request.Phone;
                 store.Email = request.Email;
@@ -147,8 +146,8 @@ namespace Backend.Repository.Implements
 
         public async Task<int> CountProducts(int storeId)
         {
-            return await _context.StoreProducts
-                .Where(sp => sp.StoreId == storeId)
+            return await _context.Stores
+                .Where(sp => sp.Id == storeId)
                 .CountAsync();
         }
 

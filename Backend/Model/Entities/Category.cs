@@ -17,6 +17,8 @@ public class Category
     public string? Type { get; set; }
     
     public string? Status { get; set; }
+    
+    public List<ProductCategory>? ProductCategory { get; set; }
 
     public DateTime? CreateOn { get; set; }
     

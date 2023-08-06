@@ -11,17 +11,15 @@ namespace Backend.Service
     public class ProductsService
     {
         private readonly IProductsRepository _productsRepository;
-        private readonly IStoreProductsRepository _storeProductsRepository;
         private readonly IVariantsRepository _variantsRepository;
         private readonly IProductCategoryRepository _productCategoryRepository;
 
         public ProductsService(IProductsRepository productsRepository,
-            IProductCategoryRepository productCategoryRepository, IStoreProductsRepository storeProductsRepository,
+            IProductCategoryRepository productCategoryRepository,
             IVariantsRepository variantsRepository)
         {
             _productsRepository = productsRepository;
             _productCategoryRepository = productCategoryRepository;
-            _storeProductsRepository = storeProductsRepository;
             _variantsRepository = variantsRepository;
         }
 
@@ -70,6 +68,7 @@ namespace Backend.Service
                 Code = request.Code,
                 Image = image,
                 Name = request.Name,
+                StoreId = request.StoreId,
                 Description = request.Description,
                 Brand = request.Brand,
             };
@@ -100,14 +99,7 @@ namespace Backend.Service
                     InStock = request.InStock,
                 });
             }
-
-            await _storeProductsRepository.Add(new StoreProduct()
-            {
-                StoreId = request.StoreId,
-                ProductId = productResponse.Id,
-            });
-
-
+            
             return await _productsRepository.GetById(productResponse.Id);
         }
 

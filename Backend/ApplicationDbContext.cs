@@ -21,7 +21,6 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
     public DbSet<OrderLineItem> OrderLineItems { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Store> Stores { get; set; } = null!;
-    public DbSet<StoreProduct> StoreProducts { get; set; } = null!;
     public DbSet<Variant> Variants { get; set; } = null!;
 
     public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
@@ -35,7 +34,14 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
         builder.Entity<ProductCategory>()
             .HasOne(pc => pc.Product)
             .WithMany(p => p.ProductCategory)
-            .HasForeignKey(pc => pc.ProductId);
+            .HasForeignKey(pc => pc.ProductId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<ProductCategory>()
+            .HasOne(pc => pc.Category)
+            .WithMany(c => c.ProductCategory)
+            .HasForeignKey(pc => pc.CategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         base.OnModelCreating(builder);
         foreach (var entityType in builder.Model.GetEntityTypes())

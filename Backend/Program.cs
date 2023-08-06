@@ -52,9 +52,6 @@ builder.Services.AddScoped<ProductsService>();
 // Store
 builder.Services.AddScoped<IStoresRepository, StoresRepository>();
 builder.Services.AddScoped<StoresService>();
-// StoreProduct
-builder.Services.AddScoped<IStoreProductsRepository, StoreProductsRepository>();
-builder.Services.AddScoped<StoreProductsService>();
 // Variant
 builder.Services.AddScoped<IVariantsRepository, VariantsRepository>();
 builder.Services.AddScoped<VariantsService>();

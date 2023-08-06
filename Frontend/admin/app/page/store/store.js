@@ -264,6 +264,7 @@ function loadCategory($http, $scope) {
   $scope.page && params.append('page', $scope.page);
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
+  params.append('type', 'store');
 
   return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {

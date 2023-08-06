@@ -19,7 +19,6 @@
   transition: var(--tran-05);
 }
 .admin-sidebar ul.bottom-content {
-  padding-bottom: 10px;
   position: absolute;
   bottom: 0;
 }

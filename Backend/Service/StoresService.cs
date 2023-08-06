@@ -12,11 +12,13 @@ namespace Backend.Service
     {
         private readonly IStoresRepository _storesRepository;
         private readonly IBannersRepository _bannersRepository;
+        private readonly IProductsRepository _productsRepository;
 
-        public StoresService(IStoresRepository storesRepository, IBannersRepository bannersRepository)
+        public StoresService(IStoresRepository storesRepository, IBannersRepository bannersRepository, IProductsRepository productsRepository)
         {
             _storesRepository = storesRepository;
             _bannersRepository = bannersRepository;
+            _productsRepository = productsRepository;
         }
 
         public async Task<Store> GetById(int storeId)
@@ -94,29 +96,16 @@ namespace Backend.Service
             return await _storesRepository.Delete(storeIds);
         }
 
-        public async Task<TableListResponse<StoreProductResponse>> GetProducts(int id, FilterModel filters)
+        public async Task<TableListResponse<Product>> GetProducts(int id, FilterModel filters)
         {
             var storeProduct = await _storesRepository.GetProducts(id, filters);
             var total = await _storesRepository.CountProducts(storeProduct.First().StoreId);
-            var storeProductResponse = storeProduct.Select((sp) => new StoreProductResponse()
+            
+            var products = await _productsRepository.GetByFilter(filters);
+            
+            return new TableListResponse<Product>()
             {
-                Id = sp.Id,
-                Code = sp.Product!.Code,
-                Image = sp.Product!.Image,
-                Name = sp.Product!.Name,
-                Description = sp.Product!.Description,
-                Brand = sp.Product!.Brand,
-                ProductCategory = sp.Product!.ProductCategory,
-                Variants = sp.Product!.Variants,
-                Status = sp.Product!.Status,
-                CreateOn = sp.Product!.CreateOn,
-                ModifiedOn = sp.Product!.ModifiedOn,
-                Store = sp.Store,
-            }).ToList();
-
-            return new TableListResponse<StoreProductResponse>()
-            {
-                Data = storeProductResponse,
+                Data = products,
                 Limit = filters.Limit,
                 Page = filters.Page,
                 Total = total

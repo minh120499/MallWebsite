@@ -183,23 +183,6 @@ public static class Validations
         }
     }
 
-    public static void StoreProduct(StoreProductRequest request)
-    {
-        var errors = new List<Dictionary<string, string>>();
-        if (request.Product is null)
-        {
-            errors.Add(new Dictionary<string, string>()
-            {
-                { "name", "name is not blank" }
-            });
-        }
-
-        if (errors.Count > 0)
-        {
-            throw new FormValidationException(errors);
-        }
-    }
-
     public static void Variant(VariantRequest request)
     {
         var errors = new List<Dictionary<string, string>>();

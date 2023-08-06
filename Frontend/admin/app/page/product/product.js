@@ -29,6 +29,7 @@ angular.module('myApp.product', ['ngRoute'])
       $scope.products = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
+      $scope.deleteModal = false;
 
       loadProduct($http, $scope, paginationService);
 
@@ -114,6 +115,8 @@ angular.module('myApp.product', ['ngRoute'])
           $scope.categoryId = $scope.categories.find((s) => s.id === $scope.product.category.id)
           $scope.floorId = $scope.floors.find((s) => s.id === $scope.product.floor.id)
           $scope.facilityId = $scope.facilities.find((s) => s.id == $scope.product.facilities)
+          $scope.price = $scope?.product.variants.price
+          $scope.stock = $scope?.product.variants.inStock
         });
       $scope.uploadImage = function () {
         uploadImage($scope);
@@ -126,14 +129,15 @@ angular.module('myApp.product', ['ngRoute'])
       $scope.updateProduct = function () {
         const formData = new FormData();
         if ($scope.product.name) formData.append("name", $scope.product.name)
-        if ($scope.floorId) formData.append("floorId", typeof $scope.floorId === "number" ? $scope.floorId : $scope.floorId.id)
+        if ($scope.product.code) formData.append("code", $scope.product.code)
+        if ($scope.product.brand) formData.append("brand", $scope.product.brand)
         if ($scope.categoryId) formData.append("categoryId", typeof $scope.categoryId === "number" ? $scope.categoryId : $scope.categoryId.id)
-        if ($scope.fileData) formData.append("formFile", $scope.fileData)
-        if ($scope.facilityIds) formData.append("facilityIds", $scope.facilityIds)
-        if ($scope.product.phone) formData.append("phone", $scope.product.phone)
-        if ($scope.product.email) formData.append("email", $scope.product.email)
+        if ($scope.storeId) formData.append("storeId", typeof $scope.storeId === "number" ? $scope.storeId : $scope.storeId.id)
+        if ($scope.price) formData.append("price", $scope.price)
+        if ($scope.stock) formData.append("inStock", $scope.stock)
         if ($scope.product.description) formData.append("description", $scope.product.description)
         if ($scope.productStatus) formData.append("status", $scope.productStatus)
+        if ($scope.fileData) formData.append("formFile", $scope.fileData)
         if ($scope.image) formData.append("image", $scope.product.image)
         updateProduct($http, $scope, formData)
           .finally(() => {
@@ -252,6 +256,7 @@ function loadCategory($http, $scope, paginationService) {
   $scope.page && params.append('page', $scope.page);
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
+  params.append('type', 'product');
 
   return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {

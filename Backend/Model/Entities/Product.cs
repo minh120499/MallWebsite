@@ -13,10 +13,9 @@ public class Product
     public string? Description { get; set; }
     public string? Brand { get; set; }
     [Required] public int StoreId { get; set; }
-
     [ForeignKey("StoreId")] public Store? Store { get; set; }
     public List<ProductCategory>? ProductCategory { get; set; }
-    public List<Variant> Variants { get; set; } = new List<Variant>();
+    public List<Variant>? Variants { get; set; }
     public string? Status { get; set; }
     public DateTime? CreateOn { get; set; }
     public DateTime? ModifiedOn { get; set; }
