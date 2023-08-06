@@ -9,30 +9,30 @@ angular.module('myApp', [
   'myApp.setting',
   'myApp.category',
 ])
-  .constant('BE_URL', 'http://localhost:5062/')
-  .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
-    var backendUrl = 'http://localhost:5062';
+  .config(['$locationProvider', '$routeProvider', '$httpProvider', '$rootScopeProvider',
+    function ($locationProvider, $routeProvider, $httpProvider, $rootScopeProvider) {
+      var backendUrl = 'http://localhost:5062';
 
-    $locationProvider.hashPrefix('');
+      $locationProvider.hashPrefix('');
 
-    $routeProvider
-      .when('/', {
-        templateUrl: 'page/dashboard/dashboard.html',
-        controller: 'DashboardCtrl'
-      })
-      .otherwise({ redirectTo: '/' });
+      $routeProvider
+        .when('/', {
+          templateUrl: 'page/dashboard/dashboard.html',
+          controller: 'DashboardCtrl'
+        })
+        .otherwise({ redirectTo: '/' });
 
-    $httpProvider.interceptors.push(['$q', function ($q) {
-      return {
-        request: function (config) {
-          if (config.url.indexOf('/api/') === 0) {
-            config.url = backendUrl + config.url;
+      $httpProvider.interceptors.push(['$q', function ($q) {
+        return {
+          request: function (config) {
+            if (config.url.indexOf('/api/') === 0) {
+              config.url = backendUrl + config.url;
+            }
+            return config;
           }
-          return config;
-        }
-      };
+        };
+      }]);
     }]);
-  }]);
 
 angular.module('myApp').service('paginationService', function () {
   let page = 1;

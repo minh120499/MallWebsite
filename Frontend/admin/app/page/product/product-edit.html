@@ -1,0 +1,92 @@
+<div class="form-title">
+  <div class="form-title-content">
+    <h3>{{productName}}</h3>
+    <div ng-if="productStatus === 'active'" ng-click="toggleStatus()">
+      <badge type="productStatus"></badge>
+    </div>
+    <div ng-if="productStatus !== 'active'" ng-click="toggleStatus()">
+      <badge type="productStatus"></badge>
+    </div>
+  </div>
+
+  <div class="form-title-action">
+    <a href="#/products">
+      <button class="button-create button primary-outline">
+        <span>Cancel</span>
+      </button>
+    </a>
+    <button class="button-create button primary" ng-click="updateProduct()">
+      <i class='bx bx-edit'></i>
+      <span>Save</span>
+    </button>
+  </div>
+</div>
+
+<div class="form-container">
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-name">Name</label>
+      <input id="product-name" ng-model="product.name" placeholder="Name..." />
+    </div>
+
+    <div class="form-item">
+      <label for="product-code">Code</label>
+      <input id="product-code" ng-model="product.code" placeholder="Code..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-brand">Brand</label>
+      <input id="product-brand" ng-model="product.brand" placeholder="Brand..." />
+    </div>
+
+    <div class="form-item">
+      <label for="product-category">Categories</label>
+      <select ng-model="categoryId" class="form-item select-dropdown"
+        ng-options="category.name for category in categories"></select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-store">Store</label>
+      <select ng-model="storeId" class="form-item select-dropdown" ng-options="store.name for store in stores"></select>
+    </div>
+
+    <div class="form-item">
+      <label for="product-price">Price</label>
+      <input id="product-price" ng-model="product.price" placeholder="Price..." />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-item">
+      <label for="product-stock">InStock</label>
+      <input id="product-stock" ng-model="product.stock" placeholder="InStock..." />
+    </div>
+
+    <div class="form-item">
+      <label for="product-description">Description</label>
+      <input id="product-description" ng-model="product.description" placeholder="Description..." />
+    </div>
+  </div>
+
+  <!-- <div class="form-group">
+    <div class="form-item">
+      <label for="product-variants">Variants</label>
+      <input id="product-variants" ng-model="product.variants" placeholder="Variants..." />
+    </div>
+  </div> -->
+
+  <div class="form-group">
+    <div class="form-item">
+      <button class="input-upload button primary" ng-click="uploadImage()">
+        <i class='bx bx-upload'></i>
+        <sapn>Upload file</sapn>
+      </button>
+    </div>
+    <div class="form-item"></div>
+  </div>
+  <div class="images"></div>
+</div>

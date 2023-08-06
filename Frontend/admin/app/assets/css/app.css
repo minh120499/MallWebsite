@@ -139,3 +139,22 @@
   touch-action: manipulation;
   color: rgba(0, 0, 0, .88);
 }
+
+textarea {
+  font-size: 14px;
+  height: 100px;
+  padding: 4px 15px;
+  border-radius: 6px;
+
+  outline: none;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.645, .045, .355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  color: rgba(0, 0, 0, .88);
+}

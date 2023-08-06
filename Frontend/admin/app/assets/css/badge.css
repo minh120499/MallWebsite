@@ -1,6 +1,8 @@
 .badge {
-  max-width: 70px;
+  min-width: 70px;
   margin: 0 auto;
+  cursor: pointer;
+  padding: 0px 12px;
 }
 
 .badge-success {

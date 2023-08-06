@@ -2,7 +2,7 @@
 
 public static class FileHelper
 {
-    private const string Image = "/Image/";
+    private const string Image = "http://localhost:5062/image/";
 
     public static async Task<string?> UploadImage(IFormFile? file)
     {

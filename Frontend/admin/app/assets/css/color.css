@@ -1,3 +1,8 @@
+:root {
+  --primary: #1677ff;
+  --danger: #ff4d4f
+}
+
 .primary-color {
   color: #b31e8d;
 }
@@ -7,20 +12,25 @@
   background-color: #b31e8d;
 }
 
-.outline-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
+.danger-outline {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.primary-outline {
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .primary-danger {
   color: #fff;
-  background-color: #ff4d4f;
+  background-color: var(--danger);
   box-shadow: 0 2px 0 rgba(5, 145, 255, .1);
 }
 
 .primary {
   color: #fff;
-  background-color: #1677ff;
+  background-color: var(--primary);
   box-shadow: 0 2px 0 rgba(5, 145, 255, .1);
 }
 

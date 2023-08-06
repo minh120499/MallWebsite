@@ -9,11 +9,15 @@ angular.module('myApp.store', ['ngRoute'])
       .when('/stores/create', {
         templateUrl: 'page/store/store-create.html',
         controller: 'StoreCreateCtrl'
+      })
+      .when('/stores/:id/edit', {
+        templateUrl: 'page/store/store-edit.html',
+        controller: 'StoreEditCtrl'
       });
   }])
 
-  .controller('StoreListCtrl', ['$scope', '$http', '$location', 'BE_URL', 'paginationService',
-    function ($scope, $http, $location, BE_URL, paginationService) {
+  .controller('StoreListCtrl', ['$scope', '$http', '$location', 'paginationService',
+    function ($scope, $http, $location, paginationService) {
       document.title = 'Store List';
 
       const { query, page, limit } = $location.search();
@@ -22,12 +26,27 @@ angular.module('myApp.store', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.BE_URL = BE_URL;
-      $scope.data = undefined;
+      $scope.stores = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
 
       loadStore($http, $scope, paginationService);
+
+      $scope.handleDeleteStore = () => {
+        const ids = $scope.selectStore.id;
+        deleteStore($http, $scope, ids)
+          .then(() => {
+            $scope.deleteModal = false;
+            $location.path('/stores').replace();
+            loadStore($http, $scope, paginationService);
+          })
+      }
+
+      $scope.showDeleteConfirm = (store) => {
+        $scope.deleteModal = true;
+        $scope.selectStore = store;
+      }
+      $scope.closeDeleteConfirm = () => $scope.deleteModal = false;
     }])
 
   .controller('StoreCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
@@ -44,7 +63,7 @@ angular.module('myApp.store', ['ngRoute'])
     $scope.name = "";
     $scope.location = "";
 
-    loadCategory($http, $scope, paginationService)
+    loadCategory($http, $scope)
       .then(() => {
         loadSetting($http, $scope);
       });
@@ -66,7 +85,62 @@ angular.module('myApp.store', ['ngRoute'])
       if ($scope.email) formData.append("email", $scope.email)
       createStore($http, $scope, formData);
     };
-  }]);
+  }])
+  .controller('StoreEditCtrl', ['$scope', '$http', '$filter', '$routeParams', '$location', 'paginationService',
+    function ($scope, $http, $filter, $routeParams, $location, paginationService) {
+      document.title = 'Edit Store';
+
+      $scope.store = undefined;
+      $scope.error = undefined;
+      $scope.isLoading = false;
+      $scope.storeName = "";
+      $scope.fileData = "";
+      $scope.fileName = "";
+      $scope.storeId = $routeParams.id;
+
+      $scope.formattedDate = formattedDate;
+      $scope.timeDifference = timeDifference;
+
+      loadSetting($http, $scope)
+        .then(() => {
+          return loadCategory($http, $scope);
+        })
+        .then(() => {
+          return getStoreById($http, $scope);
+        })
+        .then(() => {
+          $scope.storeStatus = $scope?.store?.status || 'active'
+          $scope.storeName = $scope?.store?.name
+          $scope.categoryId = $scope.categories.find((s) => s.id === $scope.store.category.id)
+          $scope.floorId = $scope.floors.find((s) => s.id === $scope.store.floor.id)
+          $scope.facilityId = $scope.facilities.find((s) => s.id == $scope.store.facilities)
+        });
+      $scope.uploadImage = function () {
+        uploadImage($scope);
+      };
+
+      $scope.toggleStatus = () => {
+        $scope.storeStatus = $scope.storeStatus === "active" ? "inactive" : "active"
+      };
+
+      $scope.updateStore = function () {
+        const formData = new FormData();
+        if ($scope.store.name) formData.append("name", $scope.store.name)
+        if ($scope.floorId) formData.append("floorId", typeof $scope.floorId === "number" ? $scope.floorId : $scope.floorId.id)
+        if ($scope.categoryId) formData.append("categoryId", typeof $scope.categoryId === "number" ? $scope.categoryId : $scope.categoryId.id)
+        if ($scope.fileData) formData.append("formFile", $scope.fileData)
+        if ($scope.facilityIds) formData.append("facilityIds", $scope.facilityIds)
+        if ($scope.store.phone) formData.append("phone", $scope.store.phone)
+        if ($scope.store.email) formData.append("email", $scope.store.email)
+        if ($scope.store.description) formData.append("description", $scope.store.description)
+        if ($scope.storeStatus) formData.append("status", $scope.storeStatus)
+        if ($scope.image) formData.append("image", $scope.store.image)
+        updateStore($http, $scope, formData)
+          .finally(() => {
+            getStoreById($http, $scope);
+          });
+      }
+    }]);
 
 function loadStore($http, $scope, paginationService) {
   $scope.isLoading = true;
@@ -76,9 +150,9 @@ function loadStore($http, $scope, paginationService) {
   $scope.limit && params.append('limit', $scope.limit);
   $scope.query && params.append('query', $scope.query);
 
-  $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
+  return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
-      $scope.data = response.data.data;
+      $scope.stores = response.data.data;
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
       $scope.total = response.data.total;
@@ -90,6 +164,40 @@ function loadStore($http, $scope, paginationService) {
     .catch(function (error) {
       $scope.error = error;
       $scope.isLoading = false;
+    });
+}
+
+function getStoreById($http, $scope) {
+  $scope.isLoading = true;
+
+  return $http.get(`/api/stores/${$scope.storeId}`)
+    .then(function (response) {
+      $scope.store = response.data;
+      $scope.isLoading = false;
+    })
+    .then(() => {
+      renderImage($scope.store.image);
+      $scope.storeId = $scope.stores.find((s) => s.id === $scope.storeId)
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
+
+function updateStore($http, $scope, formData) {
+  $scope.isLoading = true;
+
+  return $http.put(`/api/stores/${$scope.storeId}`, formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
+    .then(function (response) {
+      showSuccessToast("Update store success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 
@@ -149,7 +257,7 @@ function loadSetting($http, $scope) {
     });
 }
 
-function loadCategory($http, $scope, paginationService) {
+function loadCategory($http, $scope) {
   $scope.isLoading = true;
 
   var params = new URLSearchParams();
@@ -162,9 +270,6 @@ function loadCategory($http, $scope, paginationService) {
       console.log("Category", response);
       $scope.categories = response.data.data;
       $scope.total = response.data.total;
-      paginationService.setPage(response.data.page)
-      paginationService.setLimit(response.data.limit)
-      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
 
     })
@@ -172,5 +277,18 @@ function loadCategory($http, $scope, paginationService) {
       console.log('Error fetching data:', error);
       $scope.error = error;
       $scope.isLoading = false;
+    });
+}
+
+function deleteStore($http, $scope, ids) {
+  $scope.isLoading = true;
+
+  return $http.delete(`/api/stores?ids=${ids}`)
+    .then(function (response) {
+      showSuccessToast("Delete store success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }

@@ -86,7 +86,14 @@ public class CategoriesRepository : ICategoriesRepository
             var category = await GetById(categoryId);
 
             category.Name = request.Name;
-            category.Image = await FileHelper.UploadImage(request.FormFile) ?? request.Image;
+            if (request.FormFile != null)
+            {
+                category.Image = await FileHelper.UploadImage(request.FormFile);
+            }
+            else
+            {
+                category.Image = request.Image;
+            }
             category.Type = request.Type;
             category.Status = request.Status;
             category.ModifiedOn = DateTime.Now;

@@ -17,16 +17,20 @@ namespace Backend.Repository.Implements
             _context = context;
         }
 
-        public async Task<StoreResponse> GetById(int storeId)
+        public async Task<Store> GetById(int storeId)
         {
-            var store = await _context.Stores.FindAsync(storeId);
+            var store = await _context.Stores
+                .Include(s => s.Banners)
+                .Include(s => s.Floor)
+                .Include(s => s.Banners)
+                .FirstOrDefaultAsync(s => s.Id == storeId);
 
             if (store == null)
             {
                 throw new NotFoundException("Store not found.");
             }
 
-            return new StoreResponse();
+            return store;
         }
 
         public async Task<(int totalCount, List<Store>)> GetByFilter(FilterModel filters)
@@ -101,20 +105,28 @@ namespace Backend.Repository.Implements
             }
         }
 
-        public async Task<StoreResponse> Update(int storeId, StoreRequest request)
+        public async Task<Store> Update(int storeId, StoreRequest request)
         {
             try
             {
                 var store = await GetById(storeId);
 
                 store.Name = request.Name;
-                store.Image = await FileHelper.UploadImage(request.FormFile);
-                store.Floor = request.Floor;
+                if (request.FormFile != null)
+                {
+                    store.Image = await FileHelper.UploadImage(request.FormFile);
+                }
+                else
+                {
+                    store.Image = request.Image;
+                }
+                
+                store.FloorId = request.FloorId;
                 store.Phone = request.Phone;
                 store.Email = request.Email;
-                store.Category = request.Category;
-                // store.Facilities = request.FacilityIds;
-                store.Banners = request.Banners;
+                store.CategoryId = request.CategoryId;
+                store.Facilities = request.FacilityIds;
+                // store.Banners = request.Banners;
                 store.Description = request.Description;
                 store.Status = request.Status;
                 store.ModifiedOn = DateTime.Now;

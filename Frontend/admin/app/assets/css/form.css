@@ -22,10 +22,6 @@
 .form-item input {
   outline: none;
   padding: 10px 24px;
-  /* p */
-  /* height: 100%;
-  border: none;
-  border-radius: 6px; */
 }
 
 .form-item input {
@@ -41,10 +37,9 @@
 
 .button-create {
   display: flex;
-  border: 1px solid rebeccapurple;
   border-radius: 6px;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .label {
@@ -59,17 +54,10 @@
 /* file img */
 .input-upload {
   display: flex;
-  /* border: 1px solid rebeccapurple; */
+  width: max-content;
   border-radius: 6px;
   align-items: center;
   gap: 8px;
-}
-
-.input-upload button {
-  border: 1px solid blue;
-  border-radius: 6px;
-  padding: 8px;
-  background-color: #f5f7fa;
 }
 
 .images {
@@ -131,3 +119,34 @@
 }
 
 /* file img */
+
+.form-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.form-title h3 {
+  color: rgba(0,0,0,.88);
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.9rem;
+}
+
+.form-title-content {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+}
+
+.sub-form-title-content {
+  color: gray;
+  line-height: 1rem;
+  /* transform: translateY(5px); */
+}
+
+.form-title-action {
+  display: flex;
+  gap: 8px;
+}

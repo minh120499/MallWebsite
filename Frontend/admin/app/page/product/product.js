@@ -9,11 +9,15 @@ angular.module('myApp.product', ['ngRoute'])
       .when('/products/create', {
         templateUrl: 'page/product/product-create.html',
         controller: 'ProductCreateCtrl'
+      })
+      .when('/products/:id/edit', {
+        templateUrl: 'page/product/product-edit.html',
+        controller: 'ProductEditCtrl'
       });
   }])
 
-  .controller('ProductListCtrl', ['$scope', '$location', '$http', 'BE_URL', 'paginationService',
-    function ($scope, $location, $http, BE_URL, paginationService) {
+  .controller('ProductListCtrl', ['$scope', '$location', '$http', 'paginationService',
+    function ($scope, $location, $http, paginationService) {
       document.title = 'Product List';
 
       const { query, page, limit } = $location.search();
@@ -22,12 +26,28 @@ angular.module('myApp.product', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.BE_URL = BE_URL;
       $scope.products = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
 
       loadProduct($http, $scope, paginationService);
+
+
+      $scope.handleDeleteProduct = () => {
+        const ids = $scope.selectProduct.id;
+        deleteProduct($http, $scope, ids)
+          .then(() => {
+            $scope.deleteModal = false;
+            $location.path('/products').replace();
+            loadProduct($http, $scope, paginationService);
+          })
+      }
+
+      $scope.showDeleteConfirm = (product) => {
+        $scope.deleteModal = true;
+        $scope.selectProduct = product;
+      }
+      $scope.closeDeleteConfirm = () => $scope.deleteModal = false;
     }])
 
   .controller('ProductCreateCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
@@ -68,7 +88,59 @@ angular.module('myApp.product', ['ngRoute'])
       if ($scope.storeId) formData.append("storeId", $scope.storeId)
       createProduct($http, $scope, formData);
     };
-  }]);
+  }])
+  .controller('ProductEditCtrl', ['$scope', '$http', '$filter', '$routeParams', '$location', 'paginationService',
+    function ($scope, $http, $filter, $routeParams, $location, paginationService) {
+      document.title = 'Edit Product';
+
+      $scope.product = undefined;
+      $scope.error = undefined;
+      $scope.isLoading = false;
+      $scope.productName = "";
+      $scope.fileData = "";
+      $scope.fileName = "";
+      $scope.productId = $routeParams.id;
+
+      $scope.formattedDate = formattedDate;
+      $scope.timeDifference = timeDifference;
+
+      loadCategory($http, $scope)
+        .then(() => {
+          return getProductById($http, $scope);
+        })
+        .then(() => {
+          $scope.productStatus = $scope?.product?.status || 'active'
+          $scope.productName = $scope?.product?.name
+          $scope.categoryId = $scope.categories.find((s) => s.id === $scope.product.category.id)
+          $scope.floorId = $scope.floors.find((s) => s.id === $scope.product.floor.id)
+          $scope.facilityId = $scope.facilities.find((s) => s.id == $scope.product.facilities)
+        });
+      $scope.uploadImage = function () {
+        uploadImage($scope);
+      };
+
+      $scope.toggleStatus = () => {
+        $scope.productStatus = $scope.productStatus === "active" ? "inactive" : "active"
+      };
+
+      $scope.updateProduct = function () {
+        const formData = new FormData();
+        if ($scope.product.name) formData.append("name", $scope.product.name)
+        if ($scope.floorId) formData.append("floorId", typeof $scope.floorId === "number" ? $scope.floorId : $scope.floorId.id)
+        if ($scope.categoryId) formData.append("categoryId", typeof $scope.categoryId === "number" ? $scope.categoryId : $scope.categoryId.id)
+        if ($scope.fileData) formData.append("formFile", $scope.fileData)
+        if ($scope.facilityIds) formData.append("facilityIds", $scope.facilityIds)
+        if ($scope.product.phone) formData.append("phone", $scope.product.phone)
+        if ($scope.product.email) formData.append("email", $scope.product.email)
+        if ($scope.product.description) formData.append("description", $scope.product.description)
+        if ($scope.productStatus) formData.append("status", $scope.productStatus)
+        if ($scope.image) formData.append("image", $scope.product.image)
+        updateProduct($http, $scope, formData)
+          .finally(() => {
+            getProductById($http, $scope);
+          });
+      }
+    }]);
 
 
 function loadProduct($http, $scope, paginationService) {
@@ -110,6 +182,40 @@ function createProduct($http, $scope, formData) {
     .catch(function (error) {
       showErrorToast(getErrorsMessage(error));
       $scope.error = error.data ? error.data : error
+    });
+}
+
+function getProductById($http, $scope) {
+  $scope.isLoading = true;
+
+  return $http.get(`/api/products/${$scope.productId}`)
+    .then(function (response) {
+      $scope.product = response.data;
+      $scope.isLoading = false;
+    })
+    .then(() => {
+      renderImage($scope.product.image);
+      $scope.productId = $scope.product.find((s) => s.id === $scope.productId)
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+    });
+}
+
+function updateProduct($http, $scope, formData) {
+  $scope.isLoading = true;
+
+  return $http.put(`/api/products/${$scope.productId}`, formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
+  })
+    .then(function (response) {
+      showSuccessToast("Update product success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
 
@@ -190,24 +296,15 @@ function loadStore($http, $scope, paginationService) {
     });
 }
 
-// function resetButton() {
-//   var resetbtn = $('#reset')
-//   resetbtn.on('click', function () {
-//     reset()
-//   })
-// }
+function deleteProduct($http, $scope, ids) {
+  $scope.isLoading = true;
 
-// function reset() {
-
-//   $('#title').val('')
-//   $('.select-option .head').html('Category')
-//   $('select#category').val('')
-
-//   var images = $('.images .img')
-//   for (var i = 0; i < images.length; i++) {
-//     $(images)[i].remove()
-//   }
-
-//   var topic = $('#topic').val('')
-//   var message = $('#msg').val('')
-// }
+  return $http.delete(`/api/products?ids=${ids}`)
+    .then(function (response) {
+      showSuccessToast("Delete product success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
+    });
+}

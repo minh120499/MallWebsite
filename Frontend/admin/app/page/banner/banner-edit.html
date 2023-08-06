@@ -1,22 +1,31 @@
-<button class="button-create" ng-click="updateBanner()">
-  <span>Save</span>
-  <i class='bx bx-edit'></i>
-</button>
-<div class="form-container">
-  <div class="form-group">
-    <div class="form-item">
-      <label class="label" for="banner-status">Status</label>
-      <div>
-        <div ng-if="bannerStatus === 'active'" ng-click="toggleStatus()">
-          <badge type="bannerStatus"></badge>
-        </div>
-        <div ng-if="bannerStatus !== 'active'" ng-click="toggleStatus()">
-          <badge type="bannerStatus"></badge>
-        </div>
-      </div>
+<div class="form-title">
+  <div class="form-title-content">
+    <h3>{{banner.name}}</h3>
+    <div ng-if="bannerStatus === 'active'" ng-click="toggleStatus()">
+      <badge type="bannerStatus"></badge>
+    </div>
+    <div ng-if="bannerStatus !== 'active'" ng-click="toggleStatus()">
+      <badge type="bannerStatus"></badge>
+    </div>
+    <div class="sub-form-title-content">
+      {{ formattedDate(banner.startOn) }} {{ banner.endOn ? ' - ' + formattedDate(banner.endOn) : '' }}
     </div>
   </div>
 
+  <div class="form-title-action">
+    <a href="#/banners">
+      <button class="button-create button primary-outline">
+        <span>Cancel</span>
+      </button>
+    </a>
+    <button class="button-create button primary" ng-click="updateBanner()">
+      <i class='bx bx-edit'></i>
+      <span>Save</span>
+    </button>
+  </div>
+</div>
+
+<div class="form-container">
   <div class="form-group">
     <div class="form-item">
       <label class="label" for="banner-name">Name</label>
@@ -25,10 +34,8 @@
 
     <div class="form-item">
       <label class="label" for="banner-store">Store</label>
-      <select ng-model="storeId" class="form-item select-dropdown">
-        <option class="select-dropdown-item" ng-repeat="store in stores" value="{{store.id}}"
-          ng-bind="store.name + ' - ' + store.floor.name">
-        </option>
+      <select ng-model="storeId" class="form-item select-dropdown"
+        ng-options="store.name + ' - ' + store.floor.name for store in stores">
       </select>
     </div>
   </div>
@@ -47,9 +54,10 @@
 
   <div class="form-group">
     <div class="form-item">
-      <div class="input-upload">
-        <button class="button" ng-click="uploadImage()">Upload file</button>
-      </div>
+      <button class="input-upload button primary" ng-click="uploadImage()">
+        <i class='bx bx-upload'></i>
+        <sapn>Upload file</sapn>
+      </button>
     </div>
     <div class="form-item"></div>
   </div>

@@ -47,14 +47,14 @@ public class BannersRepository : IBannersRepository
         {
             query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
         }
-        
+
         var totalCount = await query.CountAsync();
-        
+
         query = query.OrderBy(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
             .Take(filters.Limit)
             .Reverse();
-        
+
         return (totalCount, await query.ToListAsync());
     }
 
@@ -87,10 +87,22 @@ public class BannersRepository : IBannersRepository
         {
             var banner = await GetById(bannerId);
             banner.Name = request.Name;
-            banner.Image = await FileHelper.UploadImage(request.FormFile);
-            banner.Expire = request.Expire;
+            if (request.FormFile != null)
+            {
+                banner.Image = await FileHelper.UploadImage(request.FormFile);
+            }
+            else
+            {
+                banner.Image = request.Image;
+            }
             banner.Status = request.Status;
             banner.StoreId = request.StoreId;
+            banner.StartOn = request.StartOn;
+            banner.EndOn = request.EndOn;
+            if (banner is { StartOn: not null, EndOn: not null })
+            {
+                banner.Expire = (banner.EndOn - banner.StartOn).Value.Days;
+            }
             banner.ModifiedOn = DateTime.Now;
             await _context.SaveChangesAsync();
 

@@ -19,7 +19,7 @@ namespace Backend.Service
             _bannersRepository = bannersRepository;
         }
 
-        public async Task<StoreResponse> GetById(int storeId)
+        public async Task<Store> GetById(int storeId)
         {
             return await _storesRepository.GetById(storeId);
         }
@@ -36,7 +36,7 @@ namespace Backend.Service
             };
         }
 
-        public async Task<StoreResponse> Create(StoreRequest request)
+        public async Task<Store> Create(StoreRequest request)
         {
             Validations.Store(request);
 
@@ -80,7 +80,7 @@ namespace Backend.Service
             return await _storesRepository.GetById(storeEntity.Id);
         }
 
-        public async Task<StoreResponse> Update(int storeId, StoreRequest request)
+        public async Task<Store> Update(int storeId, StoreRequest request)
         {
             Validations.Store(request);
 

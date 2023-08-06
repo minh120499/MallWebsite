@@ -1,5 +1,12 @@
 <div class="form-title">
   <div class="form-title-content">
+    <h3>{{storeName}}</h3>
+    <div ng-if="storeStatus === 'active'" ng-click="toggleStatus()">
+      <badge type="storeStatus"></badge>
+    </div>
+    <div ng-if="storeStatus !== 'active'" ng-click="toggleStatus()">
+      <badge type="storeStatus"></badge>
+    </div>
   </div>
 
   <div class="form-title-action">
@@ -8,9 +15,9 @@
         <span>Cancel</span>
       </button>
     </a>
-    <button class="button-create button primary" ng-click="createStore()">
+    <button class="button-create button primary" ng-click="updateStore()">
       <i class='bx bx-edit'></i>
-      <span>Create</span>
+      <span>Save</span>
     </button>
   </div>
 </div>
@@ -19,15 +26,12 @@
   <div class="form-group">
     <div class="form-item">
       <label for="store-name">Name</label>
-      <input id="store-name" ng-model="name" placeholder="Name..." />
+      <input id="store-name" ng-model="store.name" placeholder="Name..." />
     </div>
 
     <div class="form-item">
       <label for="store-name">Floor</label>
-      <!-- <span class="select-arrow"><i class="bx bx-chevron-down"></i></span> -->
-      <select ng-model="floorId" class="form-item select-dropdown">
-        <option value="">Select floor</option>
-        <option ng-repeat="floor in floors" value="{{floor.id}}" ng-bind="floor.name"></option>
+      <select ng-model="floorId" class="form-item select-dropdown" ng-options="floor.name for floor in floors">
       </select>
     </div>
   </div>
@@ -35,17 +39,14 @@
   <div class="form-group">
     <div class="form-item">
       <label for="store-category">Category</label>
-      <select ng-model="categoryId" class="form-item select-dropdown">
-        <option value="">Select category</option>
-        <option ng-repeat="category in categories" value="{{category.id}}" ng-bind="category.name"></option>
+      <select ng-model="categoryId" class="form-item select-dropdown"
+        ng-options="category.name for category in categories">
       </select>
     </div>
 
     <div class="form-item">
       <label for="store-facility">Facilities</label>
-      <select ng-model="facilityIds" class="form-item select-dropdown">
-        <option value="">Select facility</option>
-        <option ng-repeat="facility in facilities" value="{{facility.id}}" ng-bind="facility.name"></option>
+      <select ng-model="facilityId" class="form-item select-dropdown" ng-options="facility.name for facility in facilities">
       </select>
     </div>
   </div>
@@ -53,19 +54,19 @@
   <div class="form-group">
     <div class="form-item">
       <label for="store-phone">Phone</label>
-      <input id="store-phone" ng-model="phone" placeholder="Phone..." />
+      <input id="store-phone" ng-model="store.phone" placeholder="Phone..." />
     </div>
 
     <div class="form-item">
       <label for="store-email">Email</label>
-      <input id="store-email" ng-model="email" placeholder="Email..." />
+      <input id="store-email" ng-model="store.email" placeholder="Email..." />
     </div>
   </div>
 
   <div class="form-group">
     <div class="form-item">
       <label for="store-description">Description</label>
-      <input id="store-description" ng-model="description" placeholder="Description..." />
+      <input id="store-description" ng-model="store.description" placeholder="Description..." />
     </div>
 
     <div class="form-item"></div>

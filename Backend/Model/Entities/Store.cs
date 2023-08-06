@@ -40,7 +40,7 @@ public class Store
     public string? Description { get; set; }
     public string? Status { get; set; }
 
-    public List<StoreProduct> StoreProducts { get; set; } = new List<StoreProduct>();
+    public List<Product> Products { get; set; } = new List<Product>();
     public DateTime? CreateOn { get; set; }
     
     public DateTime? ModifiedOn { get; set; }

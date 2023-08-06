@@ -1,5 +1,17 @@
 <div ng-controller="ProductListCtrl">
-  <a href="#/products/create">Create</a>
+  <div class="form-title">
+    <div class="form-title-content"></div>
+
+    <div class="form-title-action">
+      <a href="#/products/create">
+        <button class="button-create button primary">
+          <i class='bx bx-plus-circle'></i>
+          Create product
+        </button>
+      </a>
+    </div>
+  </div>
+
   <div ng-if="isLoading">
     <div class="spinner">Loading...</div>
   </div>
@@ -27,7 +39,7 @@
             <td>{{ (page - 1) * limit + $index + 1}}</td>
             <td>
               <div class="table-row-image" ng-if="item.image">
-                <img ng-src="{{BE_URL + item.image}}" />
+                <img ng-src="{{item.image}}" />
               </div>
             </td>
             <td>{{ item.code }}</td>
@@ -47,10 +59,12 @@
             <td>
               <div class="column-action">
                 <button class="edit">
-                  <i class='bx bx-edit-alt'></i>
+                  <a href="#/products/{{item.id}}/edit">
+                    <i class='bx bx-edit-alt icon'></i>
+                  </a>
                 </button>
-                <button class="delete">
-                  <i class='bx bx-trash'></i>
+                <button class="delete" ng-click="showDeleteConfirm(item)">
+                  <i class='bx bx-trash icon'></i>
                 </button>
               </div>
             </td>
@@ -60,4 +74,24 @@
       <pagination></pagination>
     </div>
   </div>
+
+  <!-- Modal Section -->
+  <modal ng-if="deleteModal">
+    <button class="btn-close-modal" ng-click="closeDeleteConfirm()">
+      <i class='bx bx-x'></i>
+    </button>
+    <h3 class="title-modal">Delete product</h3>
+    <div class="content-modal">
+      <p>Permanantly delete <b>{{ selectProduct.name }}</b>. You can't undo this.</p>
+    </div>
+    <div class="action-modal">
+      <button class="button danger-outline" ng-click="closeDeleteConfirm()">
+        Cancel
+      </button>
+      <button class="button primary-danger" ng-click="handleDeleteProduct()">
+        Delete
+      </button>
+    </div>
+  </modal>
+  <!-- Modal Section -->
 </div>

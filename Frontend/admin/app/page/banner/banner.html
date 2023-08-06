@@ -1,8 +1,17 @@
 <div ng-controller="BannerListCtrl">
-  <a href="#/banners/create">
-    <i class='bx bx-edit'></i>
-    <span>Create</span>
-  </a>
+  <div class="form-title">
+    <div class="form-title-content"></div>
+
+    <div class="form-title-action">
+      <a href="#/banners/create">
+        <button class="button-create button primary">
+          <i class='bx bx-plus-circle'></i>
+          Create banner
+        </button>
+      </a>
+    </div>
+  </div>
+
   <div ng-if="isLoading">
     <div class="spinner">Loading...</div>
   </div>
@@ -30,7 +39,7 @@
             <td>{{ (page - 1) * limit + $index + 1}}</td>
             <td>
               <div class="table-row-image" ng-if="banner.image">
-                <img ng-src="{{BE_URL + banner.image}}" />
+                <img ng-src="{{banner.image}}" />
               </div>
             </td>
             <td>{{ banner.name }}</td>
@@ -38,8 +47,8 @@
             <td>
               <badge ng-if="editIndex !== $index" type="banner.status"></badge>
             </td>
-            <td>{{ banner.startOn }}</td>
-            <td>{{ banner.endOn }}</td>
+            <td>{{ formattedDate(banner.startOn) }}</td>
+            <td>{{ formattedDate(banner.endOn) }}</td>
             <td>{{ banner.expire }}</td>
             <td>
               <div class="column-action">
@@ -70,7 +79,7 @@
       <p>Permanantly delete <b>{{ selectBanner.name }}</b>. You can't undo this.</p>
     </div>
     <div class="action-modal">
-      <button class="button outline-danger" ng-click="closeDeleteConfirm()">
+      <button class="button danger-outline" ng-click="closeDeleteConfirm()">
         Cancel
       </button>
       <button class="button primary-danger" ng-click="handleDeleteBanner()">

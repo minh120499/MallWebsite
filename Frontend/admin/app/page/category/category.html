@@ -1,9 +1,18 @@
 <div ng-controller="CategoryListCtrl">
-  <a href="#/categories/create">
-    <i class='bx bx-edit'></i>
-    <span>Create</span>
-  </a>
-  <div ng-if="isLoading">
+  <div class="form-title">
+    <div class="form-title-content"></div>
+
+    <div class="form-title-action">
+      <a href="#/categories/create">
+        <button class="button-create button primary">
+          <i class='bx bx-plus-circle'></i>
+          Create categorie
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div ng-if=" isLoading">
     <div class="spinner">Loading...</div>
   </div>
   <div ng-if="!isLoading">
@@ -30,12 +39,14 @@
             <!-- Image -->
             <td>
               <div class="table-row-image" ng-if="editIndex !== $index && item.image">
-                <img ng-src="{{BE_URL + item.image}}" />
+                <img ng-src="{{item.image}}" />
               </div>
               <div class="table-row-image" ng-if="editIndex === $index">
-                <div class="form-item">
-                  <input ng-change="changeCategory(this)" ng-model="editItem.image" placeholder="Image..." />
-                </div>
+                <img ng-src="{{item.image}}" ng-if="item.image" />
+                <button ng-if="!item.image" ng-click="uploadImage()">
+                  <i class='bx bx-upload'></i>
+                </button>
+                <div class="images"></div>
               </div>
             </td>
 
@@ -86,7 +97,7 @@
                   <i class='bx bx-save'></i>
                 </button>
 
-                <button class="delete" ng-click="delete(item.id)">
+                <button class="delete" ng-click="showDeleteConfirm(item)">
                   <i class='bx bx-trash'></i>
                 </button>
               </div>
@@ -97,4 +108,24 @@
       <pagination></pagination>
     </div>
   </div>
+
+  <!-- Modal Section -->
+  <modal ng-if="deleteModal">
+    <button class="btn-close-modal" ng-click="closeDeleteConfirm()">
+      <i class='bx bx-x'></i>
+    </button>
+    <h3 class="title-modal">Delete category</h3>
+    <div class="content-modal">
+      <p>Permanantly delete <b>{{ selectCategory.name }}</b>. You can't undo this.</p>
+    </div>
+    <div class="action-modal">
+      <button class="button danger-outline" ng-click="closeDeleteConfirm()">
+        Cancel
+      </button>
+      <button class="button primary-danger" ng-click="handleDeleteCategory()">
+        Delete
+      </button>
+    </div>
+  </modal>
+  <!-- Modal Section -->
 </div>

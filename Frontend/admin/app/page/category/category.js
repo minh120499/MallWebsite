@@ -12,13 +12,12 @@ angular.module('myApp.category', ['ngRoute'])
       });
   }])
 
-  .controller('CategoryListCtrl', ['$scope', '$http', '$rootScope', '$location', 'BE_URL', 'paginationService',
-    function ($scope, $http, $rootScope, $location, BE_URL, paginationService) {
+  .controller('CategoryListCtrl', ['$scope', '$http', '$rootScope', '$location', 'paginationService',
+    function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Category List';
 
       const { query, page, limit } = $location.search();
 
-      $scope.BE_URL = BE_URL;
       $scope.limit = Number(limit || 10);
       $scope.page = Number(page || 1);
       $scope.total = 0;
@@ -27,8 +26,9 @@ angular.module('myApp.category', ['ngRoute'])
       $scope.data = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
+      $scope.deleteModal = false;
 
-      loadCategory($http, $scope, paginationService);
+      loadCategories($http, $scope, paginationService);
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -60,6 +60,27 @@ angular.module('myApp.category', ['ngRoute'])
           status: $scope?.editItem?.status === "active" ? "inactive" : "active"
         }
       }
+
+      $scope.uploadImage = function () {
+        uploadImage($scope);
+      };
+
+      $scope.handleDeleteCategory = () => {
+        const id = $scope.selectCategory.id;
+        deleteCategory($http, $scope, id, paginationService)
+          .then(() => {
+            $scope.deleteModal = false;
+            $location.path('/categories').replace();
+            loadCategories($http, $scope, paginationService);
+          })
+      }
+
+      $scope.showDeleteConfirm = (category) => {
+        $scope.deleteModal = true;
+        $scope.selectCategory = category;
+      }
+
+      $scope.closeDeleteConfirm = () => $scope.deleteModal = false;
     }])
 
   .controller('CategoryCreateCtrl', ['$scope', '$http', function ($scope, $http) {
@@ -86,7 +107,7 @@ angular.module('myApp.category', ['ngRoute'])
   }]);
 
 
-function loadCategory($http, $scope, paginationService) {
+function loadCategories($http, $scope, paginationService) {
   $scope.isLoading = true;
 
   var params = new URLSearchParams();
@@ -162,7 +183,7 @@ function editCategory($http, $scope, paginationService) {
     transformRequest: angular.identity
   })
     .then(function () {
-      loadCategory($http, $scope, paginationService);
+      loadCategories($http, $scope, paginationService);
       $scope.editIndex = -1;
       $scope.editItem = {};
       showSuccessToast("Update success!");
@@ -177,10 +198,10 @@ function editCategory($http, $scope, paginationService) {
 
 function deleteCategory($http, $scope, ids, paginationService) {
   $scope.isLoading = true;
-  $http.delete(`/api/categories/?ids=${ids}`)
+  return $http.delete(`/api/categories/?ids=${ids}`)
     .then(function () {
       showSuccessToast("Delete success!");
-      loadCategory($http, $scope, paginationService);
+      loadCategories($http, $scope, paginationService);
     })
     .catch(function (error) {
       $scope.error = error;
