@@ -29,7 +29,6 @@
             <th>Floor</th>
             <th>Category</th>
             <th>Facilities</th>
-            <!-- <th>Banners</th> -->
             <th class="column-status">Status</th>
             <th>Description</th>
             <th class="column-actions"></th>
@@ -47,7 +46,6 @@
             <td>{{ store.floor.name }}</td>
             <td>{{ store.category.name }}</td>
             <td>{{ store.facilities }}</td>
-            <!-- <td>{{ store.banners }}</td> -->
             <td>
               <badge ng-if="editIndex !== $index" type="store.status"></badge>
               <div ng-if="editItem.status === 'active' && editIndex === $index" ng-click="toggleStatus()">
