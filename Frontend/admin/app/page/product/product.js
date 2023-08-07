@@ -65,9 +65,9 @@ angular.module('myApp.product', ['ngRoute'])
     $scope.stock = "";
     $scope.price = "";
 
-    loadCategory($http, $scope, paginationService)
+    loadCategory($http, $scope)
       .then(() => {
-        loadStore($http, $scope, paginationService);
+        loadStore($http, $scope);
       });
 
     $scope.uploadImage = function () {
@@ -104,8 +104,10 @@ angular.module('myApp.product', ['ngRoute'])
 
       $scope.formattedDate = formattedDate;
       $scope.timeDifference = timeDifference;
-
-      loadCategory($http, $scope)
+      loadStore($http, $scope).
+        then(() => {
+          return loadCategory($http, $scope);
+        })
         .then(() => {
           return getProductById($http, $scope);
         })
@@ -114,6 +116,7 @@ angular.module('myApp.product', ['ngRoute'])
           $scope.productName = $scope?.product?.name
           $scope.categoryId = $scope.categories.find((s) => s.id === $scope.product.category.id)
           $scope.floorId = $scope.floors.find((s) => s.id === $scope.product.floor.id)
+          $scope.storeId = $scope.stores.find((s) => s.id === $scope.product.store.id)
           $scope.facilityId = $scope.facilities.find((s) => s.id == $scope.product.facilities)
           $scope.price = $scope?.product.variants.price
           $scope.stock = $scope?.product.variants.inStock
@@ -249,7 +252,7 @@ function uploadImage($scope) {
   })
 };
 
-function loadCategory($http, $scope, paginationService) {
+function loadCategory($http, $scope) {
   $scope.isLoading = true;
 
   var params = new URLSearchParams();
@@ -263,9 +266,6 @@ function loadCategory($http, $scope, paginationService) {
       console.log("Category", response);
       $scope.categories = response.data.data;
       $scope.total = response.data.total;
-      paginationService.setPage(response.data.page)
-      paginationService.setLimit(response.data.limit)
-      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
 
     })
@@ -276,7 +276,7 @@ function loadCategory($http, $scope, paginationService) {
     });
 }
 
-function loadStore($http, $scope, paginationService) {
+function loadStore($http, $scope) {
   $scope.isLoading = true;
 
   var params = new URLSearchParams();
@@ -290,9 +290,6 @@ function loadStore($http, $scope, paginationService) {
       $scope.limit = response.data.limit;
       $scope.page = response.data.page;
       $scope.total = response.data.total;
-      paginationService.setPage(response.data.page)
-      paginationService.setLimit(response.data.limit)
-      paginationService.setTotal(response.data.total)
       $scope.isLoading = false;
     })
     .catch(function (error) {
