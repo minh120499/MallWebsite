@@ -57,6 +57,14 @@ public static class Validations
                 { "name", "name is not blank" }
             });
         }
+        
+        if (request.Type is not ("product" and "store"))
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "type", "type must be product or store" }
+            });
+        }
 
         if (errors.Count > 0)
         {
@@ -108,6 +116,22 @@ public static class Validations
                 { "name", "name is not blank" }
             });
         }
+        
+        if (request.Message is null or "")
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "message", "message is not blank" }
+            });
+        }
+        
+        if (request.Email is null or "")
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "email", "email is not blank" }
+            });
+        }
 
         if (errors.Count > 0)
         {
@@ -140,6 +164,14 @@ public static class Validations
             errors.Add(new Dictionary<string, string>()
             {
                 { "name", "name is not blank" }
+            });
+        }
+        
+        if (request.OrdersLineItems == null || request.OrdersLineItems.Count == 0)
+        {
+            errors.Add(new Dictionary<string, string>()
+            {
+                { "order_line_item", "order_line_item is not blank" }
             });
         }
 
