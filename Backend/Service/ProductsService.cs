@@ -4,23 +4,16 @@ using Backend.Model.Request;
 using Backend.Model.Response;
 using Backend.Repository;
 using Backend.Utils;
-using Newtonsoft.Json;
 
 namespace Backend.Service
 {
     public class ProductsService
     {
         private readonly IProductsRepository _productsRepository;
-        private readonly IVariantsRepository _variantsRepository;
-        private readonly IProductCategoryRepository _productCategoryRepository;
 
-        public ProductsService(IProductsRepository productsRepository,
-            IProductCategoryRepository productCategoryRepository,
-            IVariantsRepository variantsRepository)
+        public ProductsService(IProductsRepository productsRepository)
         {
             _productsRepository = productsRepository;
-            _productCategoryRepository = productCategoryRepository;
-            _variantsRepository = variantsRepository;
         }
 
         public async Task<Product> GetById(int productId)
@@ -62,44 +55,8 @@ namespace Backend.Service
         public async Task<Product> Create(ProductRequest request)
         {
             Validations.Product(request);
-            var image = await FileHelper.UploadImage(request.FormFile);
-            var product = new Product()
-            {
-                Code = request.Code,
-                Image = image,
-                Name = request.Name,
-                StoreId = request.StoreId,
-                Description = request.Description,
-                Brand = request.Brand,
-            };
+            var productResponse = await _productsRepository.Add(request);
 
-            var productResponse = await _productsRepository.Add(product);
-            if (request.Categories != null)
-            {
-                var categoriesIds = JsonConvert.DeserializeObject<List<string>>(request.CategoriesIds)!;
-                var productCategory = categoriesIds
-                    .Select(c => new ProductCategory
-                    {
-                        ProductId = productResponse.Id,
-                        CategoryId = Convert.ToInt32(c)
-                    }).ToList();
-                await _productCategoryRepository.Add(productCategory);
-            }
-
-            if (request.Variant == null)
-            {
-                await _variantsRepository.Add(new Variant()
-                {
-                    Name = request.Name,
-                    ProductId = productResponse.Id,
-                    Code = request.Code,
-                    Description = request.Description,
-                    Image = image,
-                    Price = request.Price,
-                    InStock = request.InStock,
-                });
-            }
-            
             return await _productsRepository.GetById(productResponse.Id);
         }
 

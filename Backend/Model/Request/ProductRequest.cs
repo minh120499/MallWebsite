@@ -20,7 +20,7 @@ public class ProductRequest
     public List<Category>? Categories { get; set; }
     public string CategoriesIds { get; set; } = "[]";
 
-    public List<VariantRequest>? Variant { get; set; }
+    public List<Variant>? Variants { get; set; }
 
     public int StoreId { get; set; }
 

@@ -4,16 +4,19 @@ using Backend.Model.Entities;
 using Backend.Model.Request;
 using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Backend.Repository.Implements
 {
     public class ProductsRepository : IProductsRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoriesRepository _categoriesRepository;
 
-        public ProductsRepository(ApplicationDbContext context)
+        public ProductsRepository(ApplicationDbContext context, ICategoriesRepository categoriesRepository)
         {
             _context = context;
+            _categoriesRepository = categoriesRepository;
         }
 
         public async Task<Product> GetById(int productId)
@@ -58,18 +61,69 @@ namespace Backend.Repository.Implements
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse();
-            
+
             return await query.ToListAsync();
         }
 
-        public async Task<Product> Add(Product product)
+        public async Task<Product> Add(ProductRequest request)
         {
             try
             {
+                var image = await FileHelper.UploadImage(request.FormFile);
+                var product = new Product()
+                {
+                    Code = request.Code,
+                    Image = image,
+                    Name = request.Name,
+                    StoreId = request.StoreId,
+                    Description = request.Description,
+                    Brand = request.Brand,
+                };
+
+                if (request.Categories != null)
+                {
+                    var categoriesIds = JsonConvert.DeserializeObject<List<int>>(request.CategoriesIds)!;
+                    var categories = _categoriesRepository.GetByFilter(new FilterModel()
+                    {
+                        Ids = categoriesIds
+                    }).Result.Item2;
+
+                    if (categories == null || categories.Count == 0 || categories.Count != categoriesIds.Count)
+                    {
+                        throw new NotFoundException("categories not found");
+                    }
+
+                    foreach (var category in categories)
+                    {
+                        product.ProductCategory = new List<ProductCategory>
+                            { new() { Category = category } };
+                    }
+                }
+
+                if (request.Variants == null)
+                {
+                    product.Variants = new List<Variant>
+                    {
+                        new()
+                        {
+                            Name = request.Name,
+                            Code = request.Code,
+                            Description = request.Description,
+                            Image = image,
+                            Price = request.Price,
+                            InStock = request.InStock,
+                        }
+                    };
+                }
+
                 product.CreateOn = DateTime.Now;
                 product.ModifiedOn = DateTime.Now;
                 product.Status = StatusConstraint.ACTIVE;
+
+                await _context.Variants.AddRangeAsync(product.Variants!);
+                await _context.ProductCategories.AddRangeAsync(product.ProductCategory!);
                 var response = await _context.Products.AddAsync(product);
+
                 await _context.SaveChangesAsync();
 
                 return response.Entity;
@@ -91,7 +145,8 @@ namespace Backend.Repository.Implements
                 product.Name = request.Name;
                 product.Description = request.Description;
                 product.Brand = request.Brand;
-                // product.Variants = request.Variants;
+                product.StoreId = request.StoreId;
+                product.Variants = request.Variants;
                 product.Status = request.Status;
                 product.ModifiedOn = DateTime.Now;
                 await _context.SaveChangesAsync();

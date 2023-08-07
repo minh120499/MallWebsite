@@ -58,7 +58,7 @@ public static class Validations
             });
         }
         
-        if (request.Type is not ("product" and "store"))
+        if (request.Type != "product" && request.Type != "store")
         {
             errors.Add(new Dictionary<string, string>()
             {

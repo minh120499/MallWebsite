@@ -114,12 +114,10 @@ angular.module('myApp.product', ['ngRoute'])
         .then(() => {
           $scope.productStatus = $scope?.product?.status || 'active'
           $scope.productName = $scope?.product?.name
-          $scope.categoryId = $scope.categories.find((s) => s.id === $scope.product.category.id)
-          $scope.floorId = $scope.floors.find((s) => s.id === $scope.product.floor.id)
+          $scope.categoryId = $scope.categories.find((s) => s.id === $scope.product.productCategory[0].categoryId)
           $scope.storeId = $scope.stores.find((s) => s.id === $scope.product.store.id)
-          $scope.facilityId = $scope.facilities.find((s) => s.id == $scope.product.facilities)
-          $scope.price = $scope?.product.variants.price
-          $scope.stock = $scope?.product.variants.inStock
+          $scope.price = $scope?.product.variants[0]?.price
+          $scope.stock = $scope?.product.variants[0]?.inStock
         });
       $scope.uploadImage = function () {
         uploadImage($scope);
@@ -131,17 +129,27 @@ angular.module('myApp.product', ['ngRoute'])
 
       $scope.updateProduct = function () {
         const formData = new FormData();
-        if ($scope.product.name) formData.append("name", $scope.product.name)
-        if ($scope.product.code) formData.append("code", $scope.product.code)
-        if ($scope.product.brand) formData.append("brand", $scope.product.brand)
-        if ($scope.categoryId) formData.append("categoryId", typeof $scope.categoryId === "number" ? $scope.categoryId : $scope.categoryId.id)
-        if ($scope.storeId) formData.append("storeId", typeof $scope.storeId === "number" ? $scope.storeId : $scope.storeId.id)
-        if ($scope.price) formData.append("price", $scope.price)
-        if ($scope.stock) formData.append("inStock", $scope.stock)
-        if ($scope.product.description) formData.append("description", $scope.product.description)
-        if ($scope.productStatus) formData.append("status", $scope.productStatus)
-        if ($scope.fileData) formData.append("formFile", $scope.fileData)
-        if ($scope.image) formData.append("image", $scope.product.image)
+        if ($scope.product.name) formData.append("name", $scope.product.name);
+        if ($scope.product.code) formData.append("code", $scope.product.code);
+        if ($scope.product.brand) formData.append("brand", $scope.product.brand);
+        if ($scope.categoryId) formData.append("categoryId", typeof $scope.categoryId === "number" ? $scope.categoryId : $scope.categoryId.id);
+        if ($scope.storeId) formData.append("storeId", typeof $scope.storeId === "number" ? $scope.storeId : $scope.storeId.id);
+        if (!$scope.product.variants[0]) {
+          $scope.product.variants = [{
+            name: $scope.product.name,
+            code: $scope.product.code,
+            description: $scope.product.description,
+            price: $scope.price,
+            instock: $scope.stock,
+          }]
+        }
+        if ($scope.price) $scope.product.variants[0].price = $scope.price;
+        if ($scope.stock) $scope.product.variants[0].inStock = $scope.stock;
+        formData.append("variants", $scope.product.variants);
+        if ($scope.product.description) formData.append("description", $scope.product.description);
+        if ($scope.productStatus) formData.append("status", $scope.productStatus);
+        if ($scope.fileData) formData.append("formFile", $scope.fileData);
+        if ($scope.image) formData.append("image", $scope.product.image);
         updateProduct($http, $scope, formData)
           .finally(() => {
             getProductById($http, $scope);
