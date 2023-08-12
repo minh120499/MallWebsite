@@ -31,7 +31,7 @@ namespace Backend.Repository.Implements
         {
             var employees = await _context.Employees
                 .Where(u => u.FullName.Contains(filters.Query ?? ""))
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse()

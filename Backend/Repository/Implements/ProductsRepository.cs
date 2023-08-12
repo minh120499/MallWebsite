@@ -57,7 +57,7 @@ namespace Backend.Repository.Implements
                 query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
             }
 
-            query = query.OrderBy(u => u.Id)
+            query = query.OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse();

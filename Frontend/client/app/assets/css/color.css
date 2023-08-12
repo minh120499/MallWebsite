@@ -1,8 +1,14 @@
+:root {
+  --pimary: #c41d7f;
+  --secondary: #eb2f96;
+
+}
+
 .primary-color {
-  color: #b31e8d;
+  color: var(--pimary);
 }
 
 .primary-bg {
   color: #fff;
-  background-color: #b31e8d;
+  background-color: var(--pimary);
 }

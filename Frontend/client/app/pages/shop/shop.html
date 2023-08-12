@@ -14,7 +14,7 @@
   <div class="shop-box">
     <a href="{{store.id}}" class="shop-item hover-effect" ng-repeat="store in stores"
       ng-class="{'flex-direction-left': !isLeft($index)}">
-      <img src="http://localhost:5062{{store.image}}" />
+      <img src="{{store.image}}" />
       <div class="shop-info" ng-class="{'transform-left': !isLeft($index)}">
         <h3>{{ store.name }}</h3>
         <p>Floor: {{ store.floor.name }}</p>
@@ -22,6 +22,8 @@
       </div>
     </a>
   </div>
-  <pagination ng-if="total !== 0"></pagination>
+  <div ng-if="total !== 0" class="pagination-box">
+    <pagination></pagination>
+  </div>
   <empty-data ng-if="total === 0"></empty-data>
 </div>

@@ -13,7 +13,7 @@
   <div class="play-box">
     <a href="{{store.id}}" class="play-item hover-effect" ng-repeat="store in stores"
       ng-class="{'flex-direction-left': !isLeft($index)}">
-      <img src="http://localhost:5062{{store.image}}" />
+      <img src="{{store.image}}" />
       <div class="play-info" ng-class="{'transform-left': !isLeft($index)}">
         <h3>{{ store.name }}</h3>
         <p>Floor: {{ store.floor.name }}</p>

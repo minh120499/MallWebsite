@@ -83,7 +83,11 @@ angular.module('myApp.store', ['ngRoute'])
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
       if ($scope.phone) formData.append("phone", $scope.phone)
       if ($scope.email) formData.append("email", $scope.email)
-      createStore($http, $scope, formData);
+      $scope.isLoading = true;
+      createStore($http, $scope, formData)
+        .finally(() => {
+          $scope.isLoading = false;
+        });
     };
   }])
   .controller('StoreEditCtrl', ['$scope', '$http', '$filter', '$routeParams', '$location', 'paginationService',
@@ -202,9 +206,7 @@ function updateStore($http, $scope, formData) {
 }
 
 function createStore($http, $scope, formData) {
-  $scope.isLoading = true;
-  console.log($scope);
-  $http.post('/api/stores', formData, {
+  return $http.post('/api/stores', formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity
   })

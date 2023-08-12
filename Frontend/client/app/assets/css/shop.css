@@ -17,6 +17,7 @@
   background: #efefef;
   width: 100%;
 }
+
 /* 
   * serach
 */
@@ -94,7 +95,9 @@
   gap: 8px;
   width: 200px;
   height: 100px;
-  background: red;
+  border: 1px solid var(--secondary);
+  background: var(--secondary);
+  color: #fff;
   transform: translateX(-25%);
 }
 
@@ -104,4 +107,10 @@
 
 .flex-direction-left {
   flex-direction: row-reverse !important;
+}
+
+.pagination-box {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

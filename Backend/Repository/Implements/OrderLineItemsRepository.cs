@@ -31,7 +31,7 @@ namespace Backend.Repository.Implements
         {
             var orderLineItems = await _context.OrderLineItems
                 .Where(u => u.ProductName != null && u.ProductName.Contains(filters.Query ?? ""))
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse()

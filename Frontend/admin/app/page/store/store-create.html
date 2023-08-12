@@ -3,12 +3,12 @@
   </div>
 
   <div class="form-title-action">
-    <a href="#/stores">
-      <button class="button-create button primary-outline">
+    <button class="button-create button primary-outline" ng-class="{ 'loading': isLoading }">
+      <a href="#/stores">
         <span>Cancel</span>
-      </button>
-    </a>
-    <button class="button-create button primary" ng-click="createStore()">
+      </a>
+    </button>
+    <button class="button-create button primary" ng-click="createStore()" ng-class="{ 'loading': isLoading }">
       <i class='bx bx-edit'></i>
       <span>Create</span>
     </button>
@@ -73,7 +73,7 @@
 
   <div class="form-group">
     <div class="form-item">
-      <button class="input-upload button primary" ng-click="uploadImage()">
+      <button class="input-upload button primary" ng-click="uploadImage()" ng-class="{ 'loading': isLoading }">
         <i class='bx bx-upload'></i>
         <sapn>Upload file</sapn>
       </button>

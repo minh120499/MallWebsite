@@ -31,7 +31,7 @@ namespace Backend.Repository.Implements
         {
             var feedbacks = await _context.Feedbacks
                 .Where(f => f.Name != null && f.Name.Contains(filters.Query ?? ""))
-                .OrderBy(f => f.Id)
+                .OrderByDescending(f => f.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse()

@@ -30,7 +30,7 @@ namespace Backend.Repository.Implements
         public async Task<List<Order>> GetByFilter(FilterModel filters)
         {
             var orders = await _context.Orders
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse()

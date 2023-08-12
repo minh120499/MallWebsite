@@ -96,7 +96,7 @@ angular.module('myApp.category', ['ngRoute'])
     $scope.name = "";
     $scope.fileData = "";
     $scope.fileName = "";
-
+    $scope.type = "product"
     $scope.uploadImage = function () {
       uploadImage($scope);
     };
@@ -106,7 +106,11 @@ angular.module('myApp.category', ['ngRoute'])
       if ($scope.name) formData.append("name", $scope.name)
       if ($scope.type) formData.append("type", $scope.type)
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
-      createCategory($http, $scope, formData);
+      $scope.isLoading = true;
+      createCategory($http, $scope, formData)
+        .finally(() => {
+          $scope.isLoading = false;
+        });
     };
   }])
   .controller('CategoryEditCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
@@ -134,6 +138,7 @@ angular.module('myApp.category', ['ngRoute'])
     $scope.updateCategory = function () {
       const formData = new FormData();
       if ($scope.categoryName) formData.append("name", $scope.categoryName)
+      if ($scope.type) formData.append("type", $scope.type)
       if ($scope.type) formData.append("type", $scope.type)
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
       if ($scope.categoryStatus) formData.append("status", $scope.categoryStatus)
@@ -176,7 +181,7 @@ function loadCategories($http, $scope, paginationService) {
 
 function createCategory($http, $scope, formData) {
   $scope.isLoading = true;
-  $http.post('/api/categories', formData, {
+  return $http.post('/api/categories', formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity
   })

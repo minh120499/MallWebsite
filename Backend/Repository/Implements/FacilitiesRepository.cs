@@ -34,7 +34,7 @@ namespace Backend.Repository.Implements
                 .Where(u => u.Name != null &&
                             u.Name!.Contains(filters.Query ?? "") &&
                             u.Status!.Equals(StatusConstraint.ACTIVE))
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
                 .Reverse()

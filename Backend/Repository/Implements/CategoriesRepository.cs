@@ -54,10 +54,9 @@ public class CategoriesRepository : ICategoriesRepository
 
         var totalCount = await query.CountAsync();
 
-        query = query.OrderBy(u => u.Id)
+        query = query.OrderByDescending(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
-            .Take(filters.Limit)
-            .Reverse();
+            .Take(filters.Limit);
 
         return (totalCount, await query.ToListAsync());
     }
