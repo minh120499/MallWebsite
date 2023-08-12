@@ -28,8 +28,6 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  border-top: 1px solid black;
-  padding-top: 16px;
 }
 
 .setting-box .button-add {

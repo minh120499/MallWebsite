@@ -89,12 +89,10 @@
             <!-- Action -->
             <td>
               <div class="column-action">
-                <button class="edit" ng-click="edit($index)" ng-if="editIndex !== $index">
-                  <i class='bx bx-edit-alt'></i>
-                </button>
-
-                <button class="edit" ng-click="handleEdit($index)" ng-if="editIndex === $index">
-                  <i class='bx bx-save'></i>
+                <button class="edit">
+                  <a href="#/categories/{{item.id}}/edit">
+                    <i class='bx bx-edit-alt icon'></i>
+                  </a>
                 </button>
 
                 <button class="delete" ng-click="showDeleteConfirm(item)">

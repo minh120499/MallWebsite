@@ -81,7 +81,11 @@ angular.module('myApp.banner', ['ngRoute'])
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
       if ($scope.bannerStart) formData.append("startOn", $filter('date')($scope.bannerStart, 'yyyy-MM-ddTHH:mm:ss'))
       if ($scope.bannerEnd) formData.append("endOn", $filter('date')($scope.bannerEnd, 'yyyy-MM-ddTHH:mm:ss'))
-      createBanner($http, $scope, formData);
+      $scope.isLoading = true;
+      createBanner($http, $scope, formData)
+        .finally(() => {
+          $scope.isLoading = false;
+        });
     };
   }])
 
@@ -114,7 +118,7 @@ angular.module('myApp.banner', ['ngRoute'])
         $scope.bannerStatus = $scope.bannerStatus === "active" ? "inactive" : "active"
       };
 
-      $scope.updateBanner = function () {
+      $scope.updateBanner = async function () {
         const formData = new FormData();
         if ($scope.bannerName) formData.append("name", $scope.bannerName)
         if ($scope.storeId) formData.append("storeId", typeof $scope.storeId === "number" ? $scope.storeId : $scope.storeId.id)
@@ -123,9 +127,11 @@ angular.module('myApp.banner', ['ngRoute'])
         if ($scope.bannerEnd) formData.append("endOn", $filter('date')($scope.bannerEnd, 'yyyy-MM-ddTHH:mm:ss'))
         if ($scope.bannerStatus) formData.append("status", $scope.bannerStatus)
         if ($scope.image) formData.append("image", $scope.image)
+        $scope.isLoading = true;
         updateBanner($http, $scope, formData)
           .finally(() => {
             getBannerById($http, $scope);
+            $scope.isLoading = false;
           });
       }
     }]);
@@ -184,8 +190,6 @@ function getBannerById($http, $scope) {
 }
 
 function updateBanner($http, $scope, formData) {
-  $scope.isLoading = true;
-
   return $http.put(`/api/banners/${$scope.bannerId}`, formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity
@@ -200,8 +204,6 @@ function updateBanner($http, $scope, formData) {
 }
 
 function createBanner($http, $scope, formData) {
-  $scope.isLoading = true;
-
   return $http.post('/api/banners', formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity

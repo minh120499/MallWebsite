@@ -10,21 +10,22 @@
       <div class="setting-box-main" ng-if="!facilities || !facilities.length">
         <empty-data>
       </div>
-      <div class="setting-box-main" ng-if="facilities && facilities.length > 0">
-        <div class="content-table">
-          <div class="table-line-header">
-            <div style="width: 50px;">Stt</div>
-            <div style="flex-grow: 1">Name</div>
-            <div style="width: 450px;">Description</div>
-            <div style="width: 100px;">Status</div>
-            <div style="width: 100px;"></div>
-          </div>
-          <div>
-            <div class="table-line-row" ng-repeat="item in facilities">
-              <!-- index -->
-              <div style="width: 50px;">{{ $index + 1 }}</div>
+      <table class="content-table" ng-if="facilities && facilities.length > 0">
+        <thead>
+          <tr>
+            <th class="column-index">Stt</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="column-status">Status</th>
+            <th class="column-actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in facilities">
+            <td>{{ $index + 1 }}</td>
 
-              <!-- Name -->
+            <!-- Name -->
+            <td>
               <div style="flex-grow: 1" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
                 {{ item.name }}
               </div>
@@ -38,8 +39,11 @@
                   <input ng-change="changeFacility(this, $index)" ng-model="editItem.name" placeholder="Name..." />
                 </div>
               </div>
+            </td>
 
-              <!-- Description -->
+
+            <!-- Description -->
+            <td>
               <div style="width: 450px;" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
                 {{ item.description }}
               </div>
@@ -55,8 +59,11 @@
                     placeholder="Description..." />
                 </div>
               </div>
+            </td>
 
-              <!-- Status -->
+
+            <!-- Status -->
+            <td>
               <div style="width: 100px;" ng-if="item.status && (editIndex !== $index || editContext !== 'facilities')">
                 <badge type="item.status"></badge>
               </div>
@@ -71,8 +78,10 @@
                   <badge type="editItem.status"></badge>
                 </div>
               </div>
+            </td>
 
-              <!-- Action -->
+            <!-- Action -->
+            <td>
               <div style="width: 100px;">
                 <div ng-if="item.status" class="column-action">
                   <button class="edit" ng-click="edit($index, 'facilities')"
@@ -93,12 +102,11 @@
                   <button ng-click="remove($index, 'facilities')">x</button>
                 </div>
               </div>
-              <!-- Action -->
-
-            </div>
-          </div>
-        </div>
-      </div>
+            </td>
+            <!-- Action -->
+          </tr>
+        </tbody>
+      </table>
       <div class="action-box">
         <div ng-if="isChangeFacilities">
           <div class="button-save" ng-click="saveSetting()">Save</div>
@@ -115,22 +123,23 @@
       <div class="setting-box-main" ng-if="!floors || !floors.length">
         <empty-data>
       </div>
-      <div class="setting-box-main" ng-if="floors && floors.length > 0">
-        <div class="content-table">
-          <div class="table-line-header">
-            <div style="width: 50px;">Stt</div>
-            <div class="grow">Name</div>
-            <div style="width: 200px;">Area</div>
-            <div style="width: 450px;">Description</div>
-            <div style="width: 100px;">Status</div>
-            <div style="width: 100px;"></div>
-          </div>
-          <div>
-            <div class="table-line-row" ng-repeat="item in floors">
-              <!-- index -->
-              <div style="width: 50px;">{{ $index + 1 }}</div>
+      <table class="content-table" ng-if="floors && floors.length > 0">
+        <thead>
+          <tr>
+            <th class="column-index">Stt</th>
+            <th>Name</th>
+            <!-- <th>Area</th> -->
+            <th>Description</th>
+            <th class="column-status">Status</th>
+            <th class="column-actions"></th>
+          </tr>
+        <tbody>
+          <tr ng-repeat="item in floors">
+            <!-- index -->
+            <td>{{ $index + 1 }}</td>
 
-              <!-- Name -->
+            <!-- Name -->
+            <td>
               <div class="grow" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
                 {{ item.name }}
               </div>
@@ -144,9 +153,10 @@
                   <input ng-change="changeFloors(this, $index)" ng-model="editItem.name" placeholder="Name..." />
                 </div>
               </div>
+            </td>
 
-              <!-- Area -->
-              <!-- <div style="width: 200px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
+            <!-- Area -->
+            <!-- <div style="width: 200px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
                 {{ item.area }}
               </div>
               <div style="width: 200px;" ng-if="!item.status">
@@ -160,7 +170,8 @@
                 </div>
               </div> -->
 
-              <!-- Description -->
+            <!-- Description -->
+            <td>
               <div style="width: 450px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
                 {{ item.description }}
               </div>
@@ -175,8 +186,10 @@
                     placeholder="Description..." />
                 </div>
               </div>
+            </td>
 
-              <!-- Status -->
+            <!-- Status -->
+            <td>
               <div style="width: 100px;" ng-if="item.status && (editIndex !== $index || editContext !== 'floors')">
                 <badge type="item.status"></badge>
               </div>
@@ -191,8 +204,10 @@
                   <badge type="editItem.status"></badge>
                 </div>
               </div>
+            </td>
 
-              <!-- Action -->
+            <!-- Action -->
+            <td>
               <div style="width: 100px;">
                 <div ng-if="item.status" class="column-action">
                   <button class="edit" ng-click="edit($index, 'floors')"
@@ -213,11 +228,12 @@
                   <button ng-click="remove($index, 'floors')">x</button>
                 </div>
               </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
+            </td>
+            <!-- Action -->
+          </tr>
+        </tbody>
+        </thead>
+      </table>
       <div class="action-box">
         <div ng-if="isChangeFloors">
           <div class="button-save" ng-click="saveSetting()">Save</div>

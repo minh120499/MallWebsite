@@ -14,11 +14,11 @@
 
   <div class="form-title-action">
     <a href="#/banners">
-      <button class="button-create button primary-outline">
+      <button class="button-create button primary-outline" ng-class="{ 'loading': isLoading }">
         <span>Cancel</span>
       </button>
     </a>
-    <button class="button-create button primary" ng-click="updateBanner()">
+    <button class="button-create button primary" ng-click="updateBanner()" ng-class="{ 'loading': isLoading }">
       <i class='bx bx-edit'></i>
       <span>Save</span>
     </button>
@@ -54,7 +54,7 @@
 
   <div class="form-group">
     <div class="form-item">
-      <button class="input-upload button primary" ng-click="uploadImage()">
+      <button class="input-upload button primary" ng-click="uploadImage()" ng-class="{ 'loading': isLoading }">
         <i class='bx bx-upload'></i>
         <sapn>Upload file</sapn>
       </button>

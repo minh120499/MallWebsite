@@ -42,9 +42,40 @@
   gap: 4px;
 }
 
-.label {
-  font-size: 1.2rem;
-  padding: 10px 10px 0;
+.button::after {
+  content: '';
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+  position: absolute;
+  left: calc(50% - 0.75em);
+  top: calc(50% - 0.75em);
+  border: 0.15em solid transparent;
+  border-right-color: white;
+  border-radius: 50%;
+  animation: button-anim 0.7s linear infinite;
+  opacity: 0;
+}
+
+@keyframes button-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button.loading {
+  color: transparent;
+}
+
+.button.loading::after {
+  opacity: 1;
+}
+.loading {
+  cursor: default;
+  pointer-events: none;
 }
 
 .form-item input:hover {

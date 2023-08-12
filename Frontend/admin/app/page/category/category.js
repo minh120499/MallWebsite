@@ -9,6 +9,10 @@ angular.module('myApp.category', ['ngRoute'])
       .when('/categories/create', {
         templateUrl: 'page/category/category-create.html',
         controller: 'CategoryCreateCtrl'
+      })
+      .when('/categories/:id/edit', {
+        templateUrl: 'page/category/category-edit.html',
+        controller: 'CategoryEditCtrl'
       });
   }])
 
@@ -104,7 +108,45 @@ angular.module('myApp.category', ['ngRoute'])
       if ($scope.fileData) formData.append("formFile", $scope.fileData)
       createCategory($http, $scope, formData);
     };
-  }]);
+  }])
+  .controller('CategoryEditCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+    document.title = 'Edit Category';
+
+    $scope.data = undefined;
+    $scope.error = undefined;
+    $scope.isLoading = false;
+    $scope.name = "";
+    $scope.fileData = "";
+    $scope.fileName = "";
+    $scope.categoryId = $routeParams.id;
+
+
+    getCategoriesById($http, $scope);
+
+    $scope.uploadImage = function () {
+      uploadImage($scope);
+    };
+
+    $scope.toggleStatus = () => {
+      $scope.categoryStatus = $scope.categoryStatus === "active" ? "inactive" : "active"
+    };
+
+    $scope.updateCategory = function () {
+      const formData = new FormData();
+      if ($scope.categoryName) formData.append("name", $scope.categoryName)
+      if ($scope.type) formData.append("type", $scope.type)
+      if ($scope.fileData) formData.append("formFile", $scope.fileData)
+      if ($scope.categoryStatus) formData.append("status", $scope.categoryStatus)
+      if ($scope.image) formData.append("image", $scope.image)
+      $scope.isLoading = true;
+      updateCategory($http, $scope, formData)
+        .finally(() => {
+          getCategoriesById($http, $scope);
+          $scope.isLoading = false;
+        });;
+    };
+  }])
+
 
 
 function loadCategories($http, $scope, paginationService) {
@@ -169,21 +211,35 @@ function uploadImage($scope) {
   })
 };
 
-function editCategory($http, $scope, paginationService) {
-  const formData = new FormData();
-  if ($scope.editItem?.name) formData.append("name", $scope.editItem.name)
-  if ($scope.editItem?.type) formData.append("type", $scope.editItem.type)
-  if ($scope.editItem?.image) formData.append("image", $scope.editItem.image)
-  if ($scope.editItem?.fileData) formData.append("formFile", $scope.fileData)
-  if ($scope.editItem?.id) formData.append("id", $scope.editItem.id)
-  if ($scope.editItem?.status) formData.append("status", $scope.editItem.status)
+function getCategoriesById($http, $scope) {
+  $scope.isLoading = true;
 
-  $http.put(`/api/categories/${$scope.editItem.id}`, formData, {
+  return $http.get(`/api/categories/${$scope.categoryId}`)
+    .then(function (response) {
+      const { name, type, image, status } = response.data;
+      $scope.category = response.data;
+      $scope.categoryName = name;
+      $scope.type = type;
+      $scope.image = image;
+      $scope.categoryStatus = status;
+      $scope.isLoading = false;
+    })
+    .then(() => {
+      renderImage($scope.image);
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      $scope.error = error;
+    });
+}
+
+function updateCategory($http, $scope, formData) {
+  return $http.put(`/api/categories/${$scope.categoryId}`, formData, {
     headers: { 'Content-Type': undefined },
     transformRequest: angular.identity
   })
     .then(function () {
-      loadCategories($http, $scope, paginationService);
+      // loadCategories($http, $scope, paginationService);
       $scope.editIndex = -1;
       $scope.editItem = {};
       showSuccessToast("Update success!");

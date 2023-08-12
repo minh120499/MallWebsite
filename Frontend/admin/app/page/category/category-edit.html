@@ -1,5 +1,12 @@
 <div class="form-title">
   <div class="form-title-content">
+    <h3>{{category.name}}</h3>
+    <div ng-if="categoryStatus === 'active'" ng-click="toggleStatus()">
+      <badge type="categoryStatus"></badge>
+    </div>
+    <div ng-if="categoryStatus !== 'active'" ng-click="toggleStatus()">
+      <badge type="categoryStatus"></badge>
+    </div>
   </div>
 
   <div class="form-title-action">
@@ -8,9 +15,9 @@
         <span>Cancel</span>
       </button>
     </a>
-    <button class="button-create button primary" ng-click="createCategory()" ng-class="{ 'loading': isLoading }">
+    <button class="button-create button primary" ng-click="updateCategory()" ng-class="{ 'loading': isLoading }">
       <i class='bx bx-edit'></i>
-      <span>Create</span>
+      <span>Save</span>
     </button>
   </div>
 </div>
@@ -18,8 +25,8 @@
 <div class="form-container">
   <div class="form-group">
     <div class="form-item">
-      <label class="label" for="name">Name</label>
-      <input id="name" ng-model="name" placeholder="Name..." />
+      <label class="label" for="category-name">Name</label>
+      <input id="category-name" ng-model="categoryName" placeholder="Name..." />
     </div>
 
     <div class="form-item">
