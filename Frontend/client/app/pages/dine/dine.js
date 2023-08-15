@@ -12,22 +12,25 @@ angular.module('myApp.dine', ['ngRoute'])
     function ($scope, $http, $rootScope, $location, paginationService) {
       document.title = 'Home';
 
-      const { query, page, limit } = $location.search();
+      const { page, limit } = $location.search();
 
       $scope.limit = Number(limit || 10);
       $scope.page = Number(page || 1);
       $scope.total = 0;
-      $scope.query = query || "";
 
       $scope.stores = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
+      $scope.loadFilter = false;
 
-      $scope.isLeft = function(index) {
+      $scope.isLeft = function (index) {
         return index % 4 === 0 || index % 4 === 1;
       };
 
-      loadStore($http, $scope, paginationService)
+      loadStore($http, $scope, $location, paginationService)
+        .then(() => {
+          $scope.loadFilter = true;
+        })
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -35,13 +38,18 @@ angular.module('myApp.dine', ['ngRoute'])
     }]);
 
 
-function loadStore($http, $scope, paginationService) {
+function loadStore($http, $scope, $location, paginationService) {
   $scope.isLoading = true;
 
+  var params = $location.search();
+  const { query, floorId, categoryId, facilityIds } = params;
   var params = new URLSearchParams();
   $scope.page && params.append('page', $scope.page);
   $scope.limit && params.append('limit', $scope.limit);
-  $scope.query && params.append('query', $scope.query);
+  query && params.append('query', query);
+  floorId && params.append('floorId', floorId);
+  categoryId && params.append('categoryId', categoryId);
+  facilityIds && params.append('facilityIds', facilityIds);
 
   return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {

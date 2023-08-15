@@ -11,7 +11,8 @@ public class FilterModel
     public List<int> Ids { get; set; } = new List<int>();
     public int StoreId { get; set; }
     public string? Type { get; set; }
-    
     public string? Category { get; set; }
     public int? CategoryId { get; set; }
+    public int? FloorId { get; set; }
+    public string? FacilityIds { get; set; }
 }

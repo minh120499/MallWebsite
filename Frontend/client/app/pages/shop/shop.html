@@ -1,18 +1,9 @@
 <div class="shop-container">
   <div class="shop-filter-box">
-    <filter-box />
-    <!-- <div class="filter-box">
-      <h4>Filter</h4>
-    </div>
-    <div class="search-box">
-      <div class="search-input">
-        <input ng-model="query" placeholder="Enter to search..." ng-keypress="onKeyPress($event)" />
-      </div>
-      <button class="search-btn" ng-click="searchStore()">search</button>
-    </div> -->
+    <filter-box ng-if="loadFilter" />
   </div>
   <div class="shop-box">
-    <a href="{{store.id}}" class="shop-item hover-effect" ng-repeat="store in stores"
+    <a href="#/shop/{{store.id}}" class="shop-item hover-effect" ng-repeat="store in stores"
       ng-class="{'flex-direction-left': !isLeft($index)}">
       <img src="{{store.image}}" />
       <div class="shop-info" ng-class="{'transform-left': !isLeft($index)}">

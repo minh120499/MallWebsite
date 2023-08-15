@@ -50,37 +50,9 @@ angular.module('myApp').service('paginationService', function () {
     },
     setTotal: function (value) {
       total = value;
-    }
+    },
   };
 });
-
-angular.module('myApp').service('paginationService', function () {
-  let page = 1;
-  let limit = 10;
-  let total = 0;
-
-  return {
-    getPage: function () {
-      return page;
-    },
-    setPage: function (value) {
-      page = value;
-    },
-    getLimit: function () {
-      return limit;
-    },
-    setLimit: function (value) {
-      limit = value;
-    },
-    getTotal: function () {
-      return total;
-    },
-    setTotal: function (value) {
-      total = value;
-    }
-  };
-});
-
 
 angular.module('myApp').component('app', {
   templateUrl: 'app.html',

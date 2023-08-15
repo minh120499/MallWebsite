@@ -13,7 +13,7 @@
   .filter-box .search .search-input {
     flex-grow: 1;
   }
-  
+
   .filter-box .search .search-btn {
     display: flex;
   }
@@ -34,31 +34,35 @@
 <div class="filter-box">
   <div class="search">
     <div class="search-input">
-      <input class="form-control" type="text" placeholder="Search" />
+      <input ng-model="query" class="form-control" type="text" placeholder="Search" />
     </div>
     <div class="search-btn">
-      <button type="submit" class="">Search</button>
+      <button type="submit" class="" ng-click="handleSearch()">Search</button>
     </div>
   </div>
+
   <div class="filter">
     <div class="form-group col-sm-3 col-xs-6">
-      <select data-filter="make" class="filter-make filter form-control">
-        <option value="">Select Make</option>
-        <option value="">Show All</option>
+      <select ng-model="floorId" class="form-item select-dropdown" ng-change="handleSearch()">
+        <option value="">All floor</option>
+        <option ng-repeat="floor in floors" value="{{floor.id}}" ng-bind="floor.name"></option>
       </select>
     </div>
+
     <div class="form-group col-sm-3 col-xs-6">
-      <select data-filter="model" class="filter-model filter form-control">
-        <option value="">Select Model</option>
-        <option value="">Show All</option>
+      <select ng-model="categoryId" class="form-item select-dropdown" ng-change="handleSearch()">
+        <option value="">All category</option>
+        <option ng-repeat="category in categories" value="{{category.id}}" ng-bind="category.name"></option>
       </select>
     </div>
+
     <div class="form-group col-sm-3 col-xs-6">
-      <select data-filter="type" class="filter-type filter form-control">
-        <option value="">Select Type</option>
-        <option value="">Show All</option>
+      <select ng-model="facilityIds" class="form-item select-dropdown" ng-change="handleSearch()">
+        <option value="">All facility</option>
+        <option ng-repeat="facility in facilities" value="{{facility.id}}" ng-bind="facility.name"></option>
       </select>
     </div>
+
     <div class="form-group col-sm-3 col-xs-6">
       <select data-filter="price" class="filter-price filter form-control">
         <option value="">Select Price Range</option>

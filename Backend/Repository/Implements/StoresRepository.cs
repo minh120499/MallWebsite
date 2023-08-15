@@ -54,6 +54,21 @@ namespace Backend.Repository.Implements
                 query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
             }
 
+            if (filters.FloorId > 0)
+            {
+                query = query.Where(u => u.FloorId == filters.FloorId);
+            }
+
+            if (filters.CategoryId > 0)
+            {
+                query = query.Where(u => u.CategoryId == filters.CategoryId);
+            }
+
+            if (!string.IsNullOrEmpty(filters.FacilityIds))
+            {
+                query = query.Where(u => u.Facilities!.Equals(filters.FacilityIds));
+            }
+
             if (!string.IsNullOrEmpty(filters.Category))
             {
                 query = query.Where(u =>

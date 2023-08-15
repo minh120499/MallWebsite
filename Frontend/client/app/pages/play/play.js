@@ -17,14 +17,16 @@ angular.module('myApp.play', ['ngRoute'])
       $scope.limit = Number(limit || 10);
       $scope.page = Number(page || 1);
       $scope.total = 0;
-      $scope.query = query || "";
 
       $scope.banners = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
+      $scope.loadFilter = false;
 
-      loadBanner($http, $scope, paginationService)
-        .then(startSlick);
+      loadStore($http, $scope, $location, paginationService)
+        .then(() => {
+          $scope.loadFilter = true;
+        })
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -32,17 +34,21 @@ angular.module('myApp.play', ['ngRoute'])
     }]);
 
 
-function loadBanner($http, $scope, paginationService) {
+function loadStore($http, $scope, $location, paginationService) {
   $scope.isLoading = true;
+  const { query, floorId, categoryId, facilityIds } = $location.search();
 
   var params = new URLSearchParams();
   $scope.page && params.append('page', $scope.page);
   $scope.limit && params.append('limit', $scope.limit);
-  $scope.query && params.append('query', $scope.query);
+  query && params.append('query', query);
+  floorId && params.append('floorId', floorId);
+  categoryId && params.append('categoryId', categoryId);
+  facilityIds && params.append('facilityIds', facilityIds);
 
-  return $http.get(`/api/banners${params.size ? "?" + params.toString() : ""}`)
+  return $http.get(`/api/stores${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
-      $scope.banners = response.data.data;
+      $scope.stores = response.data.data;
       $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)

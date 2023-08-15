@@ -1,20 +1,12 @@
-<div class="play-container">
-  <div class="play-filter-box">
-    <div class="filter-box">
-      <h4>Filter</h4>
-    </div>
-    <div class="search-box">
-      <div class="search-input">
-        <input />
-      </div>
-      <button class="search-btn">search</button>
-    </div>
+<div class="dine-container">
+  <div class="dine-filter-box">
+    <filter-box ng-if="loadFilter" />
   </div>
-  <div class="play-box">
-    <a href="{{store.id}}" class="play-item hover-effect" ng-repeat="store in stores"
+  <div class="dine-box">
+    <a href="{{store.id}}" class="dine-item hover-effect" ng-repeat="store in stores"
       ng-class="{'flex-direction-left': !isLeft($index)}">
       <img src="{{store.image}}" />
-      <div class="play-info" ng-class="{'transform-left': !isLeft($index)}">
+      <div class="dine-info" ng-class="{'transform-left': !isLeft($index)}">
         <h3>{{ store.name }}</h3>
         <p>Floor: {{ store.floor.name }}</p>
         <p>Phone: {{ store.name }}</p>

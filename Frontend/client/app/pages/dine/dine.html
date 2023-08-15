@@ -1,14 +1,6 @@
 <div class="dine-container">
   <div class="dine-filter-box">
-    <div class="filter-box">
-      <h4>Filter</h4>
-    </div>
-    <div class="search-box">
-      <div class="search-input">
-        <input />
-      </div>
-      <button class="search-btn">search</button>
-    </div>
+    <filter-box ng-if="loadFilter" />
   </div>
   <div class="dine-box">
     <a href="{{store.id}}" class="dine-item hover-effect" ng-repeat="store in stores"
