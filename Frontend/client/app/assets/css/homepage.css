@@ -1,6 +1,8 @@
 #brand {
-  padding: 70px 0;
-  margin: 0 10%;
+  margin: 70px 0;
+  padding: 0 10%;
+  background: #fff0f6;
+  padding-bottom: 1rem;
 }
 
 #brand h3 {

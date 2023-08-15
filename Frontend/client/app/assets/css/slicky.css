@@ -5,10 +5,15 @@
   background: #fff;
 }
 
-#banner img,
-#brand img {
+#banner img {
   width: 100%;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 300px);
+  object-fit: cover;
+}
+
+#brand img {
+  margin: 0 auto;
+  max-height: 300px;
   object-fit: cover;
 }
 
@@ -41,6 +46,7 @@
 .slick-dots li.slick-active button {
   background-color: red;
 }
+
 /* slick dots css */
 
 /* slick arrow css */
@@ -55,11 +61,13 @@
   -moz-appearance: none;
   appearance: none;
 }
+
 .slide-arrow {
   position: absolute;
   top: 50%;
   margin-top: -15px;
 }
+
 .slick-arrow.prev-arrow {
   left: 40px;
   width: 0;
@@ -70,6 +78,7 @@
   border-bottom: 10px solid transparent;
   z-index: 10;
 }
+
 .slick-arrow.next-arrow {
   right: 40px;
   width: 0;
@@ -80,4 +89,5 @@
   border-bottom: 10px solid transparent;
   z-index: 10;
 }
+
 /* slick arrow css */

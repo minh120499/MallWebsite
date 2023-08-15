@@ -5,8 +5,8 @@ export default angular.module('myApp')
       function PaginationController($scope, $location, $http, paginationService) {
         $scope.page = $location.path().slice(1) || "home";
 
-        $scope.setPage = function (page) {
-          $scope.page = page
-        }
+        $scope.setPage = function (pageName) {
+          $scope.page = pageName
+        };
       }]
   });

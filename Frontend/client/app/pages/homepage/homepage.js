@@ -81,10 +81,20 @@ function loadStore($http, $scope) {
 const startSlick = () => {
   setTimeout(() => {
     $('.slick').slick({
-      // autoplay: true,
+      autoplay: true,
       autoplaySpeed: 2000,
       dots: true,
       slidesToShow: 1,
+      slidesToScroll: 1,
+      prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+      nextArrow: '<button class="slide-arrow next-arrow"></button>',
+    })
+
+    $('.slickBrand').slick({
+      autoplay: true,
+      autoplaySpeed: 5000,
+      dots: true,
+      slidesToShow: 3,
       slidesToScroll: 1,
       prevArrow: '<button class="slide-arrow prev-arrow"></button>',
       nextArrow: '<button class="slide-arrow next-arrow"></button>',

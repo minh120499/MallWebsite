@@ -8,9 +8,11 @@
 
 <div id="brand">
   <h3>BRAND AT RMALL</h3>
-  <div class="slick" ng-if="stores.length > 0">
+  <div class="slickBrand" ng-if="stores.length > 0">
     <div ng-repeat="store in stores">
-      <img src="{{store.image}}" />
+      <a href="#/shop/{{store.id}}">
+        <img src="{{store.image}}" />
+      </a>
     </div>
   </div>
 </div>
