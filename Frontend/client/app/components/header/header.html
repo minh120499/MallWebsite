@@ -1,21 +1,57 @@
 <style>
-  .header-top {
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  header nav ul {
+    display: flex;
+    gap: 8px;
+  }
+
+  header nav li {
     padding: 20px;
+    cursor: pointer;
+  }
+
+  .active {
+    background: red;
   }
 </style>
 
-<div class="header-top primary-bg">
-  <div>Mall house: 10-22</div>
-</div>
-<div class="header-container h-16 flex justify-between px-40 gap-6 items-center">
-  <div>Logo</div>
+
+<header class="h-16 px-40 gap-6 items-center primary-bg">
+  <div>
+    <div>Logo</div>
+    <div>Mall house: 10-22</div>
+  </div>
   <nav class="">
     <ul class="menu flex justify-between w-full">
-      <li><a href="#/">Home</a></li>
-      <li><a href="#/shop">Shop</a></li>
-      <li><a href="#/dine">Dine</a></li>
-      <li><a href="#/play">Play</a></li>
-      <li><a href="#/info">Infor</a></li>
+      <a href="#/">
+        <li ng-click="setPage('home')" ng-class="{ 'active': page === 'home' }">
+          Home
+        </li>
+      </a>
+      <a href="#/shop">
+        <li ng-click="setPage('shop')" ng-class="{ 'active': page === 'shop' }">
+          Shop
+        </li>
+      </a>
+      <a href="#/dine">
+        <li ng-click="setPage('dine')" ng-class="{ 'active': page === 'dine' }">
+          Dine
+        </li>
+      </a>
+      <a href="#/play">
+        <li ng-click="setPage('play')" ng-class="{ 'active': page === 'play' }">
+          Play
+        </li>
+      </a>
+      <a href="#/info">
+        <li ng-click="setPage('info')" ng-class="{ 'active': page === 'info' }">
+          Infor
+        </li>
+      </a>
     </ul>
   </nav>
-</div>
+</header>
