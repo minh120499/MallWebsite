@@ -98,17 +98,14 @@ namespace Backend.Service
 
         public async Task<TableListResponse<Product>> GetProducts(int id, FilterModel filters)
         {
-            var storeProduct = await _storesRepository.GetProducts(id, filters);
-            var total = await _storesRepository.CountProducts(storeProduct.First().StoreId);
-            
-            var products = await _productsRepository.GetByFilter(filters);
+            var products = await _storesRepository.GetProducts(id, filters);
             
             return new TableListResponse<Product>()
             {
-                Data = products,
+                Data = products.Item2,
                 Limit = filters.Limit,
                 Page = filters.Page,
-                Total = total
+                Total = products.totalCount
             };
         }
     }

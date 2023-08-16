@@ -1,4 +1,16 @@
 <div class="shop-container">
-  <div>detail</div>
+  <img class="shop-image" ng-src="{{store.image}}" />
+
+  <div class="products">
+    <div class="product-boxx" ng-repeat="product in products">
+      <img class="product-image" ng-src="{{product.image}}">
+      <h4>{{product.name}}</h4>
+      <p>{{product.variants[0].price}}</p>
+      <p>{{product.description}}</p>
+      <p>{{product.brand}}</p>
+      <div ng-class="{ 'sould-out': product.variants[0].inStock === 0 }">Sould out</div>
+    </div>
+  </div>
+
   <empty-data ng-if="total === 0"></empty-data>
 </div>

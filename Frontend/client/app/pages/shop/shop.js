@@ -78,7 +78,7 @@ angular.module('myApp.shop', ['ngRoute'])
       $scope.total = 0;
       $scope.query = query || "";
 
-      $scope.stores = undefined;
+      $scope.store = undefined;
       $scope.error = undefined;
       $scope.isLoading = false;
       $scope.storeId = $routeParams.id;
@@ -87,7 +87,14 @@ angular.module('myApp.shop', ['ngRoute'])
         return index % 4 === 0 || index % 4 === 1;
       };
 
+
       getStoreById($http, $scope)
+        .then(() => {
+          return getStoreProduct($http, $scope, paginationService);
+        })
+        .finally(() => {
+          $scope.isLoading = false;
+        })
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -98,21 +105,6 @@ angular.module('myApp.shop', ['ngRoute'])
           $scope.searchStore();
         }
       };
-
-      $scope.searchStore = function () {
-        const urlParams = window.location.hash.split("query=");
-        if (urlParams[1]) {
-          const queryValue = urlParams[1].split('&')[0];
-          if (queryValue === $scope.query) {
-            console.log(12);
-            return;
-          }
-        }
-        loadStore($http, $scope, paginationService);
-        $location.search('limit', $scope.limit);
-        $location.search('page', $scope.page);
-        $location.search('query', $scope.query);
-      }
     }]);
 
 
@@ -150,6 +142,7 @@ function getStoreById($http, $scope) {
   return $http.get(`/api/stores/${$scope.storeId}`)
     .then(function (response) {
       $scope.store = response.data;
+      
       $scope.isLoading = false;
     })
     .then(() => {
@@ -159,5 +152,18 @@ function getStoreById($http, $scope) {
     .catch(function (error) {
       $scope.error = error;
       $scope.isLoading = false;
+    });
+}
+
+function getStoreProduct($http, $scope, paginationService) {
+  return $http.get(`/api/stores/${$scope.storeId}/products`)
+    .then(function (response) {
+      $scope.products = response.data.data;
+      paginationService.setPage(response.data.page)
+      paginationService.setLimit(response.data.limit)
+      paginationService.setTotal(response.data.total)
+    })
+    .catch(function (error) {
+      $scope.error = error;
     });
 }

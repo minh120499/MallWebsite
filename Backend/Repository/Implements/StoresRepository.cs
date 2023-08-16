@@ -87,18 +87,57 @@ namespace Backend.Repository.Implements
             return (totalCount, await query.ToListAsync());
         }
 
-        public async Task<List<Product>> GetProducts(int storeId, FilterModel filters)
+        public async Task<(int totalCount, List<Product>)> GetProducts(int storeId, FilterModel filters)
         {
-            var storeProducts = await _context.Products
-                .Where(sp => sp.StoreId == storeId)
+            IQueryable<Product> query = _context.Products
+                .Where(s => s.StoreId.Equals(storeId))
                 .Include(sp => sp.Store)
                 .Include(sp => sp.Variants)
-                .OrderBy(u => u.Id)
+                .Include(p => p.ProductCategory)!
+                .ThenInclude(pc => pc.Category);
+
+            if (filters.Ids.Any())
+            {
+                query = query.Where(u => filters.Ids.Contains(u.Id));
+            }
+
+            if (!string.IsNullOrEmpty(filters.Status))
+            {
+                query = query.Where(u => u.Status == filters.Status);
+            }
+
+            if (!string.IsNullOrEmpty(filters.Query))
+            {
+                query = query.Where(u => u.Name != null && u.Name.Contains(filters.Query));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            query = query.OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
-                .Reverse()
-                .ToListAsync();
-            return storeProducts;
+                .Reverse();
+
+            var products = await query.ToListAsync();
+
+            foreach (var product in products)
+            {
+                if (product.ProductCategory != null)
+                {
+                    foreach (var productCategory in product.ProductCategory)
+                    {
+                        productCategory.Product = null;
+                        if (productCategory.Category != null)
+                        {
+                            productCategory.Category.ProductCategory = null;
+                        }
+                    }
+                }
+
+                product.Store = null;
+            }
+
+            return (totalCount, products);
         }
 
         public async Task<Store> Add(Store store)

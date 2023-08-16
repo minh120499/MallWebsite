@@ -21,18 +21,18 @@ namespace Backend.Repository.Implements
 
         public async Task<Product> GetById(int productId)
         {
-            var product = await _context.Products
+            var products = await _context.Products
                 .Include(p => p.ProductCategory)!
                 .ThenInclude(pc => pc.Category)
                 .Include(p => p.Variants)
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
-            if (product == null)
+            if (products == null)
             {
                 throw new NotFoundException("Product not found.");
             }
 
-            return product;
+            return products;
         }
 
         public async Task<List<Product>> GetByFilter(FilterModel filters)
@@ -62,7 +62,19 @@ namespace Backend.Repository.Implements
                 .Take(filters.Limit)
                 .Reverse();
 
-            return await query.ToListAsync();
+            var products = await query.ToListAsync();
+
+            foreach (var product in products)
+            {
+                foreach (var productCategory in product.ProductCategory!)
+                {
+                    productCategory.Product = null;
+                }
+
+                product.Store = null;
+            }
+
+            return products;
         }
 
         public async Task<Product> Add(ProductRequest request)
@@ -96,7 +108,7 @@ namespace Backend.Repository.Implements
                     foreach (var category in categories)
                     {
                         product.ProductCategory = new List<ProductCategory>
-                            { new() { Category = category } };
+                            { new() { Category = category, CategoryId = category.Id } };
                     }
                 }
 
@@ -112,6 +124,8 @@ namespace Backend.Repository.Implements
                             Image = image,
                             Price = request.Price,
                             InStock = request.InStock,
+                            CreateOn = DateTime.Now,
+                            ModifiedOn = DateTime.Now
                         }
                     };
                 }
@@ -121,11 +135,13 @@ namespace Backend.Repository.Implements
                 product.Status = StatusConstraint.ACTIVE;
 
                 await _context.Variants.AddRangeAsync(product.Variants!);
-                await _context.ProductCategories.AddRangeAsync(product.ProductCategory!);
                 var response = await _context.Products.AddAsync(product);
+                if (response.Entity.ProductCategory != null)
+                {
+                    await _context.ProductCategories.AddRangeAsync(response.Entity.ProductCategory);
+                }
 
                 await _context.SaveChangesAsync();
-
                 return response.Entity;
             }
             catch (Exception e)
