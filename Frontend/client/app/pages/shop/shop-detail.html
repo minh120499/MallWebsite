@@ -1,16 +1,54 @@
 <div class="shop-container">
-  <img class="shop-image" ng-src="{{store.image}}" />
-
-  <div class="products">
-    <div class="product-boxx" ng-repeat="product in products">
-      <img class="product-image" ng-src="{{product.image}}">
-      <h4>{{product.name}}</h4>
-      <p>{{product.variants[0].price}}</p>
-      <p>{{product.description}}</p>
-      <p>{{product.brand}}</p>
-      <div ng-class="{ 'sould-out': product.variants[0].inStock === 0 }">Sould out</div>
+  <div class="shop-detail-info">
+    <img class="shop-image" ng-src="{{store.image}}" />
+    <div class="shop-detail-left">
+      <h2>{{store.name}}</h2>
+      <p>{{store.category.name || store.categoryId}}</p>
+      <p class="store-description" ng-if="!store.description">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. At maiores libero eaque magnam hic dolores ad saepe
+        ullam excepturi esse commodi, suscipit, expedita voluptate aliquam dignissimos deserunt aperiam itaque cumque!
+      </p>
+      <p>{{store.description}}</p>
+      <div class="shop-detail">
+        <div><i class='bx bx-envelope'></i>{{store.email}}</div>
+        <div><i class='bx bx-phone'></i></i>{{store.phone}}</div>
+        <div><i class='bx bx-map-pin'></i>{{store.floor.name}}</div>
+        <div><i class='bx bx-map-pin'></i>{{store.floor.name}}</div>
+      </div>
+      <div>Facilities: {{store.facilities}}</div>
     </div>
   </div>
 
+  <div id="store-product-heading">IN OUR STORE</div>
+
+  <div class="filter-box shop-filter-box">
+    <div class="search">
+      <div class="search-input">
+        <input ng-model="query" class="form-control" type="text" placeholder="Search" />
+      </div>
+      <div class="search-btn">
+        <button type="submit" class="" ng-click="handleSearch()">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="products">
+    <div class="product-box" ng-repeat="product in products">
+      <img class="product-image" ng-src="{{product.image}}">
+      <div class="product-info">
+        <div class="product-title">
+          <h4>{{product.name}}</h4>
+          <p>{{product.brand}}</p>
+        </div>
+        <p>{{product.variants[0].price}}$</p>
+        <p class="description-text">{{product.description}}</p>
+        <div ng-if="product.variants[0].inStock === 0" ng-class="{ 'sould-out': product.variants[0].inStock === 0 }">
+          Sould out</div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="total !== 0" class="pagination-box">
+    <pagination></pagination>
+  </div>
   <empty-data ng-if="total === 0"></empty-data>
 </div>

@@ -23,12 +23,18 @@ angular.module('myApp.info', ['ngRoute'])
       $scope.error = undefined;
       $scope.isLoading = false;
 
-      loadBanner($http, $scope, paginationService)
-        .then(startSlick);
+      $scope.sendFeedBack = function () {
+        const formData = new FormData();
+        if ($scope.name) formData.append("name", $scope.name)
+        if ($scope.email) formData.append("email", $scope.email)
+        if ($scope.message) formData.append("message", $scope.message)
 
-      $scope.handlePageClick = function () {
-        console.log('Button clicked!');
-      };
+        sendFeedBack($http, $scope, {
+          name: $scope.name,
+          email: $scope.email,
+          message: $scope.message,
+        });
+      }
     }]);
 
 
@@ -53,6 +59,32 @@ function loadBanner($http, $scope, paginationService) {
       $scope.error = error;
       $scope.isLoading = false;
     });
+};
+
+function sendFeedBack($http, $scope, request) {
+  return $http.post(`/api/feedbacks`, {
+    body: request
+  })
+    .then(function (response) {
+      $scope.banners = response.data.data;
+      showSuccessToast("Thank for your feedback!");
+    })
+    .catch(function (error) {
+      $scope.error = error;
+      $scope.isLoading = false;
+      showErrorToast(getErrorsMessage(error) || "An error occurred");
+    });
+}
+
+function getErrorsMessage(error) {
+  if (error?.data?.error) {
+    return error?.data?.error;
+  }
+
+  if (!error?.data?.errors[0]) {
+    return "";
+  }
+  return Object.values(error.data.errors[0]);
 };
 
 const startSlick = () => {

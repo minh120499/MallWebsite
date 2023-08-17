@@ -22,10 +22,6 @@
 .form-item input {
   outline: none;
   padding: 10px 24px;
-  /* p */
-  /* height: 100%;
-  border: none;
-  border-radius: 6px; */
 }
 
 .form-item input {
@@ -41,15 +37,45 @@
 
 .button-create {
   display: flex;
-  border: 1px solid rebeccapurple;
   border-radius: 6px;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
-.label {
-  font-size: 1.2rem;
-  padding: 10px 10px 0;
+.button::after {
+  content: '';
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+  position: absolute;
+  left: calc(50% - 0.75em);
+  top: calc(50% - 0.75em);
+  border: 0.15em solid transparent;
+  border-right-color: white;
+  border-radius: 50%;
+  animation: button-anim 0.7s linear infinite;
+  opacity: 0;
+}
+
+@keyframes button-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button.loading {
+  color: transparent;
+}
+
+.button.loading::after {
+  opacity: 1;
+}
+.loading {
+  cursor: default;
+  pointer-events: none;
 }
 
 .form-item input:hover {
@@ -59,17 +85,10 @@
 /* file img */
 .input-upload {
   display: flex;
-  /* border: 1px solid rebeccapurple; */
+  width: max-content;
   border-radius: 6px;
   align-items: center;
   gap: 8px;
-}
-
-.input-upload button {
-  border: 1px solid blue;
-  border-radius: 6px;
-  padding: 8px;
-  background-color: #f5f7fa;
 }
 
 .images {
@@ -131,3 +150,34 @@
 }
 
 /* file img */
+
+.form-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.form-title h3 {
+  color: rgba(0,0,0,.88);
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.9rem;
+}
+
+.form-title-content {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+}
+
+.sub-form-title-content {
+  color: gray;
+  line-height: 1rem;
+  /* transform: translateY(5px); */
+}
+
+.form-title-action {
+  display: flex;
+  gap: 8px;
+}

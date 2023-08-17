@@ -28,6 +28,7 @@
   padding: 6px;
   background: gainsboro;
 }
+
 /* 
  * End layout css 
 */
@@ -97,3 +98,36 @@
 /* 
  * End side bar css 
 */
+
+/* Filter-box css */
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Search */
+.filter-box .search {
+  display: flex;
+}
+
+.filter-box .search .search-input {
+  flex-grow: 1;
+}
+
+.filter-box .search .search-btn {
+  display: flex;
+}
+
+/* End Search */
+
+
+/* Search */
+.filter-box .filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* End Search */
+/* End Filter-box css */

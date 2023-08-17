@@ -159,6 +159,7 @@ function getStoreProduct($http, $scope, paginationService) {
   return $http.get(`/api/stores/${$scope.storeId}/products`)
     .then(function (response) {
       $scope.products = response.data.data;
+      $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)
       paginationService.setTotal(response.data.total)
