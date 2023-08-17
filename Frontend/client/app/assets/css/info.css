@@ -126,3 +126,10 @@
   resize: none;
   height: 150px;
 }
+
+.feedback-mall button {
+  flex-direction: column;
+  padding: 8px;
+  height: 100%;
+  font-size: 18px;
+}

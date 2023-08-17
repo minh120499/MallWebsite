@@ -51,7 +51,7 @@
 </div>
 
 <div class="feedback-mall">
-  <h4 id="feedback" ng-click="sendFeedBack()">Give us your feedback</h4>
+  <h4 id="feedback">Give us your feedback</h4>
   <div class="feedback-form form-container">
     <div class="form-group">
       <div class="form-item">
@@ -68,8 +68,9 @@
     <div class="form-group">
       <div class="form-item">
         <label class="label" for="message">Description</label>
-        <textarea id="message" ng-model="message" placeholder="Description..." />
+        <textarea id="message" ng-model="message" placeholder="Description..."></textarea>
       </div>
     </div>
+    <button class="button-create button primary" ng-click="sendFeedBack()">Submit</button>
   </div>
 </div>

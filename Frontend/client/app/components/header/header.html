@@ -1,88 +1,151 @@
 <style>
   header {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
   }
 
-  header nav ul {
+  .header-top {
+    padding: 20px 160px;
+    background: #1a1a1a;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Open Sans', sans-serif;
+    color: #959595;
+    font-size: 14px;
+  }
+
+  .header-top div {
     display: flex;
+    align-items: center;
     gap: 8px;
   }
 
-  header nav li {
-    padding: 20px;
+  .header-top i {
+    color: #69cdbe;
+    transform: scale(1.4);
+  }
+
+  #network {
+    display: flex;
+    justify-content: end;
+    padding-right: 16px;
+    gap: 16px;
+  }
+
+  #network i {
+    display: flex;
+    gap: 20px;
+    border-radius: 50%;
     cursor: pointer;
   }
 
-  .active {
-    background: red;
-  }
+  #network a:hover {}
 
-  .header-right {
+  /* 
+  * Nav menu
+  */
+  .header-nav {
+    position: sticky;
+    top: 0;
     display: flex;
-    height: 100%;
-    gap: 16px;
-    width: 100%;
-  }
-
-  .header-right img {
-    width: 200px;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .mall-hour {
-    display: flex;
+    justify-content: space-between;
+    padding: 0 160px;
     align-items: center;
-    gap: 16px
   }
 
-  .hour {
-    width: 200px;
+  .header-nav-menu ul {
+    display: flex;
+    gap: 40px;
+  }
+
+  .header-nav-menu ul li {
+    font-weight: 400;
+    padding: 20px 16px;
+  }
+
+  .header-nav-menu ul li:hover {
+    background-color: #6235b0;
+    color: #fff;
+  }
+
+  .active {
+    color: #6235b0;
+  }
+
+  .header-nav img {
+    max-height: 84px;
+    object-fit: contain;
   }
 </style>
 
+<header>
+  <div class="header-top">
+    <div>
+      <i class='bx bx-map-alt'></i>
+      266 Doi Can, Ba Dinh, Ha Noi
+    </div>
+    <div>
+      <i class='bx bx-phone'></i>
+      (345) 012-6789
+    </div>
+    <div>
+      <i class='bx bx-time'></i>
+      Opening Hours: Mon-Fri: 9am-6pm; Sun: 10am-1pm
+    </div>
+    <div id="network">
+      <a href="#">
+        <i class='bx bxl-facebook'></i>
+      </a>
+      <a href="">
+        <i class='bx bxl-twitter'></i>
+      </a>
+      <a href="">
+        <i class='bx bxl-youtube'></i>
+      </a>
+      <a href="">
+        <i class='bx bxl-linkedin'></i>
+      </a>
+      <a href="">
+        <i class='bx bxl-google'></i>
+      </a>
+    </div>
+  </div>
 
-<header class="h-16 px-40 gap-6 items-center primary-bg">
-  <div class="header-right">
+  <div class="header-nav">
     <a href="#/">
       <img src="http://127.0.0.1:5500/app/assets/image/mallLogo.png" alt="Rmall logo" />
     </a>
-    <div class="mall-hour">
-      <div>Mall house</div>
-      <div class="hour">
-        <div>Mon - Fri: 8:00 - 23:00</div>
-        <div>Sun & Sat: 9:00 - 22:00</div>
-      </div>
-    </div>
+
+    <nav class="header-nav-menu">
+      <ul class="menu flex justify-between w-full">
+        <a href="#/">
+          <li ng-click="setPage('home')" ng-class="{ 'active': page.startsWith('home') }">
+            Home
+          </li>
+        </a>
+        <a href="#/shop" ng-click="setPage('shop')">
+          <li ng-class="{ 'active': page.startsWith('shop') }">
+            Shop
+          </li>
+        </a>
+        <a href="#/dine">
+          <li ng-click="setPage('dine')" ng-class="{ 'active': page === 'dine' }">
+            Dine
+          </li>
+        </a>
+        <a href="#/play">
+          <li ng-click="setPage('play')" ng-class="{ 'active': page === 'play' }">
+            Play
+          </li>
+        </a>
+        <a href="#/info">
+          <li ng-click="setPage('info')" ng-class="{ 'active': page === 'info' }">
+            Infor
+          </li>
+        </a>
+      </ul>
+    </nav>
   </div>
-  <nav class="">
-    <ul class="menu flex justify-between w-full">
-      <a href="#/">
-        <li ng-click="setPage('home')" ng-class="{ 'active': page.startsWith('home') }">
-          Home
-        </li>
-      </a>
-      <a href="#/shop" ng-click="setPage('shop')">
-        <li ng-class="{ 'active': page.startsWith('shop') }">
-          Shop
-        </li>
-      </a>
-      <a href="#/dine">
-        <li ng-click="setPage('dine')" ng-class="{ 'active': page === 'dine' }">
-          Dine
-        </li>
-      </a>
-      <a href="#/play">
-        <li ng-click="setPage('play')" ng-class="{ 'active': page === 'play' }">
-          Play
-        </li>
-      </a>
-      <a href="#/info">
-        <li ng-click="setPage('info')" ng-class="{ 'active': page === 'info' }">
-          Infor
-        </li>
-      </a>
-    </ul>
-  </nav>
 </header>

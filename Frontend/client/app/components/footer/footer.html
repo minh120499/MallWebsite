@@ -1,6 +1,6 @@
 <style>
   footer {
-    background-color: #121315;
+    background-color: #1a1a1a;
     color: #a7a7a7;
     font-size: 16px;
   }
@@ -118,20 +118,143 @@
     footer .row.primary {
       grid-template-columns: 1fr;
     }
+  }
 
+  .footer-root {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 160px 20px 160px;
+  }
+
+  .footer-col-left p {
+    max-width: 323px;
+  }
+
+  .footer-col-right h6 {
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Montserrat', sans-serif !important;
+    color: #959595;
+    font-size: 12px;
+    line-height: 1.9;
+    letter-spacing: 0px;
+    padding: 20px 0;
+  }
+
+  .footer-col-right div {
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0px;
+  }
+
+  .footer-col-right div:not(:last-child) {
+    margin-bottom: 18px;
+  }
+
+  .footer-col-left p {
+    margin-top: 24px;
+
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #959595;
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: 0px;
+  }
+
+  .footer-open p {
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0px;
+  }
+
+  .network {
+    margin-top: 16px;
+    display: flex;
+    padding-right: 16px;
+    gap: 16px;
   }
 </style>
 
-<footer class="primary-bg">
+<footer class="">
+  <div class="footer-root">
+    <div class="footer-col-left">
+      <p>
+        R-Mall is the most exclusive shopping mall and entertainment center. We are located in an area that is best
+        known for its high-end stores and restaurants.
+      </p>
+      <div class="network">
+        <a href="#">
+          <i class='bx bxl-facebook'></i>
+        </a>
+        <a href="">
+          <i class='bx bxl-twitter'></i>
+        </a>
+        <a href="">
+          <i class='bx bxl-youtube'></i>
+        </a>
+        <a href="">
+          <i class='bx bxl-linkedin'></i>
+        </a>
+        <a href="">
+          <i class='bx bxl-google'></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col-right">
+      <h6>NAVIGATION</h6>
+      <div>Shopping</div>
+      <div>Entertainment</div>
+      <div>Dining</div>
+      <div>Cinema</div>
+      <div>Mall Map</div>
+    </div>
+    <div class="footer-col-right">
+      <h6>CUSTOMER SERVICE</h6>
+      <div>About us</div>
+      <div>Mall Administration</div>
+      <div>FAQ</div>
+      <div>Testimonials</div>
+      <div>Contacts</div>
+      <p></p>
+    </div>
+    <div class="footer-col-right">
+      <h6>WORKING HOURS</h6>
+      <div class="footer-open">
+        <p>Shopping</p>
+        <p>10:00 am - 22:00 pm</p>
+      </div>
+      <div class="footer-open">
+        <p>Entertainment Zone</p>
+        <p>10:00 am - 22:00 pm</p>
+      </div>
+      <div class="footer-open">
+        <p>Cinema</p>
+        <p>10:00 am - 22:00 pm</p>
+      </div>
+      <div class="footer-open">
+        <p>Parking</p>
+        <p>10:00 am - 22:00 pm</p>
+      </div>
+    </div>
+  </div>
   <div class="row copyright">
     <div class="footer-menu">
-
       <a href="">Home</a>
       <a href="">About</a>
       <a href="">Contact</a>
       <a href="">Blog</a>
       <a href="">Social</a>
-
     </div>
     <div>Copyright &copy; 2023 RMall Co., Ltd</div>
   </div>
