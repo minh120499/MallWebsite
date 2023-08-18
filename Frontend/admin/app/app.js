@@ -16,9 +16,13 @@ angular.module('myApp', [
       $locationProvider.hashPrefix('');
 
       $routeProvider
+        // .when('/', {
+        //   templateUrl: 'page/dashboard/dashboard.html',
+        //   controller: 'DashboardCtrl'
+        // })
         .when('/', {
-          templateUrl: 'page/dashboard/dashboard.html',
-          controller: 'DashboardCtrl'
+          templateUrl: 'page/banner/banner.html',
+          controller: 'BannerListCtrl'
         })
         .otherwise({ redirectTo: '/' });
 

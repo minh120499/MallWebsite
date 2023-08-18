@@ -105,30 +105,6 @@
   display: none;
 }
 
-/* Button styles */
-.button {
-  display: inline-block;
-  padding: 1em;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: 0 var(--bHeight) 0 var(--blue);
-  background: var(--blue);
-  color: var(--dark);
-}
-
-.button:hover,
-.button:focus {
-  cursor: pointer;
-  background-color: lighten(var(--blue), 10%);
-  box-shadow: 0 var(--bHeight) 0 var(--blue);
-}
-
-.button:active {
-  margin-top: var(--bHeight);
-  margin-bottom: calc(-1 * var(--bHeight));
-  box-shadow: 0 0 0 var(--blue);
-}
-
 /* Close button */
 .button--close {
   padding: 0.2em 0.5em;
