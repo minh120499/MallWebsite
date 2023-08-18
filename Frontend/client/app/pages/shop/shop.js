@@ -33,10 +33,10 @@ angular.module('myApp.shop', ['ngRoute'])
         return index % 4 === 0 || index % 4 === 1;
       };
 
-      loadStore($http, $scope, $location, paginationService)
-        .then(() => {
+      // loadStore($http, $scope, $location, paginationService)
+      //   .then(() => {
           $scope.loadFilter = true;
-        });
+        // });
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');

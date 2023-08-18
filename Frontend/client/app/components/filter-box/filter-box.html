@@ -1,37 +1,109 @@
+<style>
+  /* Filter-box css */
+  .filter-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* Search */
+  .filter-box .search {
+    display: flex;
+    gap: 16px;
+  }
+
+  .filter-box .search .search-input {
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .filter-box .search .search-btn {
+    display: flex;
+  }
+
+  /* End Search */
+
+
+  /* Search */
+  .filter-box .filter {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .filter .form-group select {
+    border-radius: 8px;
+    padding: 4px 12px;
+    outline: none;
+  }
+
+  .filter .form-group select option {
+    padding: 4px 12px;
+    outline: none;
+  }
+
+  .search-input i {
+    position: absolute;
+    bottom: 12px;
+    left: 20px;
+    scale: 1.2;
+  }
+
+  .search-input input {
+    padding: 8px 50px;
+    border: transparent;
+  }
+
+  .search-input input:focus {
+    outline: none;
+  }
+
+  .search-btn button {
+    padding: 0 24px;
+  }
+
+  /* End Search */
+  /* End Filter-box css */
+</style>
+
 <div class="filter-box">
   <div class="search">
     <div class="search-input">
-      <input ng-model="query" class="form-control" type="text" placeholder="Search" />
+      <i class='bx bx-search-alt-2'></i>
+      <input ng-model="query" class="form-control" type="text" placeholder="Enter..."
+        ng-keypress="handleKeyPress($event)" />
     </div>
     <div class="search-btn">
-      <button type="submit" class="" ng-click="handleSearch()">Search</button>
+      <button class="button-create button primary" ng-click="handleSearch()">Search</button>
     </div>
   </div>
 
   <div class="filter">
-    <div class="form-group col-sm-3 col-xs-6">
+    <div class="form-group">
       <select ng-model="floorId" class="form-item select-dropdown" ng-change="handleSearch()">
         <option value="">All floor</option>
         <option ng-repeat="floor in floors" value="{{floor.id}}" ng-bind="floor.name"></option>
       </select>
     </div>
 
-    <div class="form-group col-sm-3 col-xs-6">
+    <div class="form-group">
       <select ng-model="categoryId" class="form-item select-dropdown" ng-change="handleSearch()">
         <option value="">All category</option>
         <option ng-repeat="category in categories" value="{{category.id}}" ng-bind="category.name"></option>
       </select>
     </div>
 
-    <div class="form-group col-sm-3 col-xs-6">
+    <div class="form-group">
       <select ng-model="facilityIds" class="form-item select-dropdown" ng-change="handleSearch()">
         <option value="">All facility</option>
         <option ng-repeat="facility in facilities" value="{{facility.id}}" ng-bind="facility.name"></option>
       </select>
     </div>
 
-    <div class="form-group col-sm-3 col-xs-6">
-      <select data-filter="price" class="filter-price filter form-control">
+    <div class="form-group">
+      <select ng-model="price" class="form-item select-dropdown">
         <option value="">Select Price Range</option>
         <option value="">Show All</option>
       </select>

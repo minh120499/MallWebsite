@@ -39,6 +39,12 @@ export default angular.module('myApp')
           $location.search('facilityIds', $scope.facilityIds);
         }
 
+        $scope.handleKeyPress = function (event) {
+          if (event.key === "Enter") {
+            $scope.handleSearch();
+          }
+        };
+
         loadSetting($http, $scope)
           .then(() => {
             return loadCategory($http, $scope)
