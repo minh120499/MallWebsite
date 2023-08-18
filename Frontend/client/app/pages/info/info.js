@@ -24,6 +24,24 @@ angular.module('myApp.info', ['ngRoute'])
       $scope.isLoading = false;
 
       $scope.sendFeedBack = function () {
+        if (!$scope.name) {
+          showErrorToast("Name is not valid")
+          return;
+        }
+
+        if (!$scope.email) {
+          const emailPattern = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+          if (!emailPattern.test(email)) {
+            showErrorToast("Email is not valid")
+            return;
+          }
+        }
+
+        if (!$scope.message) {
+          showErrorToast("Message is not valid")
+          return;
+        }
+
         const formData = new FormData();
         if ($scope.name) formData.append("name", $scope.name)
         if ($scope.email) formData.append("email", $scope.email)
