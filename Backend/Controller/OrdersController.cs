@@ -45,7 +45,7 @@ namespace Backend.Controller
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] OrderRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] OrderRequest request)
         {
             var response = await _ordersService.Update(id, request);
             return Ok(response);

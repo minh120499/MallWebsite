@@ -159,7 +159,7 @@ public static class Validations
     public static void Order(OrderRequest request)
     {
         var errors = new List<Dictionary<string, string>>();
-        if (request.Source is null)
+        if (request.StoreId is null)
         {
             errors.Add(new Dictionary<string, string>()
             {

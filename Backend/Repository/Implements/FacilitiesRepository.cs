@@ -130,7 +130,12 @@ namespace Backend.Repository.Implements
             try
             {
                 var facilities = await _context.Facilities.Where(f => ids.Contains(f.Id)).ToListAsync();
-                _context.Facilities.RemoveRange(facilities);
+                foreach (var facility in facilities)
+                {
+                    facility.Status = StatusConstraint.DELETED;
+                }
+
+                _context.Facilities.UpdateRange(facilities);
                 await _context.SaveChangesAsync();
                 return true;
             }

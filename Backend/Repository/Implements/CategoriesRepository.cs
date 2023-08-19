@@ -30,7 +30,8 @@ public class CategoriesRepository : ICategoriesRepository
 
     public async Task<(int totalCount, List<Category>)> GetByFilter(FilterModel filters)
     {
-        IQueryable<Category> query = _context.Categories;
+        IQueryable<Category> query = _context.Categories
+            .Where(b => b.Status != StatusConstraint.DELETED);
 
         if (filters.Ids.Any())
         {
@@ -93,6 +94,7 @@ public class CategoriesRepository : ICategoriesRepository
             {
                 category.Image = request.Image;
             }
+
             category.Type = request.Type;
             category.Status = request.Status;
             category.ModifiedOn = DateTime.Now;
@@ -116,7 +118,12 @@ public class CategoriesRepository : ICategoriesRepository
         try
         {
             var categoryIds = await _context.Categories.Where(b => ids.Contains(b.Id)).ToListAsync();
-            _context.Categories.RemoveRange(categoryIds);
+            foreach (var category in categoryIds)
+            {
+                category.Status = StatusConstraint.DELETED;
+            }
+
+            _context.Categories.UpdateRange(categoryIds);
             await _context.SaveChangesAsync();
             return true;
         }

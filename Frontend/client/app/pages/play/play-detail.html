@@ -33,7 +33,7 @@
   </div>
 
   <div class="products">
-    <div class="product-box" ng-repeat="product in products">
+    <div class="product-box" ng-repeat="product in products" ng-click="handleOrder(product)">
       <img class="product-image" ng-src="{{product.image}}">
       <div class="product-info">
         <div class="product-title">
@@ -51,4 +51,24 @@
     <pagination></pagination>
   </div>
   <empty-data ng-if="total === 0"></empty-data>
+
+  <!-- Modal Section -->
+  <modal ng-if="deleteModal">
+    <button class="btn-close-modal" ng-click="closeDeleteConfirm()">
+      <i class='bx bx-x'></i>
+    </button>
+    <h3 class="title-modal">Delete store</h3>
+    <div class="content-modal">
+      <p>Permanantly delete <b>{{ selectStore.name }}</b>. You can't undo this.</p>
+    </div>
+    <div class="action-modal">
+      <button class="button danger-outline" ng-click="closeDeleteConfirm()">
+        Cancel
+      </button>
+      <button class="button primary-danger" ng-click="handleDeleteStore()">
+        Delete
+      </button>
+    </div>
+  </modal>
+  <!-- Modal Section -->
 </div>

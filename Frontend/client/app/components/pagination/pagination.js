@@ -3,8 +3,8 @@ export default angular.module('myApp')
     templateUrl: 'components/pagination/pagination.html',
     controller: ['$scope', '$location', 'paginationService', function PaginationController($scope, $location, paginationService) {
       $scope.total = paginationService.getTotal() || 0;
-      $scope.page = paginationService.getPage() || 1;
-      $scope.limit = paginationService.getLimit() || 10;
+      $scope.page = Number($location.search().page) || paginationService.getPage() || 1;
+      $scope.limit =Number($location.search().limit) || paginationService.getLimit() || 10;
       $scope.paginationMax = $scope.page === Math.ceil($scope.total / ($scope.limit || 10))
 
       $scope.pagination = Array.from({ length: Math.ceil($scope.total / ($scope.limit || 10)) }, (_, index) => ({

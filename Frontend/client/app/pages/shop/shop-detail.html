@@ -24,10 +24,12 @@
   <div class="filter-box shop-filter-box">
     <div class="search">
       <div class="search-input">
-        <input ng-model="query" class="form-control" type="text" placeholder="Search" />
+        <i class='bx bx-search-alt-2'></i>
+        <input ng-model="query" class="form-control" type="text" placeholder="Enter..."
+          ng-keypress="handleKeyPress($event)" />
       </div>
       <div class="search-btn">
-        <button type="submit" class="" ng-click="handleSearch()">Search</button>
+        <button class="button-create button primary" ng-click="handleSearch()">Search</button>
       </div>
     </div>
   </div>

@@ -34,6 +34,16 @@ angular.module('myApp.category', ['ngRoute'])
 
       loadCategories($http, $scope, paginationService);
 
+      $scope.handleSearch = () => {
+        loadCategories($http, $scope, paginationService);
+      }
+
+      $scope.handleKeyPress = function (event) {
+        if (event.key === "Enter") {
+          loadCategories($http, $scope, paginationService);
+        }
+      };
+
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
       };

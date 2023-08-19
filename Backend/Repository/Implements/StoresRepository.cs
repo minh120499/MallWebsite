@@ -37,7 +37,8 @@ namespace Backend.Repository.Implements
         {
             IQueryable<Store> query = _context.Stores
                 .Include(s => s.Floor)
-                .Include(s => s.Category);
+                .Include(s => s.Category)
+                .Where(b => b.Status != StatusConstraint.DELETED);
 
             if (filters.Ids.Any())
             {
@@ -210,7 +211,12 @@ namespace Backend.Repository.Implements
             try
             {
                 var stores = await _context.Stores.Where(s => ids.Contains(s.Id)).ToListAsync();
-                _context.Stores.RemoveRange(stores);
+                foreach (var store in stores)
+                {
+                    store.Status = StatusConstraint.DELETED;
+                }
+
+                _context.Stores.UpdateRange(stores);
                 await _context.SaveChangesAsync();
                 return true;
             }

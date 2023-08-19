@@ -39,12 +39,12 @@
   padding: 0;
   border: none;
   border-radius: 100%;
-  background-color: orange;
+  background-color: #fff;
   text-indent: -9999px;
 }
 
 .slick-dots li.slick-active button {
-  background-color: red;
+  background-color: #6235b0;
 }
 
 /* slick dots css */
@@ -73,7 +73,7 @@
   width: 0;
   height: 0;
   border-left: 0 solid transparent;
-  border-right: 15px solid #113463;
+  border-right: 15px solid #6235b0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   z-index: 10;
@@ -84,7 +84,7 @@
   width: 0;
   height: 0;
   border-right: 0 solid transparent;
-  border-left: 15px solid #113463;
+  border-left: 15px solid #6235b0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   z-index: 10;

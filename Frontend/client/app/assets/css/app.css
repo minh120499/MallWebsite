@@ -103,3 +103,72 @@ body {
 /* 
  * End side bar css 
 */
+
+
+/* Filter-box css */
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Search */
+.filter-box .search {
+  display: flex;
+  gap: 16px;
+}
+
+.filter-box .search .search-input {
+  flex-grow: 1;
+  position: relative;
+}
+
+.filter-box .search .search-btn {
+  display: flex;
+}
+
+/* End Search */
+
+
+/* Search */
+.filter-box .filter {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.filter .form-group select {
+  border-radius: 8px;
+  padding: 4px 12px;
+  outline: none;
+}
+
+.filter .form-group select option {
+  padding: 4px 12px;
+  outline: none;
+}
+
+.search-input i {
+  position: absolute;
+  bottom: 12px;
+  left: 20px;
+  scale: 1.2;
+}
+
+.search-input input {
+  padding: 8px 50px;
+  border: transparent;
+}
+
+.search-input input:focus {
+  outline: none;
+}
+
+.search-btn button {
+  padding: 0 24px;
+}
+
+/* End Search */
+/* End Filter-box css */

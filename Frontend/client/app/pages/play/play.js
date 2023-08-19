@@ -39,7 +39,7 @@ angular.module('myApp.play', ['ngRoute'])
     }])
   .controller('PlayDetailCtrl', ['$scope', '$http', '$rootScope', '$location', '$routeParams', 'paginationService',
     function ($scope, $http, $rootScope, $location, $routeParams, paginationService) {
-      document.title = 'Shop';
+      document.title = 'Play';
 
       const { query, page, limit } = $location.search();
 
@@ -53,10 +53,29 @@ angular.module('myApp.play', ['ngRoute'])
       $scope.isLoading = false;
       $scope.storeId = $routeParams.id;
 
+      $scope.handleOrder = function (product) {
+        console.log(product);
+        const formData = new FormData();
+        const orderLineItem = {
+          productId: product.variants[0].productId,
+          productName: product.name,
+          variants: product.variants,
+          price: product.variants[0].price,
+          quantity: 1
+        }
+        formData.append("OrdersLineItems", JSON.stringify([orderLineItem]));
+        formData.append("TotalPrice", product.variants[0].price);
+        formData.append("StoreId", product.storeId);
+        // createOrder($http, $scope, {
+        //   TotalPrice: product.variants[0].price,
+        //   StoreId: product.storeId,
+        //   OrdersLineItems: [orderLineItem]
+        // })
+      }
+
       $scope.isLeft = function (index) {
         return index % 4 === 0 || index % 4 === 1;
       };
-
 
       getStoreById($http, $scope)
         .then(() => {
@@ -151,3 +170,30 @@ function getStoreProduct($http, $scope, paginationService) {
       $scope.error = error;
     });
 }
+
+function createOrder($http, $scope, formData) {
+
+  // return $http.post('/api/orders', formData, {
+  //   headers: { 'Content-Type': undefined },
+  //   transformRequest: angular.identity
+  // })
+  return $http.post('/api/orders', formData)
+    .then(function (response) {
+      showSuccessToast("Create banner success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
+    });
+}
+
+function getErrorsMessage(error) {
+  if (error?.data?.error) {
+    return error?.data?.error;
+  }
+
+  if (!error?.data?.errors[0]) {
+    return "";
+  }
+  return Object.values(error.data.errors[0]);
+};

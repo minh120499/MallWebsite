@@ -78,10 +78,6 @@
   pointer-events: none;
 }
 
-.form-item input:hover {
-  border-color: #000;
-}
-
 /* file img */
 .input-upload {
   display: flex;

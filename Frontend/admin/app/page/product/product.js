@@ -33,6 +33,15 @@ angular.module('myApp.product', ['ngRoute'])
 
       loadProduct($http, $scope, paginationService);
 
+      $scope.handleSearch = () => {
+        loadProduct($http, $scope, paginationService);
+      }
+
+      $scope.handleKeyPress = function (event) {
+        if (event.key === "Enter") {
+          loadProduct($http, $scope, paginationService);
+        }
+      };
 
       $scope.handleDeleteProduct = () => {
         const ids = $scope.selectProduct.id;

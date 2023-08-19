@@ -37,13 +37,8 @@ namespace Backend.Service
         public async Task<Order> Create(OrderRequest request)
         {
             Validations.Order(request);
-
-            var order = new Order()
-            {
-                // CustomerName = request.CustomerName,
-                // TotalAmount = request.TotalAmount,
-            };
-            return await _ordersRepository.Add(order);
+            
+            return await _ordersRepository.Add(request);
         }
 
         public async Task<Order> Update(int orderId, OrderRequest request)

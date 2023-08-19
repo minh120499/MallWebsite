@@ -37,6 +37,16 @@ angular.module('myApp.banner', ['ngRoute'])
 
       loadBanner($http, $scope, paginationService);
 
+      $scope.handleSearch = () => {
+        loadBanner($http, $scope, paginationService);
+      }
+
+      $scope.handleKeyPress = function (event) {
+        if (event.key === "Enter") {
+          loadBanner($http, $scope, paginationService);
+        }
+      };
+
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
       };

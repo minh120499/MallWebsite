@@ -1,6 +1,6 @@
 <div class="dine-container">
   <img src="http://127.0.0.1:5500/app/assets/image/dineBanner.jpg" alt="Rmall dine" />
-  <div class="dine-filter-box">
+  <div class="shop-filter-box">
     <filter-box ng-if="loadFilter" />
   </div>
   <div class="dine-box">
@@ -9,10 +9,12 @@
       <img src="{{store.image}}" />
       <div class="dine-info" ng-class="{'transform-left': !isLeft($index)}">
         <h3>{{ store.name }}</h3>
-        <p><i class='bx bx-map' ></i> {{ store.floor.name }}</p>
-        <p><i class='bx bx-phone' ></i> {{ store.name }}</p>
+        <p><i class='bx bx-map'></i> {{ store.floor.name }}</p>
+        <p><i class='bx bx-phone'></i> {{ store.name }}</p>
       </div>
     </a>
   </div>
-  <pagination></pagination>
+  <div ng-if="total !== 0" class="pagination-box">
+    <pagination></pagination>
+  </div>
 </div>

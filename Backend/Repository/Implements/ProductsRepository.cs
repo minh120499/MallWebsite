@@ -22,6 +22,7 @@ namespace Backend.Repository.Implements
         public async Task<Product> GetById(int productId)
         {
             var products = await _context.Products
+                .Where(b => b.Status != StatusConstraint.DELETED)
                 .Include(p => p.ProductCategory)!
                 .ThenInclude(pc => pc.Category)
                 .Include(p => p.Variants)
@@ -185,7 +186,12 @@ namespace Backend.Repository.Implements
             try
             {
                 var products = await _context.Products.Where(p => ids.Contains(p.Id)).ToListAsync();
-                _context.Products.RemoveRange(products);
+                foreach (var product in products)
+                {
+                    product.Status = StatusConstraint.DELETED;
+                }
+
+                _context.Products.UpdateRange(products);
                 await _context.SaveChangesAsync();
                 return true;
             }

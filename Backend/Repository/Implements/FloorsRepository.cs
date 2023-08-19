@@ -31,7 +31,8 @@ namespace Backend.Repository.Implements
         public async Task<List<Floor>> GetByFilter(FilterModel filters)
         {
             var floors = await _context.Floors
-                .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? ""))
+                .Where(u => u.Name != null && u.Name.Contains(filters.Query ?? "") &&
+                            u.Status!.Equals(StatusConstraint.ACTIVE))
                 .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
@@ -126,7 +127,12 @@ namespace Backend.Repository.Implements
             try
             {
                 var floors = await _context.Floors.Where(f => ids.Contains(f.Id)).ToListAsync();
-                _context.Floors.RemoveRange(floors);
+                foreach (var floor in floors)
+                {
+                    floor.Status = StatusConstraint.DELETED;
+                }
+
+                _context.Floors.UpdateRange(floors);
                 await _context.SaveChangesAsync();
                 return true;
             }

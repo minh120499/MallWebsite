@@ -31,7 +31,8 @@ public class BannersRepository : IBannersRepository
     public async Task<(int totalCount, List<Banner>)> GetByFilter(FilterModel filters)
     {
         IQueryable<Banner> query = _context.Banners
-            .Include(u => u.Store);
+            .Include(u => u.Store)
+            .Where(b => b.Status != StatusConstraint.DELETED);
 
         if (filters.Ids.Any())
         {
@@ -95,6 +96,7 @@ public class BannersRepository : IBannersRepository
             {
                 banner.Image = request.Image;
             }
+
             banner.Status = request.Status;
             banner.StoreId = request.StoreId;
             banner.StartOn = request.StartOn;
@@ -103,6 +105,7 @@ public class BannersRepository : IBannersRepository
             {
                 banner.Expire = (banner.EndOn - banner.StartOn).Value.Days;
             }
+
             banner.ModifiedOn = DateTime.Now;
             await _context.SaveChangesAsync();
 
@@ -136,8 +139,13 @@ public class BannersRepository : IBannersRepository
     {
         try
         {
-            var bannerIds = await _context.Banners.Where(b => ids.Contains(b.Id)).ToListAsync();
-            _context.Banners.RemoveRange(bannerIds);
+            var banners = await _context.Banners.Where(b => ids.Contains(b.Id)).ToListAsync();
+            foreach (var banner in banners)
+            {
+                banner.Status = StatusConstraint.DELETED;
+            }
+
+            _context.Banners.UpdateRange(banners);
             await _context.SaveChangesAsync();
             return true;
         }

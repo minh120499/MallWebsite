@@ -32,6 +32,16 @@ angular.module('myApp.store', ['ngRoute'])
 
       loadStore($http, $scope, paginationService);
 
+      $scope.handleSearch = () => {
+        loadStore($http, $scope, paginationService);
+      }
+
+      $scope.handleKeyPress = function (event) {
+        if (event.key === "Enter") {
+          loadStore($http, $scope, paginationService);
+        }
+      };
+
       $scope.handleDeleteStore = () => {
         const ids = $scope.selectStore.id;
         deleteStore($http, $scope, ids)

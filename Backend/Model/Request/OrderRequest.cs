@@ -7,10 +7,10 @@ public class OrderRequest
     public int Id { get; set; }
     
     public Store? Source { get; set; }
-    
+    public int? StoreId { get; set; }
     public Employee? SaleBy { get; set; }
     
-    public List<OrderLineItem>? OrdersLineItems { get; set; }
+    public List<OrderLineItemRequest>? OrdersLineItems { get; set; }
 
     public float? TotalPrice { get; set; }
     
