@@ -3,6 +3,11 @@
  * layout css
  * 
 */
+html,
+body {
+  scroll-behavior: smooth
+}
+
 .container {
   display: flex;
 }

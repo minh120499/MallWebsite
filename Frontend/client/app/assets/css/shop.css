@@ -98,9 +98,11 @@
   gap: 8px;
   width: 200px;
   height: 100px;
-  border: 1px solid var(--secondary);
-  background: var(--secondary);
-  color: #fff;
+  background: #F5F5F5;
+  /* #1a1a1a */
+  border-radius: 8px;
+  color: #6235b0;
+  opacity: 0.7;
   transform: translateX(-25%);
 }
 
@@ -177,8 +179,7 @@
   font-style: italic;
 }
 
-.shop-detail i {
-}
+.shop-detail i {}
 
 .products {
   margin: 0 auto;
