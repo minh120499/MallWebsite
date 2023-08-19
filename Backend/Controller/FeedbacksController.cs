@@ -38,16 +38,16 @@ namespace Backend.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] FeedbackRequest request)
+        public async Task<IActionResult> Create([FromForm] FeedbackRequest request)
         {
             var response = await _feedbacksService.Create(request);
             return Ok(response);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] FeedbackRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id)
         {
-            var response = await _feedbacksService.Update(id, request);
+            var response = await _feedbacksService.Update(id, new FeedbackRequest());
             return Ok(response);
         }
 

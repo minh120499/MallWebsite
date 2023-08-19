@@ -33,10 +33,10 @@ angular.module('myApp.shop', ['ngRoute'])
         return index % 4 === 0 || index % 4 === 1;
       };
 
-      // loadStore($http, $scope, $location, paginationService)
-      //   .then(() => {
+      loadStore($http, $scope, $location, paginationService)
+        .then(() => {
           $scope.loadFilter = true;
-        // });
+        });
 
       $scope.handlePageClick = function () {
         console.log('Button clicked!');
@@ -142,7 +142,6 @@ function getStoreById($http, $scope) {
   return $http.get(`/api/stores/${$scope.storeId}`)
     .then(function (response) {
       $scope.store = response.data;
-      
       $scope.isLoading = false;
     })
     .then(() => {

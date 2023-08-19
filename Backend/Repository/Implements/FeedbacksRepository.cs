@@ -2,6 +2,7 @@
 using Backend.Model;
 using Backend.Model.Entities;
 using Backend.Model.Request;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository.Implements
@@ -44,6 +45,7 @@ namespace Backend.Repository.Implements
             try
             {
                 feedback.CreateOn = DateTime.Now;
+                feedback.Status = StatusConstraint.ACTIVE;
                 await _context.Feedbacks.AddAsync(feedback);
                 await _context.SaveChangesAsync();
 
@@ -60,10 +62,7 @@ namespace Backend.Repository.Implements
             try
             {
                 var feedback = await GetById(feedbackId);
-
-                feedback.Message = request.Message;
-                feedback.Email = request.Email;
-                feedback.Name = request.Name;
+                feedback.Status = StatusConstraint.INACTIVE;
                 await _context.SaveChangesAsync();
 
                 return feedback;

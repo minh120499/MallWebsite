@@ -30,8 +30,11 @@ angular.module('myApp.info', ['ngRoute'])
         }
 
         if (!$scope.email) {
+          showErrorToast("Email is required")
+          return;
+        } else {
           const emailPattern = /^[\w\.-]+@[\w\.-]+\.\w+$/;
-          if (!emailPattern.test(email)) {
+          if (!emailPattern.test($scope.email)) {
             showErrorToast("Email is not valid")
             return;
           }
@@ -47,11 +50,7 @@ angular.module('myApp.info', ['ngRoute'])
         if ($scope.email) formData.append("email", $scope.email)
         if ($scope.message) formData.append("message", $scope.message)
 
-        sendFeedBack($http, $scope, {
-          name: $scope.name,
-          email: $scope.email,
-          message: $scope.message,
-        });
+        sendFeedBack($http, $scope, formData);
       }
     }]);
 
@@ -79,9 +78,10 @@ function loadBanner($http, $scope, paginationService) {
     });
 };
 
-function sendFeedBack($http, $scope, request) {
-  return $http.post(`/api/feedbacks`, {
-    body: request
+function sendFeedBack($http, $scope, formData) {
+  return $http.post(`/api/feedbacks`, formData, {
+    headers: { 'Content-Type': undefined },
+    transformRequest: angular.identity
   })
     .then(function (response) {
       $scope.banners = response.data.data;

@@ -40,15 +40,16 @@ namespace Backend.Service
 
             var feedback = new Feedback()
             {
-                // Content = request.Content,
-                // Rating = request.Rating,
+                Name = request.Name,
+                Email = request.Email,
+                Message = request.Message,
             };
             return await _feedbacksRepository.Add(feedback);
         }
 
         public async Task<Feedback> Update(int feedbackId, FeedbackRequest request)
         {
-            Validations.Feedback(request);
+            // Validations.Feedback(request);
 
             return await _feedbacksRepository.Update(feedbackId, request);
         }

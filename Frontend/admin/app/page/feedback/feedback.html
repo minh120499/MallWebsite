@@ -1,4 +1,4 @@
-<div ng-controller="StoreListCtrl">
+<div ng-controller="FeedbackListCtrl">
   <div ng-if="isLoading">
     <div class="spinner">Loading...</div>
   </div>
@@ -10,26 +10,56 @@
       <table class="content-table">
         <thead>
           <tr>
-            <th>Stt</th>
+            <th class="column-index">Stt</th>
             <th>Name</th>
-            <th>Location</th>
-            <th>Status</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th style="width: 50px;">Status</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="item in data">
-            <td>{{ item.id }}</td>
+            <td>{{ (page - 1) * limit + $index + 1}}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.location }}</td>
-            <td>{{ item.status }}</td>
-            <td class="column-action">
-              <button class="edit" />
-              <button class="delete" />
+            <td>{{ item.email }}</td>
+            <td>{{ item.message }}</td>
+            <td>
+              <badge type="item.status"></badge>
+            </td>
+            <td>
+              <div class="column-action">
+                <button class="edit" ng-if="item.status === 'active'" ng-click="handleUpdateFeedback(item)">
+                  <i class='bx bx-edit-alt icon'></i>
+                </button>
+                <button class="delete" ng-click="showDeleteConfirm(item)">
+                  <i class='bx bx-trash icon'></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  <!-- Modal Section -->
+  <modal ng-if="deleteModal">
+    <button class="btn-close-modal" ng-click="closeDeleteConfirm()">
+      <i class='bx bx-x'></i>
+    </button>
+    <h3 class="title-modal">Delete feedback</h3>
+    <div class="content-modal">
+      <p>Permanantly delete this feedback. You can't undo this.</p>
+    </div>
+    <div class="action-modal">
+      <button class="button danger-outline" ng-click="closeDeleteConfirm()">
+        Cancel
+      </button>
+      <button class="button primary-danger" ng-click="handleDeleteFeedback()">
+        Delete
+      </button>
+    </div>
+  </modal>
+  <!-- Modal Section -->
 </div>

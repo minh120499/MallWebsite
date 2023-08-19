@@ -8,7 +8,7 @@ angular.module('myApp.feedback', ['ngRoute'])
       })
   }])
 
-  .controller('FeedbackListCtrl', ['$scope', '$http', function ($scope, $http) {
+  .controller('FeedbackListCtrl', ['$scope', '$http', 'paginationService', function ($scope, $http, paginationService) {
     document.title = 'Feedback List';
 
     $scope.data = undefined;
@@ -18,12 +18,35 @@ angular.module('myApp.feedback', ['ngRoute'])
     $scope.page = 1;
     $scope.total = 0;
 
-    loadFeedback($http, $scope);
+    $scope.handleUpdateFeedback = (feedback) => {
+      $scope.selectFeedback = feedback;
+      updateFeedback($http, $scope);
+    }
+
+    $scope.showDeleteConfirm = (feedback) => {
+      console.log(feedback);
+      $scope.deleteModal = true;
+      $scope.selectFeedback = feedback;
+    }
+    $scope.handleDeleteFeedback = () => {
+      const ids = $scope.selectFeedback.id;
+      deleteFeedback($http, $scope, ids)
+        .then(() => {
+          $scope.deleteModal = false;
+          $location.path('/feedbacks').replace();
+          loadFeedback($http, $scope, paginationService);
+        })
+    }
+    $scope.closeDeleteConfirm = () => $scope.deleteModal = false;
+
+    setTimeout(() => {
+      loadFeedback($http, $scope);
+    }, 300);
   }])
 
-function loadFeedback($http, $scope) {
+function loadFeedback($http, $scope, paginationService) {
   $scope.isLoading = true;
-  $http.get('/api/feedbacks')
+  return $http.get('/api/feedbacks')
     .then(function (response) {
       console.log(response);
       $scope.data = response.data.data;
@@ -36,5 +59,30 @@ function loadFeedback($http, $scope) {
       console.log('Error fetching data:', error);
       $scope.error = error;
       $scope.isLoading = false;
+    });
+}
+
+function updateFeedback($http, $scope) {
+  return $http.put(`/api/feedbacks/${$scope.selectFeedback.id}`)
+    .then(function (response) {
+      showSuccessToast("Update feedbacks success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
+    });
+}
+
+
+function deleteFeedback($http, $scope, ids) {
+  $scope.isLoading = true;
+
+  return $http.delete(`/api/feedbacks?ids=${ids}`)
+    .then(function (response) {
+      showSuccessToast("Delete feedbacks success!");
+    })
+    .catch(function (error) {
+      $scope.error = error.data ? error.data : error
+      showErrorToast(getErrorsMessage(error));
     });
 }
