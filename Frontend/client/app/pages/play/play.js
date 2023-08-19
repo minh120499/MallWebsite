@@ -102,6 +102,7 @@ function loadStore($http, $scope, $location, paginationService) {
   const { query, floorId, categoryId, facilityIds } = $location.search();
 
   var params = new URLSearchParams();
+  params.append('category', "play");
   $scope.page && params.append('page', $scope.page);
   $scope.limit && params.append('limit', $scope.limit);
   query && params.append('query', query);

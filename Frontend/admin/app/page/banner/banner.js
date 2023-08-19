@@ -53,9 +53,9 @@ angular.module('myApp.banner', ['ngRoute'])
 
       $scope.handleDeleteBanner = () => {
         const ids = $scope.selectBanner.id;
+        $scope.deleteModal = false;
         deleteBanner($http, $scope, ids)
           .then(() => {
-            $scope.deleteModal = false;
             $location.path('/banners').replace();
             loadBanner($http, $scope, paginationService);
           })

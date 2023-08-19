@@ -68,6 +68,7 @@ public class CategoriesRepository : ICategoriesRepository
         {
             category.CreateOn = DateTime.Now;
             category.ModifiedOn = DateTime.Now;
+            category.ProductCategory = new List<ProductCategory>();
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
@@ -117,14 +118,20 @@ public class CategoriesRepository : ICategoriesRepository
     {
         try
         {
-            var categoryIds = await _context.Categories.Where(b => ids.Contains(b.Id)).ToListAsync();
-            foreach (var category in categoryIds)
+            var categoryIds = await _context.Categories.FirstOrDefaultAsync(c => ids.Contains(c.Id));
+
+            if (categoryIds != null)
             {
-                category.Status = StatusConstraint.DELETED;
+                categoryIds.Status = StatusConstraint.DELETED;
+
+                _context.Categories.Update(categoryIds);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new NotFoundException("Category not found");
             }
 
-            _context.Categories.UpdateRange(categoryIds);
-            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)

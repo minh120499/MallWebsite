@@ -81,9 +81,9 @@ angular.module('myApp.category', ['ngRoute'])
 
       $scope.handleDeleteCategory = () => {
         const id = $scope.selectCategory.id;
+        $scope.deleteModal = false;
         deleteCategory($http, $scope, id, paginationService)
           .then(() => {
-            $scope.deleteModal = false;
             $location.path('/categories').replace();
             loadCategories($http, $scope, paginationService);
           })
@@ -175,7 +175,7 @@ function loadCategories($http, $scope, paginationService) {
   $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log("Category", response);
-      $scope.data = response.data.data;
+      $scope.data = response.data.data.filter(c => c);
       $scope.total = response.data.total;
       paginationService.setPage(response.data.page)
       paginationService.setLimit(response.data.limit)

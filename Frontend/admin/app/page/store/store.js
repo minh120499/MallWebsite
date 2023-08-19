@@ -44,9 +44,9 @@ angular.module('myApp.store', ['ngRoute'])
 
       $scope.handleDeleteStore = () => {
         const ids = $scope.selectStore.id;
+        $scope.deleteModal = false;
         deleteStore($http, $scope, ids)
           .then(() => {
-            $scope.deleteModal = false;
             $location.path('/stores').replace();
             loadStore($http, $scope, paginationService);
           })
@@ -281,7 +281,7 @@ function loadCategory($http, $scope) {
   return $http.get(`/api/categories${params.size ? "?" + params.toString() : ""}`)
     .then(function (response) {
       console.log("Category", response);
-      $scope.categories = response.data.data;
+      $scope.categories = response.data.data.filter((c) => c.name == "Dine" || c.name === "Play" || c.name === "Shop");
       $scope.total = response.data.total;
       $scope.isLoading = false;
 

@@ -30,9 +30,9 @@ angular.module('myApp.feedback', ['ngRoute'])
     }
     $scope.handleDeleteFeedback = () => {
       const ids = $scope.selectFeedback.id;
+      $scope.deleteModal = false;
       deleteFeedback($http, $scope, ids)
         .then(() => {
-          $scope.deleteModal = false;
           $location.path('/feedbacks').replace();
           loadFeedback($http, $scope, paginationService);
         })

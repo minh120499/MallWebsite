@@ -36,7 +36,6 @@ namespace Backend.Repository.Implements
                 .OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
                 .Take(filters.Limit)
-                .Reverse()
                 .ToListAsync();
             return floors;
         }

@@ -39,6 +39,7 @@ namespace Backend.Repository.Implements
         public async Task<List<Product>> GetByFilter(FilterModel filters)
         {
             IQueryable<Product> query = _context.Products
+                .Where(p => p.Status != StatusConstraint.DELETED)
                 .Include(p => p.Variants)
                 .Include(p => p.ProductCategory)!
                 .ThenInclude(c => c.Category);
@@ -60,8 +61,7 @@ namespace Backend.Repository.Implements
 
             query = query.OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
-                .Take(filters.Limit)
-                .Reverse();
+                .Take(filters.Limit);
 
             var products = await query.ToListAsync();
 
@@ -185,14 +185,19 @@ namespace Backend.Repository.Implements
         {
             try
             {
-                var products = await _context.Products.Where(p => ids.Contains(p.Id)).ToListAsync();
-                foreach (var product in products)
+                var products = await _context.Products.FirstOrDefaultAsync(p => ids.Contains(p.Id));
+                if (products != null)
                 {
-                    product.Status = StatusConstraint.DELETED;
+                    products.Status = StatusConstraint.DELETED;
+
+                    _context.Products.Update(products);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new NotFoundException("Product not found");
                 }
 
-                _context.Products.UpdateRange(products);
-                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)

@@ -45,9 +45,9 @@ angular.module('myApp.product', ['ngRoute'])
 
       $scope.handleDeleteProduct = () => {
         const ids = $scope.selectProduct.id;
+        $scope.deleteModal = false;
         deleteProduct($http, $scope, ids)
           .then(() => {
-            $scope.deleteModal = false;
             $location.path('/products').replace();
             loadProduct($http, $scope, paginationService);
           })

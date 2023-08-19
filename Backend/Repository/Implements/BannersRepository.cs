@@ -53,8 +53,7 @@ public class BannersRepository : IBannersRepository
 
         query = query.OrderByDescending(u => u.Id)
             .Skip((filters.Page - 1) * filters.Limit)
-            .Take(filters.Limit)
-            .Reverse();
+            .Take(filters.Limit);
 
         return (totalCount, await query.ToListAsync());
     }

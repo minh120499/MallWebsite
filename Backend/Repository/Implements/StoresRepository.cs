@@ -82,8 +82,7 @@ namespace Backend.Repository.Implements
 
             query = query.OrderByDescending(u => u.Id)
                 .Skip((filters.Page - 1) * filters.Limit)
-                .Take(filters.Limit)
-                .Reverse();
+                .Take(filters.Limit);
 
             return (totalCount, await query.ToListAsync());
         }
@@ -210,14 +209,19 @@ namespace Backend.Repository.Implements
         {
             try
             {
-                var stores = await _context.Stores.Where(s => ids.Contains(s.Id)).ToListAsync();
-                foreach (var store in stores)
+                var stores = await _context.Stores.FirstOrDefaultAsync(s => ids.Contains(s.Id));
+                if (stores != null)
                 {
-                    store.Status = StatusConstraint.DELETED;
+                    stores.Status = StatusConstraint.DELETED;
+
+                    _context.Stores.Update(stores);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new NotFoundException("Store not found");
                 }
 
-                _context.Stores.UpdateRange(stores);
-                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
